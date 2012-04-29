@@ -13,7 +13,7 @@ class YoutubePlayer:
 			('streak', '', '', '', '#fff', '#333'),
 			('bg', '', '', '', '', '#666'),]
 
-		txt = urwid.Text(('banner', u"0xPr0xy Youtube Player! v0.2"), align='center')
+		txt = urwid.Text(('banner', u"0xPr0xy Youtube Player! v2"), align='center')
 		map1 = urwid.AttrMap(txt, 'streak')
 		fill = urwid.Filler(map1)
 		self.map2 = urwid.AttrMap(fill, 'bg')

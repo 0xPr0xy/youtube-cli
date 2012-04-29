@@ -973,58 +973,10 @@ class FileDownloader(object):
 		
 		url = info_dict['url']
 		player_url = info_dict.get('player_url', None)
-		#lazy
+		
+		# so lazy xD
 		raise ReturnUrl(url)
-		
-		# try:
-			
-		# 	instance=vlc.Instance()
-		# 	media=instance.media_new(url)
-		# 	player=instance.media_player_new()
-		# 	player.set_media(media)
-			
-		# 	player.play()
 
-		# 	def clear_screen():
-		# 		os.system('ls')
-		# 		os.system('reset')
-		# 		os.system('clear')
-
-		# 	def restart():
-		# 		player.stop()
-		# 		player.play()
-
-		# 	def next():
-		# 		player.stop()
-		# 		return True
-			
-		# 	def quit():
-		# 		clear_screen()
-		# 		sys.exit(0)
-
-		# 	keybindings = {
-		# 		'p': player.pause,
-		# 		'q': quit,
-		# 		']': next,
-		# 		'[': restart,
-		# 	}
-			
-		# 	while True:
-		# 		k = getch().decode('utf8')  # Python 3+
-		# 		if k in keybindings:
-		# 			if keybindings[k]():
-		# 				clear_screen()
-		# 				break
-			
-		# 	# return False
-		
-		# except Exception as e:
-		# 	print 'error'
-		# 	print e
-		# 	pass
-
-
-		# return False
 
 class InfoExtractor(object):
 	"""Information Extractor class.

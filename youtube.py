@@ -26,6 +26,7 @@ class YoutubeClient:
 		else: sys.exit('invalid keyword')
 		
 		self.q = q
+		self.hd = True
 		ordering_key = {'rating':'rating', 'viewcount':'viewCount','relevance':'relevance'}
 		ordering = ['rating','viewcount','relevance']
 		
