@@ -22,7 +22,7 @@ Controls:
 ] or } = next
 p or P = pause
 r or R = reset
-q or Q = stop
+q or Q = quit
 
 
 Example usage:
