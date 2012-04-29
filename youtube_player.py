@@ -1,6 +1,7 @@
 import urwid
+# http://excess.org/urwid/reference.html
 import vlc
-
+# http://liris.cnrs.fr/advene/download/python-ctypes/doc/
 
 class YoutubePlayer:
 	

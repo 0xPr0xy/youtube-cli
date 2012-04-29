@@ -34,7 +34,7 @@ Returns 20 videos with query sorted by rating
 Downloads 10 videos with query sorted by viewcount
 
 ./youtube.py stream 'ukf drum and bass' relevance 2 s
-Stream the most relevant video for ukf drum and bass
+Stream 2 videos with query sorted by relevance
 
 
 Enjoy!

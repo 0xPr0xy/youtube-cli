@@ -4,10 +4,13 @@
 # import os
 import sys
 import random
-# my player, uses urwid and vlc ^^
+
 from youtube_player import YoutubePlayer
+# my player, uses urwid and vlc ^^
+
 import gdata.youtube.service
 # https://developers.google.com/youtube/2.0/developers_guide_protocol_api_query_parameters
+
 from ytdl import ytdl
 from ytstr import ytstr
 # https://bitbucket.org/rg3/youtube-dl/wiki/Home
@@ -30,7 +33,7 @@ class YoutubeClient:
 		else: sys.exit('invalid ordering')
 
 		try: self.num = int(num_results)
-		except Exception as e: exit.exit('invalid number %s' %e)
+		except Exception as e: sys.exit('invalid number %s' %e)
 
 		try: self.shuffle = shuffle
 		except IndexError: self.shuffle = False
