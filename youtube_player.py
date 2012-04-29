@@ -28,7 +28,8 @@ class YoutubePlayer:
 		if input in ('p', 'P'):
 			self.player.pause()
 		if input in ('r', 'R'):
-			self.player.restart()
+			self.player.stop()
+			self.player.play()
 		if input in (']','}'):
 			self.player.next()
 		if input in ('{', '['):
@@ -41,6 +42,7 @@ class YoutubePlayer:
 			'--ignore-config',
 			'--sout-keep',
 			'--sout-all',
+			'--vout=caca'
 		]
 		self.instance=vlc.Instance(instanceParameters)
 		self.medialist = self.instance.media_list_new()
