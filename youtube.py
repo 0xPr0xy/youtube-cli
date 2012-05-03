@@ -22,28 +22,32 @@ class YoutubeClient:
 	def __init__(self,keyword,q,order,num_results,shuffle=None):
 		
 		keywords = ['search', 'download', 'stream']
-		if keyword in keywords: self.keyword = keyword
-		else: sys.exit('invalid keyword')
-		
+		if keyword in keywords: 
+			self.keyword = keyword
+		else: 
+			sys.exit('invalid keyword')
 		self.q = q
 		self.hd = True
 		ordering_key = {'rating':'rating', 'viewcount':'viewCount','relevance':'relevance'}
 		ordering = ['rating','viewcount','relevance']
-		
-		if order in ordering: self.order = ordering_key[order]
-		else: sys.exit('invalid ordering')
-
-		try: self.num = int(num_results)
-		except Exception as e: sys.exit('invalid number %s' %e)
-
-		try: self.shuffle = shuffle
-		except IndexError: self.shuffle = False
-
+		if order in ordering: 
+			self.order = ordering_key[order]
+		else: 
+			sys.exit('invalid ordering')
+		try: 
+			self.num = int(num_results)
+		except Exception as e: 
+			sys.exit('invalid number %s' %e)
+		try: 
+			self.shuffle = shuffle
+		except IndexError: 
+			self.shuffle = False
 		self.client = gdata.youtube.service.YouTubeService()
 		self.execute()
 
 
 	def search(self,feed):
+
 		for entry in feed.entry:
 			try:
 				print '\n[video] title: %s' % entry.title.text
@@ -56,6 +60,7 @@ class YoutubeClient:
 
 
 	def download(self,feed):
+		
 		for entry in feed.entry:
 			try:
 				ytdl.main(entry.media.player.url)
@@ -64,6 +69,7 @@ class YoutubeClient:
 
 
 	def stream(self,feed):
+		
 		urls = []
 		for entry in feed.entry:
 			try:
@@ -74,7 +80,6 @@ class YoutubeClient:
 				urls.append(str(url))
 			except Exception as e:
 				print('download failed:\nError: %s' % e)
-		
 		player = YoutubePlayer(urls)
 
 
@@ -91,7 +96,6 @@ class YoutubeClient:
 		if self.shuffle:
 			random.shuffle(feed.entry)
 		command = self.keyword
-
 		if command == 'download':
 			self.download(feed)
 		if command == 'stream':
@@ -99,4 +103,8 @@ class YoutubeClient:
 		if command == 'search':
 			self.search(feed)
 
-call = YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+
+if len(sys.argv) == 6:
+	call = YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+if len(sys.argv) == 5:
+	call = YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
