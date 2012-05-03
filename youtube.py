@@ -9,7 +9,8 @@ from youtube_player import YoutubePlayer
 # my player, uses urwid and vlc ^^
 
 import gdata.youtube.service
-# https://developers.google.com/youtube/2.0/developers_guide_protocol_api_query_parameters
+# http://gdata-python-client.googlecode.com/hg/pydocs/gdata.youtube.service.html#YouTubeVideoQuery
+# https://developers.google.com/youtube/1.0/developers_guide_python
 
 from ytdl import ytdl
 from ytstr import ytstr
@@ -19,29 +20,30 @@ from ytstr import ytstr
 class YoutubeClient:
 	
 
-	def __init__(self,keyword,q,order,num_results,shuffle=None):
+	def __init__(self,keyword,q,order,num_results,shuffle=None,time=None):
 		
 		keywords = ['search', 'download', 'stream']
-		if keyword in keywords: 
-			self.keyword = keyword
-		else: 
-			sys.exit('invalid keyword')
+		if keyword in keywords: self.keyword = keyword
+		else: sys.exit('invalid keyword')
+		
 		self.q = q
-		self.hd = True
-		ordering_key = {'rating':'rating', 'viewcount':'viewCount','relevance':'relevance'}
+	
+		ordering_key = {'rating':'rating', 'viewcount':'viewCount','relevance':'relevance','published':'published'}
 		ordering = ['rating','viewcount','relevance']
-		if order in ordering: 
-			self.order = ordering_key[order]
-		else: 
-			sys.exit('invalid ordering')
-		try: 
-			self.num = int(num_results)
-		except Exception as e: 
-			sys.exit('invalid number %s' %e)
-		try: 
-			self.shuffle = shuffle
-		except IndexError: 
-			self.shuffle = False
+		if order in ordering: self.order = ordering_key[order]
+		else: sys.exit('invalid ordering')
+		
+		try: self.num = int(num_results)
+		except Exception as e: sys.exit('invalid number %s' %e)
+		
+		if shuffle is not None:	self.shuffle = shuffle
+		else: self.shuffle = False
+
+		times_key = {'today':'today','week':'this_week','month':'this_month','time':'all_time'}
+		times = ['today', 'this_week', 'this_month', 'all_time']
+		if time is not None and time in times: self.time = times_key[time]
+		else: self.time = False
+
 		self.client = gdata.youtube.service.YouTubeService()
 		self.execute()
 
@@ -87,24 +89,25 @@ class YoutubeClient:
 		
 		query = gdata.youtube.service.YouTubeVideoQuery()	
 		query.format = '5'
+		query.hd = True
 		query.vq = self.q
 		query.max_results = self.num
 		query.start_index = 1
 		query.racy = 'exclude'
 		query.orderby = self.order
+		if self.time: query.time = self.time
 		feed = self.client.YouTubeQuery(query)
-		if self.shuffle:
-			random.shuffle(feed.entry)
+		if self.shuffle: random.shuffle(feed.entry)
 		command = self.keyword
-		if command == 'download':
-			self.download(feed)
-		if command == 'stream':
-			self.stream(feed)
-		if command == 'search':
-			self.search(feed)
+		if command == 'download': self.download(feed)
+		if command == 'stream':	self.stream(feed)
+		if command == 'search':	self.search(feed)
 
 
+if len(sys.argv) == 7:
+	YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
 if len(sys.argv) == 6:
-	call = YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+	if sys.argv[5] == 'shuffle': YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], None)
+	else: YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], None, sys.argv[5])
 if len(sys.argv) == 5:
-	call = YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+	YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

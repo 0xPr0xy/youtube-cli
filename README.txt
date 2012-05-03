@@ -13,7 +13,8 @@ command: search / download / stream
 query: 'multiple keywords' / singlekeyword
 order: relevance, viewcount or rating
 number of results: 1 - 50
-shuffle: s
+timespan (optional): today, week, month, all
+shuffle (optional): shuffle
 
 
 Controls:
@@ -27,14 +28,14 @@ q or Q = quit
 
 Example usage:
 ---------------
-./youtube.py search 'ukf drum and bass' rating 20 s
-Returns 20 videos with query sorted by rating
+./youtube.py search 'ukf drum and bass' rating 20 shuffle
+Returns 20 videos with query sorted by rating and shuffled
 
-./youtube.py download 'ukf drum and bass' viewcount 10 s
-Downloads 10 videos with query sorted by viewcount
+./youtube.py download 'ukf drum and bass' viewcount 10 shuffle
+Downloads 10 videos with query sorted by viewcount and shuffled
 
-./youtube.py stream 'ukf drum and bass' relevance 2 s
-Stream 2 videos with query sorted by relevance
+./youtube.py stream 'ukf drum and bass' relevance 2 month
+Stream 2 videos with query sorted by relevance and uploaded between now and a month ago
 
 
 Enjoy!
