@@ -29,9 +29,9 @@ class ItemWidget (urwid.WidgetWrap):
 				urwid.Padding(urwid.AttrWrap(
 				urwid.Text('%s' % ( entry.title.text)),  'body', 'focus')),
 				urwid.Padding(urwid.AttrWrap(
-				urwid.Text('Rating:%s' % ( entry.rating.average)),  'body', 'focus'), left=15),
+				urwid.Text('Rating:%s' % ( entry.rating.average)),  'body', 'focus'), left=10),
 				urwid.Padding(urwid.AttrWrap(
-				urwid.Text('Viewcount:%s' % ( entry.statistics.view_count )),  'body', 'focus')),
+				urwid.Text('Viewcount:%s' % ( entry.statistics.view_count )),  'body', 'focus'), left=5),
 			]
 		w = urwid.Columns(self.item)
 		self.__super.__init__(w)
