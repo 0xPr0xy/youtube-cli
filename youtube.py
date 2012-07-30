@@ -16,6 +16,33 @@ from ytdl import ytdl
 from ytstr import ytstr
 # https://bitbucket.org/rg3/youtube-dl/wiki/Home
 
+import urwid
+
+
+
+class ItemWidget (urwid.WidgetWrap):
+
+	def __init__ (self, entry):
+		if entry is not None:
+			self.content = '%s' % ( entry.media.player.url) #limit content? [:25]
+			self.item = [
+				urwid.Padding(urwid.AttrWrap(
+				urwid.Text('%s' % ( entry.title.text)),  'body', 'focus')),
+				urwid.Padding(urwid.AttrWrap(
+				urwid.Text('Rating:%s' % ( entry.rating.average)),  'body', 'focus'), left=15),
+				urwid.Padding(urwid.AttrWrap(
+				urwid.Text('Viewcount:%s' % ( entry.statistics.view_count )),  'body', 'focus')),
+			]
+		w = urwid.Columns(self.item)
+		self.__super.__init__(w)
+
+	def selectable (self):
+		return True
+
+	def keypress(self, size, key):
+		return key
+
+
 
 class YoutubeClient:
 	
@@ -49,16 +76,31 @@ class YoutubeClient:
 
 
 	def search(self,feed):
-
+		self.palette = [
+			('body','dark cyan', '', 'standout'),
+			('focus','dark red', '', 'standout'),
+			('head','light red', 'black'),
+		]
+		self.videolist = []
 		for entry in feed.entry:
 			try:
-				print '\n[video] title: %s' % entry.title.text
-				print '[video] url: %s' % entry.media.player.url
-				print '[video] rating: %s' % entry.rating.average
-				print '[video] view count: %s' % entry.statistics.view_count
-				print '[video] id: %s' % entry.media.player.url.split('watch?v=').pop().split("&")[0]
+
+				# self.videolist.append(ItemWidget(None, entry.title.text, entry.rating.average, entry.statistics.view_count))
+				self.videolist.append(ItemWidget(entry))
+				#print '\n[video] title: %s' % entry.title.text
+				#print '[video] url: %s' % entry.media.player.url
+				#print '[video] rating: %s' % entry.rating.average
+				#print '[video] view count: %s' % entry.statistics.view_count
+				#print '[video] id: %s' % entry.media.player.url.split('watch?v=').pop().split("&")[0]
 			except Exception as e: 
-				print('search failed:\nError: %s' % e)
+				pass
+				#print('search failed:\nError: %s' % e)
+
+		self.header = urwid.AttrMap(urwid.Text('selected:'), 'head')
+		self.listbox = urwid.ListBox(urwid.SimpleListWalker(self.videolist))
+		self.view = urwid.Frame(urwid.AttrWrap(self.listbox, 'body'), header=self.header)
+		self.loop = urwid.MainLoop(self.view, self.palette, unhandled_input=self.keystroke)
+		self.loop.run()
 
 
 	def download(self,feed):
@@ -70,7 +112,19 @@ class YoutubeClient:
 				print('download failed:\nError: %s' % e)
 
 
-	def stream(self,feed):
+
+	def stream(self, entry):
+		urls = []
+		try:
+			ytstr.main(entry)
+		except ytstr.ReturnUrl as url:
+			urls.append(str(url))
+		except Exception as e:
+			print('download failed:\nError: %s' % e)
+		player = YoutubePlayer(urls)
+		
+
+	def streamFeed(self,feed):
 		
 		urls = []
 		for entry in feed.entry:
@@ -100,9 +154,37 @@ class YoutubeClient:
 		if self.shuffle: random.shuffle(feed.entry)
 		command = self.keyword
 		if command == 'download': self.download(feed)
-		if command == 'stream':	self.stream(feed)
+		if command == 'stream':	self.streamFeed(feed)
 		if command == 'search':	self.search(feed)
 
+	def keystroke (self,input):
+		""" handle keystrokes """
+		
+		if input in ('q', 'Q'):
+			raise urwid.ExitMainLoop()
+		
+		if input is 'enter':
+			try:
+				self.focus = self.listbox.get_focus()[0].content
+			except Exception as e:
+				pass
+			self.view.set_header(urwid.AttrWrap(urwid.Text(
+				'selected: %s' % str(self.focus)), 'head'))
+			self.stream(self.focus)
+
+
+		if input is 'backspace':	
+			try:
+				self.focus = str(self.listbox.get_focus()[0].content)
+			except Exception as e:
+				pass
+			try: 
+				self.focus.index('blogger')
+				self.deletePost(self.focus)
+				sys.exit('deleted: %s' % self.focus)
+			except ValueError:
+				self.view.set_header(urwid.AttrWrap(urwid.Text(
+				'NO DELETE LINK!'), 'head'))
 
 if len(sys.argv) == 7:
 	YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
