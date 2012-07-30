@@ -96,9 +96,8 @@ class YoutubeClient:
 				pass
 				#print('search failed:\nError: %s' % e)
 
-		self.header = urwid.AttrMap(urwid.Text('selected:'), 'head')
 		self.listbox = urwid.ListBox(urwid.SimpleListWalker(self.videolist))
-		self.view = urwid.Frame(urwid.AttrWrap(self.listbox, 'body'), header=self.header)
+		self.view = urwid.Frame(urwid.AttrWrap(self.listbox, 'body'))
 		self.loop = urwid.MainLoop(self.view, self.palette, unhandled_input=self.keystroke)
 		self.loop.run()
 
