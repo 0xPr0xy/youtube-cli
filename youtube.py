@@ -6,7 +6,7 @@ import sys
 import random
 
 from youtube_player import YoutubePlayer
-# my player, uses urwid and vlc ^^
+# the player, uses the vlc media player python bindings
 
 import gdata.youtube.service
 # http://gdata-python-client.googlecode.com/hg/pydocs/gdata.youtube.service.html#YouTubeVideoQuery
@@ -17,14 +17,17 @@ from ytstr import ytstr
 # https://bitbucket.org/rg3/youtube-dl/wiki/Home
 
 import urwid
+# http://excess.org/urwid/reference.html
 
 
 
 class ItemWidget (urwid.WidgetWrap):
 
 	def __init__ (self, entry):
+		""" Creates UI Element for every Entry"""
+
 		if entry is not None:
-			self.content = '%s' % ( entry.media.player.url) #limit content? [:25]
+			self.content = entry.media.player.url #limit content? [:25]
 			self.item = [
 				urwid.Padding(urwid.AttrWrap(
 				urwid.Text('%s' % ( entry.title.text)),  'body', 'focus')),
@@ -45,11 +48,12 @@ class ItemWidget (urwid.WidgetWrap):
 
 
 class YoutubeClient:
-	
 
 	def __init__(self,keyword,q,order,num_results,shuffle=None,time=None):
-		
+		""" Check and Process Arguments """
+
 		keywords = ['search', 'download', 'stream']
+		
 		if keyword in keywords: self.keyword = keyword
 		else: sys.exit('invalid keyword')
 		
@@ -76,25 +80,22 @@ class YoutubeClient:
 
 
 	def search(self,feed):
+		""" Update UI with results """
+		
 		self.palette = [
 			('body','dark cyan', '', 'standout'),
 			('focus','dark red', '', 'standout'),
 			('head','light red', 'black'),
 		]
+
 		self.videolist = []
 		for entry in feed.entry:
+			
 			try:
-
-				# self.videolist.append(ItemWidget(None, entry.title.text, entry.rating.average, entry.statistics.view_count))
 				self.videolist.append(ItemWidget(entry))
-				#print '\n[video] title: %s' % entry.title.text
-				#print '[video] url: %s' % entry.media.player.url
-				#print '[video] rating: %s' % entry.rating.average
-				#print '[video] view count: %s' % entry.statistics.view_count
-				#print '[video] id: %s' % entry.media.player.url.split('watch?v=').pop().split("&")[0]
+			
 			except Exception as e: 
-				pass
-				#print('search failed:\nError: %s' % e)
+				print('search failed:\nError: %s' % e)
 
 		self.listbox = urwid.ListBox(urwid.SimpleListWalker(self.videolist))
 		self.view = urwid.Frame(urwid.AttrWrap(self.listbox, 'body'))
@@ -102,8 +103,18 @@ class YoutubeClient:
 		self.loop.run()
 
 
-	def download(self,feed):
+	def download(self, entry):
+		""" Download one video """
 		
+		try:
+			ytdl.main(entry)
+		except Exception as e:
+			print('download failed:\nError: %s' % e)
+
+
+	def downloadFeed(self,feed):
+		""" Download multiple video's """
+
 		for entry in feed.entry:
 			try:
 				ytdl.main(entry.media.player.url)
@@ -113,6 +124,8 @@ class YoutubeClient:
 
 
 	def stream(self, entry):
+		""" Stream one video """
+
 		urls = []
 		try:
 			ytstr.main(entry)
@@ -124,6 +137,7 @@ class YoutubeClient:
 		
 
 	def streamFeed(self,feed):
+		""" Stream multiple video's """
 		
 		urls = []
 		for entry in feed.entry:
@@ -139,7 +153,8 @@ class YoutubeClient:
 
 
 	def execute(self):
-		
+		""" Execute query and handle results """
+
 		query = gdata.youtube.service.YouTubeVideoQuery()	
 		query.format = '5'
 		query.hd = True
@@ -152,38 +167,33 @@ class YoutubeClient:
 		feed = self.client.YouTubeQuery(query)
 		if self.shuffle: random.shuffle(feed.entry)
 		command = self.keyword
-		if command == 'download': self.download(feed)
+		if command == 'download': self.downloadFeed(feed)
 		if command == 'stream':	self.streamFeed(feed)
 		if command == 'search':	self.search(feed)
 
+
 	def keystroke (self,input):
-		""" handle keystrokes """
+		""" Handle Keystrokes """
 		
 		if input in ('q', 'Q'):
 			raise urwid.ExitMainLoop()
-		
+
 		if input is 'enter':
 			try:
 				self.focus = self.listbox.get_focus()[0].content
 			except Exception as e:
-				pass
-			self.view.set_header(urwid.AttrWrap(urwid.Text(
-				'selected: %s' % str(self.focus)), 'head'))
+				print('listbox get_focus failed:\nError: %s' % e)
 			self.stream(self.focus)
 
-
-		if input is 'backspace':	
+		if input is ' ':
 			try:
-				self.focus = str(self.listbox.get_focus()[0].content)
+				self.focus = self.listbox.get_focus()[0].content
 			except Exception as e:
-				pass
-			try: 
-				self.focus.index('blogger')
-				self.deletePost(self.focus)
-				sys.exit('deleted: %s' % self.focus)
-			except ValueError:
-				self.view.set_header(urwid.AttrWrap(urwid.Text(
-				'NO DELETE LINK!'), 'head'))
+				print('listbox get_focus failed:\nError: %s' % e)
+			self.download(self.focus)
+
+
+			
 
 if len(sys.argv) == 7:
 	YoutubeClient(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])

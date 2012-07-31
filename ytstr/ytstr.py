@@ -354,7 +354,7 @@ def _encodeFilename(s):
 		return s.encode(sys.getfilesystemencoding(), 'ignore')
 
 class ReturnUrl(Exception):
-	"""Return the url in a rly rly rly uglt way >< """
+	"""Return the url in a rly rly rly ugly way >< """
 	pass
 
 class DownloadError(Exception):
