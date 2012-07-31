@@ -74,9 +74,6 @@ except ImportError:
             termios.tcsetattr(fd, termios.TCSADRAIN, old)
         return ch
 
-import vlc 
-# http://wiki.videolan.org/PythonBinding
-
 if os.name == 'nt':
 	import ctypes
 

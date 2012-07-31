@@ -5,20 +5,20 @@
 import sys
 import random
 
-from youtube_player import YoutubePlayer
+
+from youtube_player.youtube_player import YoutubePlayer
 # the player, uses the vlc media player python bindings
 
 import gdata.youtube.service
 # http://gdata-python-client.googlecode.com/hg/pydocs/gdata.youtube.service.html#YouTubeVideoQuery
 # https://developers.google.com/youtube/1.0/developers_guide_python
 
-from ytdl import ytdl
-from ytstr import ytstr
+from stream import stream
+from stream import download
 # https://bitbucket.org/rg3/youtube-dl/wiki/Home
 
 import urwid
 # http://excess.org/urwid/reference.html
-
 
 
 class ItemWidget (urwid.WidgetWrap):
@@ -107,7 +107,7 @@ class YoutubeClient:
 		""" Download one video """
 		
 		try:
-			ytdl.main(entry)
+			download.main(entry)
 		except Exception as e:
 			print('download failed:\nError: %s' % e)
 
@@ -117,7 +117,7 @@ class YoutubeClient:
 
 		for entry in feed.entry:
 			try:
-				ytdl.main(entry.media.player.url)
+				download.main(entry.media.player.url)
 			except Exception as e:
 				print('download failed:\nError: %s' % e)
 
@@ -128,8 +128,8 @@ class YoutubeClient:
 
 		urls = []
 		try:
-			ytstr.main(entry)
-		except ytstr.ReturnUrl as url:
+			stream.main(entry)
+		except stream.ReturnUrl as url:
 			urls.append(str(url))
 		except Exception as e:
 			print('download failed:\nError: %s' % e)
@@ -142,8 +142,8 @@ class YoutubeClient:
 		urls = []
 		for entry in feed.entry:
 			try:
-				ytstr.main(entry.media.player.url)
-			except ytstr.ReturnUrl as url:
+				stream.main(entry.media.player.url)
+			except stream.ReturnUrl as url:
 				print '[youtube] Found location for video %s' %entry.title.text
 				print '[youtube] URL: %s' %url
 				urls.append(str(url))
