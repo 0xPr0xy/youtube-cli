@@ -39,12 +39,12 @@ FLOW = 'flow'
 BOX = 'box'
 FIXED = 'fixed'
 
-# Text alignment modes 
+# Text alignment modes
 LEFT = 'left'
 RIGHT = 'right'
 CENTER = 'center'
 
-# Filler alignment modes 
+# Filler alignment modes
 TOP = 'top'
 MIDDLE = 'middle'
 BOTTOM = 'bottom'
@@ -72,7 +72,7 @@ class WidgetMeta(MetaSuper, signals.MetaSignals):
     """
     def __init__(cls, name, bases, d):
         no_cache = d.get("no_cache", [])
-        
+
         super(WidgetMeta, cls).__init__(name, bases, d)
 
         if "render" in d:
@@ -162,7 +162,7 @@ def nocache_widget_render(cls):
 def nocache_widget_render_instance(self):
     """
     Return a function that wraps the cls.render() method
-    and finalizes the canvas that it returns, but does not 
+    and finalizes the canvas that it returns, but does not
     cache the canvas.
     """
     fn = self.render.original_fn
@@ -212,14 +212,14 @@ class Widget(object):
         argument.
         """
         signals.emit_signal(self, name, self, *args)
-    
+
     def selectable(self):
         """
         Return True if this widget should take focus.  Default
         implementation returns the value of self._selectable.
         """
         return self._selectable
-    
+
     def sizing(self):
         """
         Return a set including one or more of 'box', 'flow' and
@@ -230,7 +230,7 @@ class Widget(object):
 
     def pack(self, size, focus=False):
         """
-        Return a 'packed' (maxcol, maxrow) for this widget.  Default 
+        Return a 'packed' (maxcol, maxrow) for this widget.  Default
         implementation (no packing defined) returns size, and
         calculates maxrow if not given.
         """
@@ -250,7 +250,7 @@ class Widget(object):
     # this property returns the widget without any decorations, default
     # implementation returns self.
     base_widget = property(lambda self:self)
-    
+
 
     # Use the split_repr module to create __repr__ from _repr_words
     # and _repr_attrs
@@ -268,7 +268,7 @@ class Widget(object):
 
     def _repr_attrs(self):
         return {}
-    
+
 
 class FlowWidget(Widget):
     """
@@ -276,7 +276,7 @@ class FlowWidget(Widget):
     columns available.
     """
     _sizing = set([FLOW])
-    
+
     def rows(self, size, focus=False):
         """
         All flow widgets must implement this function.
@@ -297,18 +297,18 @@ class BoxWidget(Widget):
     """
     _selectable = True
     _sizing = set([BOX])
-    
+
     def render(self, size, focus=False):
         """
         All widgets must implement this function.
         """
         raise NotImplementedError()
-    
+
 
 def fixed_size(size):
     """
     raise ValueError if size != ().
-    
+
     Used by FixedWidgets to test size parameter.
     """
     if size != ():
@@ -321,13 +321,13 @@ class FixedWidget(Widget):
     cannot be resized
     """
     _sizing = set([FIXED])
-    
+
     def render(self, size, focus=False):
         """
         All widgets must implement this function.
         """
         raise NotImplementedError()
-    
+
     def pack(self, size=None, focus=False):
         """
         All fixed widgets must implement this function.
@@ -408,7 +408,7 @@ class SolidFill(BoxWidget):
 
     def __init__(self, fill_char=" "):
         """
-        Create a box widget that will fill an area with a single 
+        Create a box widget that will fill an area with a single
         character.
 
         fill_char -- character to fill area with
@@ -484,10 +484,10 @@ class Text(FlowWidget):
 
     def _repr_attrs(self):
         attrs = dict(self.__super._repr_attrs(),
-            align=self._align_mode, 
+            align=self._align_mode,
             wrap=self._wrap_mode)
         return remove_defaults(attrs, Text.__init__)
-    
+
     def _invalidate(self):
         self._cache_maxcol = None
         self.__super._invalidate()
@@ -660,13 +660,13 @@ class Text(FlowWidget):
 
     def _calc_line_translation(self, text, maxcol ):
         return self.layout.layout(
-            text, self._cache_maxcol, 
+            text, self._cache_maxcol,
             self._align_mode, self._wrap_mode )
 
     def pack(self, size=None, focus=False):
         """
         Return the number of screen columns and rows required for
-        this Text widget to be displayed without wrapping or 
+        this Text widget to be displayed without wrapping or
         clipping, as a single element tuple.
 
         size -- None for unlimited screen columns or (maxcol,) to
@@ -788,7 +788,7 @@ class Edit(Text):
             return self._caption + self._edit_text, self._attrib
         else:
             return self._caption + (self._mask * len(self._edit_text)), self._attrib
-    
+
     def set_text(self, markup):
         """
         Not supported by Edit widget.
@@ -812,7 +812,7 @@ class Edit(Text):
         to indicate the leftmost or rightmost column available.
 
         This method is used internally and by other widgets when
-        moving the cursor up or down between widgets so that the 
+        moving the cursor up or down between widgets so that the
         column selected is one that the user would expect.
 
         >>> size = (10,)
@@ -842,11 +842,11 @@ class Edit(Text):
             return self.get_cursor_coords((maxcol,))[0]
         else:
             return pref_col
-    
+
     def update_text(self):
         """
         No longer supported.
-        
+
         >>> Edit().update_text()
         Traceback (most recent call last):
         EditError: update_text() has been removed.  Use set_caption() or set_edit_text() instead.
@@ -880,7 +880,7 @@ class Edit(Text):
 
     def set_edit_pos(self, pos):
         """
-        Set the cursor position with a self.edit_text offset.  
+        Set the cursor position with a self.edit_text offset.
         Clips pos to [0, len(edit_text)].
 
         >>> e = Edit(u"", u"word")
@@ -904,7 +904,7 @@ class Edit(Text):
         self.pref_col_maxcol = None, None
         self._edit_pos = pos
         self._invalidate()
-    
+
     edit_pos = property(lambda self:self._edit_pos, set_edit_pos)
 
     def set_mask(self, mask):
@@ -1047,19 +1047,19 @@ class Edit(Text):
             if p==0: return key
             p = move_prev_char(self.edit_text,0,p)
             self.set_edit_pos(p)
-        
+
         elif self._command_map[key] == 'cursor right':
             if p >= len(self.edit_text): return key
             p = move_next_char(self.edit_text,p,len(self.edit_text))
             self.set_edit_pos(p)
-        
+
         elif self._command_map[key] in ('cursor up', 'cursor down'):
             self.highlight = None
-            
+
             x,y = self.get_cursor_coords((maxcol,))
             pref_col = self.get_pref_col((maxcol,))
             assert pref_col is not None
-            #if pref_col is None: 
+            #if pref_col is None:
             #    pref_col = x
 
             if self._command_map[key] == 'cursor up': y -= 1
@@ -1067,13 +1067,13 @@ class Edit(Text):
 
             if not self.move_cursor_to_coords((maxcol,),pref_col,y):
                 return key
-        
+
         elif key=="backspace":
             self.pref_col_maxcol = None, None
             if not self._delete_highlighted():
                 if p == 0: return key
                 p = move_prev_char(self.edit_text,0,p)
-                self.set_edit_text( self.edit_text[:p] + 
+                self.set_edit_text( self.edit_text[:p] +
                     self.edit_text[self.edit_pos:] )
                 self.set_edit_pos( p )
 
@@ -1083,22 +1083,22 @@ class Edit(Text):
                 if p >= len(self.edit_text):
                     return key
                 p = move_next_char(self.edit_text,p,len(self.edit_text))
-                self.set_edit_text( self.edit_text[:self.edit_pos] + 
+                self.set_edit_text( self.edit_text[:self.edit_pos] +
                     self.edit_text[p:] )
-        
+
         elif self._command_map[key] in ('cursor max left', 'cursor max right'):
             self.highlight = None
             self.pref_col_maxcol = None, None
-            
+
             x,y = self.get_cursor_coords((maxcol,))
-            
+
             if self._command_map[key] == 'cursor max left':
                 self.move_cursor_to_coords((maxcol,), LEFT, y)
             else:
                 self.move_cursor_to_coords((maxcol,), RIGHT, y)
             return
-            
-            
+
+
         else:
             # key wasn't handled
             return key
@@ -1107,7 +1107,7 @@ class Edit(Text):
         """
         Set the cursor position with (x,y) coordinates.
         Returns True if move succeeded, False otherwise.
-        
+
         >>> size = (10,)
         >>> e = Edit("","edit\\ntext")
         >>> e.move_cursor_to_coords(size, 5, 0)
@@ -1191,30 +1191,30 @@ class Edit(Text):
         #    d.coords['highlight'] = [ hstart, hstop ]
         return canv
 
-    
+
     def get_line_translation(self, maxcol, ta=None ):
         trans = Text.get_line_translation(self, maxcol, ta)
-        if not self._shift_view_to_cursor: 
+        if not self._shift_view_to_cursor:
             return trans
-        
+
         text, ignore = self.get_text()
-        x,y = calc_coords( text, trans, 
+        x,y = calc_coords( text, trans,
             self.edit_pos + len(self.caption) )
         if x < 0:
             return ( trans[:y]
                 + [shift_line(trans[y],-x)]
                 + trans[y+1:] )
         elif x >= maxcol:
-            return ( trans[:y] 
+            return ( trans[:y]
                 + [shift_line(trans[y],-(x-maxcol+1))]
                 + trans[y+1:] )
         return trans
-            
+
 
     def get_cursor_coords(self, size):
         """
         Return the (x,y) coordinates of cursor within widget.
-        
+
         >>> Edit("? ","yes").get_cursor_coords((10,))
         (5, 0)
         """
@@ -1222,19 +1222,19 @@ class Edit(Text):
 
         self._shift_view_to_cursor = True
         return self.position_coords(maxcol,self.edit_pos)
-    
-    
+
+
     def position_coords(self,maxcol,pos):
         """
         Return (x,y) coordinates for an offset into self.edit_text.
         """
-        
+
         p = pos + len(self.caption)
         trans = self.get_line_translation(maxcol)
         x,y = calc_coords(self.get_text()[0], trans,p)
         return x,y
 
-        
+
 
 
 

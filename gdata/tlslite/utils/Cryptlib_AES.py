@@ -19,7 +19,7 @@ if cryptlibpyLoaded:
             cryptlib_py.cryptSetAttributeString(self.context, cryptlib_py.CRYPT_CTXINFO_IV, IV)
 
         def __del__(self):
-             cryptlib_py.cryptDestroyContext(self.context)
+            cryptlib_py.cryptDestroyContext(self.context)
 
         def encrypt(self, plaintext):
             AES.encrypt(self, plaintext)

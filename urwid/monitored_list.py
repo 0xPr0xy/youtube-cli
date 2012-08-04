@@ -37,7 +37,7 @@ class MonitoredList(list):
     """
     def _modified(self):
         pass
-    
+
     def set_modified_callback(self, callback):
         """
         Assign a callback function in with no parameters.
@@ -145,11 +145,11 @@ class MonitoredFocusList(MonitoredList):
         """
         index -- index into self.widget_list, negative indexes count from
             the end, any index out of range will raise an IndexError
-        
+
         Negative indexes work the same way they do in slicing.
 
         May also be set using .focus
-        
+
         >>> ml = MonitoredFocusList([9, 10, 11])
         >>> ml.set_focus(2); ml.get_focus()
         2
@@ -175,10 +175,10 @@ class MonitoredFocusList(MonitoredList):
         in focus is about to be changed.  The callback is in the form:
 
         callback(monitored_list, slc, new_items)
-        indices -- a (start, stop, step) tuple whose range covers the 
+        indices -- a (start, stop, step) tuple whose range covers the
             items being modified
         new_items -- a list of items replacing those at range(*indices)
-        
+
         The only valid action for the callback is to call set_focus().
         Modifying the list in the callback has undefined behaviour.
         """
@@ -227,7 +227,7 @@ class MonitoredFocusList(MonitoredList):
             self._focus = 0
 
     # override all the list methods that might affect our focus
-    
+
     def __delitem__(self, y):
         """
         >>> ml = MonitoredFocusList([0,1,2,3], focus=2)
@@ -316,7 +316,7 @@ class MonitoredFocusList(MonitoredList):
         rval = super(MonitoredFocusList, self).__setslice__(i, j, y)
         self._clamp_focus()
         return rval
-    
+
     def insert(self, index, object):
         """
         >>> ml = MonitoredFocusList([0,1,2,3], focus=2)
@@ -395,4 +395,3 @@ def _test():
 
 if __name__=='__main__':
     _test()
-

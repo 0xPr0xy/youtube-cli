@@ -17,7 +17,7 @@ if cryptlibpyLoaded:
             cryptlib_py.cryptSetAttributeString(self.context, cryptlib_py.CRYPT_CTXINFO_KEY, key)
 
         def __del__(self):
-             cryptlib_py.cryptDestroyContext(self.context)
+            cryptlib_py.cryptDestroyContext(self.context)
 
         def encrypt(self, plaintext):
             bytes = stringToBytes(plaintext)

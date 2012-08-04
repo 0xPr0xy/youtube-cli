@@ -62,204 +62,204 @@ YOUTUBE_CAPTION_MIME_TYPE = 'application/vnd.youtube.timedtext; charset=UTF-8'
 # Classes
 # -----------------------------------------------------------------------------
 class Error(Exception):
-  """Base class for errors within the YouTube service."""
-  pass
+    """Base class for errors within the YouTube service."""
+    pass
 
 
 class RequestError(Error):
-  """Error class that is thrown in response to an invalid HTTP Request."""
-  pass
+    """Error class that is thrown in response to an invalid HTTP Request."""
+    pass
 
 
 class YouTubeError(Error):
-  """YouTube service specific error class."""
-  pass
+    """YouTube service specific error class."""
+    pass
 
 
 class YouTubeClient(gdata.client.GDClient):
-  """Client for the YouTube service.
+    """Client for the YouTube service.
 
-  Performs a partial list of Google Data YouTube API functions, such as
-  retrieving the videos feed for a user and the feed for a video.
-  YouTube Service requires authentication for any write, update or delete
-  actions.
-  """
-  api_version = '2'
-  auth_service = YOUTUBE_SERVICE
-  auth_scopes = ['https://%s' % YOUTUBE_SERVER]
-  ssl = True
-
-  def get_videos(self, uri=YOUTUBE_VIDEO_FEED_URI, auth_token=None,
-                         desired_class=gdata.youtube.data.VideoFeed,
-                         **kwargs):
-    """Retrieves a YouTube video feed.
-    Args:
-      uri: A string representing the URI of the feed that is to be retrieved.
-
-    Returns:
-      A YouTubeVideoFeed if successfully retrieved.
+    Performs a partial list of Google Data YouTube API functions, such as
+    retrieving the videos feed for a user and the feed for a video.
+    YouTube Service requires authentication for any write, update or delete
+    actions.
     """
-    return self.get_feed(uri, auth_token=auth_token,
-                         desired_class=desired_class,
-                         **kwargs)
+    api_version = '2'
+    auth_service = YOUTUBE_SERVICE
+    auth_scopes = ['https://%s' % YOUTUBE_SERVER]
+    ssl = True
 
-  GetVideos = get_videos
+    def get_videos(self, uri=YOUTUBE_VIDEO_FEED_URI, auth_token=None,
+                           desired_class=gdata.youtube.data.VideoFeed,
+                           **kwargs):
+        """Retrieves a YouTube video feed.
+        Args:
+          uri: A string representing the URI of the feed that is to be retrieved.
 
+        Returns:
+          A YouTubeVideoFeed if successfully retrieved.
+        """
+        return self.get_feed(uri, auth_token=auth_token,
+                             desired_class=desired_class,
+                             **kwargs)
 
-  def get_user_feed(self, uri=None, username=None):
-    """Retrieve a YouTubeVideoFeed of user uploaded videos.
-
-    Either a uri or a username must be provided.  This will retrieve list
-    of videos uploaded by specified user.  The uri will be of format
-    "http://gdata.youtube.com/feeds/api/users/{username}/uploads".
-
-    Args:
-      uri: An optional string representing the URI of the user feed that is
-          to be retrieved.
-      username: An optional string representing the username.
-
-    Returns:
-      A YouTubeUserFeed if successfully retrieved.
-
-    Raises:
-      YouTubeError: You must provide at least a uri or a username to the
-          GetYouTubeUserFeed() method.
-    """
-    if uri is None and username is None:
-      raise YouTubeError('You must provide at least a uri or a username '
-                         'to the GetYouTubeUserFeed() method')
-    elif username and not uri:
-      uri = '%s%s/%s' % (YOUTUBE_USER_FEED_URI, username, 'uploads')
-    return self.get_feed(uri, desired_class=gdata.youtube.data.VideoFeed)
-
-  GetUserFeed = get_user_feed
+    GetVideos = get_videos
 
 
-  def get_video_entry(self, uri=None, video_id=None,
-      auth_token=None, **kwargs):
-    """Retrieve a YouTubeVideoEntry.
+    def get_user_feed(self, uri=None, username=None):
+        """Retrieve a YouTubeVideoFeed of user uploaded videos.
 
-    Either a uri or a video_id must be provided.
+        Either a uri or a username must be provided.  This will retrieve list
+        of videos uploaded by specified user.  The uri will be of format
+        "http://gdata.youtube.com/feeds/api/users/{username}/uploads".
 
-    Args:
-      uri: An optional string representing the URI of the entry that is to
-          be retrieved.
-      video_id: An optional string representing the ID of the video.
+        Args:
+          uri: An optional string representing the URI of the user feed that is
+              to be retrieved.
+          username: An optional string representing the username.
 
-    Returns:
-      A YouTubeVideoFeed if successfully retrieved.
+        Returns:
+          A YouTubeUserFeed if successfully retrieved.
 
-    Raises:
-      YouTubeError: You must provide at least a uri or a video_id to the
-          GetYouTubeVideoEntry() method.
-    """
-    if uri is None and video_id is None:
-      raise YouTubeError('You must provide at least a uri or a video_id '
-                         'to the get_youtube_video_entry() method')
-    elif video_id and uri is None:
-      uri = '%s/%s' % (YOUTUBE_VIDEO_FEED_URI, video_id)
-    return self.get_feed(uri,
-        desired_class=gdata.youtube.data.VideoEntry,
-        auth_token=auth_token,
-        **kwargs)
+        Raises:
+          YouTubeError: You must provide at least a uri or a username to the
+              GetYouTubeUserFeed() method.
+        """
+        if uri is None and username is None:
+            raise YouTubeError('You must provide at least a uri or a username '
+                               'to the GetYouTubeUserFeed() method')
+        elif username and not uri:
+            uri = '%s%s/%s' % (YOUTUBE_USER_FEED_URI, username, 'uploads')
+        return self.get_feed(uri, desired_class=gdata.youtube.data.VideoFeed)
 
-  GetVideoEntry = get_video_entry
+    GetUserFeed = get_user_feed
 
 
-  def get_caption_feed(self, uri):
-    """Retrieve a Caption feed of tracks.
+    def get_video_entry(self, uri=None, video_id=None,
+        auth_token=None, **kwargs):
+        """Retrieve a YouTubeVideoEntry.
 
-    Args:
-      uri: A string representing the caption feed's URI to be retrieved.
+        Either a uri or a video_id must be provided.
 
-    Returns:
-      A YouTube CaptionFeed if successfully retrieved.
-    """
-    return self.get_feed(uri, desired_class=gdata.youtube.data.CaptionFeed)
+        Args:
+          uri: An optional string representing the URI of the entry that is to
+              be retrieved.
+          video_id: An optional string representing the ID of the video.
 
-  GetCaptionFeed = get_caption_feed
+        Returns:
+          A YouTubeVideoFeed if successfully retrieved.
 
-  def get_caption_track(self, track_url, client_id,
-                        developer_key, auth_token=None, **kwargs):
-    http_request = atom.http_core.HttpRequest(uri = track_url, method = 'GET')
-    dev_key = 'key=' + developer_key
-    authsub = 'AuthSub token="' + str(auth_token) + '"'
-    http_request.headers = {
-      'Authorization': authsub,
-      'X-GData-Client': client_id,
-      'X-GData-Key': dev_key
-    }
-    return self.request(http_request=http_request, **kwargs)
+        Raises:
+          YouTubeError: You must provide at least a uri or a video_id to the
+              GetYouTubeVideoEntry() method.
+        """
+        if uri is None and video_id is None:
+            raise YouTubeError('You must provide at least a uri or a video_id '
+                               'to the get_youtube_video_entry() method')
+        elif video_id and uri is None:
+            uri = '%s/%s' % (YOUTUBE_VIDEO_FEED_URI, video_id)
+        return self.get_feed(uri,
+            desired_class=gdata.youtube.data.VideoEntry,
+            auth_token=auth_token,
+            **kwargs)
 
-  GetCaptionTrack = get_caption_track
-
-  def create_track(self, video_id, title, language, body, client_id,
-                   developer_key, auth_token=None, title_type='text', **kwargs):
-    """Creates a closed-caption track and adds to an existing YouTube video.
-    """
-    new_entry = gdata.youtube.data.TrackEntry(
-        content = gdata.youtube.data.TrackContent(text = body, lang = language))
-    uri = YOUTUBE_CAPTION_FEED_URI % video_id
-    http_request = atom.http_core.HttpRequest(uri = uri, method = 'POST')
-    dev_key = 'key=' + developer_key
-    authsub = 'AuthSub token="' + str(auth_token) + '"'
-    http_request.headers = {
-      'Content-Type': YOUTUBE_CAPTION_MIME_TYPE,
-      'Content-Language': language,
-      'Slug': title,
-      'Authorization': authsub,
-      'GData-Version': self.api_version,
-      'X-GData-Client': client_id,
-      'X-GData-Key': dev_key
-    }
-    http_request.add_body_part(body, http_request.headers['Content-Type'])
-    return self.request(http_request = http_request,
-        desired_class = new_entry.__class__, **kwargs)
+    GetVideoEntry = get_video_entry
 
 
-  CreateTrack = create_track
+    def get_caption_feed(self, uri):
+        """Retrieve a Caption feed of tracks.
 
-  def delete_track(self, video_id, track, client_id, developer_key,
-                   auth_token=None, **kwargs):
-    """Deletes a track."""
-    if isinstance(track, gdata.youtube.data.TrackEntry):
-      track_id_text_node = track.get_id().split(':')
-      track_id = track_id_text_node[3]
-    else:
-      track_id = track
-    uri = YOUTUBE_CAPTION_URI % (video_id, track_id)
-    http_request = atom.http_core.HttpRequest(uri = uri, method = 'DELETE')
-    dev_key = 'key=' + developer_key
-    authsub = 'AuthSub token="' + str(auth_token) + '"'
-    http_request.headers = {
-      'Authorization': authsub,
-      'GData-Version': self.api_version,
-      'X-GData-Client': client_id,
-      'X-GData-Key': dev_key
-    }
-    return self.request(http_request=http_request, **kwargs)
+        Args:
+          uri: A string representing the caption feed's URI to be retrieved.
 
-  DeleteTrack = delete_track
+        Returns:
+          A YouTube CaptionFeed if successfully retrieved.
+        """
+        return self.get_feed(uri, desired_class=gdata.youtube.data.CaptionFeed)
 
-  def update_track(self, video_id, track, body, client_id, developer_key,
-                   auth_token=None, **kwargs):
-    """Updates a closed-caption track for an existing YouTube video.
-    """
-    track_id_text_node = track.get_id().split(':')
-    track_id = track_id_text_node[3]
-    uri = YOUTUBE_CAPTION_URI % (video_id, track_id)
-    http_request = atom.http_core.HttpRequest(uri = uri, method = 'PUT')
-    dev_key = 'key=' + developer_key
-    authsub = 'AuthSub token="' + str(auth_token) + '"'
-    http_request.headers = {
-      'Content-Type': YOUTUBE_CAPTION_MIME_TYPE,
-      'Authorization': authsub,
-      'GData-Version': self.api_version,
-      'X-GData-Client': client_id,
-      'X-GData-Key': dev_key
-    }
-    http_request.add_body_part(body, http_request.headers['Content-Type'])
-    return self.request(http_request = http_request,
-        desired_class = track.__class__, **kwargs)
+    GetCaptionFeed = get_caption_feed
 
-  UpdateTrack = update_track
+    def get_caption_track(self, track_url, client_id,
+                          developer_key, auth_token=None, **kwargs):
+        http_request = atom.http_core.HttpRequest(uri = track_url, method = 'GET')
+        dev_key = 'key=' + developer_key
+        authsub = 'AuthSub token="' + str(auth_token) + '"'
+        http_request.headers = {
+          'Authorization': authsub,
+          'X-GData-Client': client_id,
+          'X-GData-Key': dev_key
+        }
+        return self.request(http_request=http_request, **kwargs)
+
+    GetCaptionTrack = get_caption_track
+
+    def create_track(self, video_id, title, language, body, client_id,
+                     developer_key, auth_token=None, title_type='text', **kwargs):
+        """Creates a closed-caption track and adds to an existing YouTube video.
+        """
+        new_entry = gdata.youtube.data.TrackEntry(
+            content = gdata.youtube.data.TrackContent(text = body, lang = language))
+        uri = YOUTUBE_CAPTION_FEED_URI % video_id
+        http_request = atom.http_core.HttpRequest(uri = uri, method = 'POST')
+        dev_key = 'key=' + developer_key
+        authsub = 'AuthSub token="' + str(auth_token) + '"'
+        http_request.headers = {
+          'Content-Type': YOUTUBE_CAPTION_MIME_TYPE,
+          'Content-Language': language,
+          'Slug': title,
+          'Authorization': authsub,
+          'GData-Version': self.api_version,
+          'X-GData-Client': client_id,
+          'X-GData-Key': dev_key
+        }
+        http_request.add_body_part(body, http_request.headers['Content-Type'])
+        return self.request(http_request = http_request,
+            desired_class = new_entry.__class__, **kwargs)
+
+
+    CreateTrack = create_track
+
+    def delete_track(self, video_id, track, client_id, developer_key,
+                     auth_token=None, **kwargs):
+        """Deletes a track."""
+        if isinstance(track, gdata.youtube.data.TrackEntry):
+            track_id_text_node = track.get_id().split(':')
+            track_id = track_id_text_node[3]
+        else:
+            track_id = track
+        uri = YOUTUBE_CAPTION_URI % (video_id, track_id)
+        http_request = atom.http_core.HttpRequest(uri = uri, method = 'DELETE')
+        dev_key = 'key=' + developer_key
+        authsub = 'AuthSub token="' + str(auth_token) + '"'
+        http_request.headers = {
+          'Authorization': authsub,
+          'GData-Version': self.api_version,
+          'X-GData-Client': client_id,
+          'X-GData-Key': dev_key
+        }
+        return self.request(http_request=http_request, **kwargs)
+
+    DeleteTrack = delete_track
+
+    def update_track(self, video_id, track, body, client_id, developer_key,
+                     auth_token=None, **kwargs):
+        """Updates a closed-caption track for an existing YouTube video.
+        """
+        track_id_text_node = track.get_id().split(':')
+        track_id = track_id_text_node[3]
+        uri = YOUTUBE_CAPTION_URI % (video_id, track_id)
+        http_request = atom.http_core.HttpRequest(uri = uri, method = 'PUT')
+        dev_key = 'key=' + developer_key
+        authsub = 'AuthSub token="' + str(auth_token) + '"'
+        http_request.headers = {
+          'Content-Type': YOUTUBE_CAPTION_MIME_TYPE,
+          'Authorization': authsub,
+          'GData-Version': self.api_version,
+          'X-GData-Client': client_id,
+          'X-GData-Key': dev_key
+        }
+        http_request.add_body_part(body, http_request.headers['Content-Type'])
+        return self.request(http_request = http_request,
+            desired_class = track.__class__, **kwargs)
+
+    UpdateTrack = update_track

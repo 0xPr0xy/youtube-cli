@@ -10,4 +10,3 @@ if hasattr(md5, 'digestsize'):
     digest_size = digestsize
     del digestsize
 del md5
-

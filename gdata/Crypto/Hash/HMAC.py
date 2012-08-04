@@ -105,4 +105,3 @@ def new(key, msg = None, digestmod = None):
     method.
     """
     return HMAC(key, msg, digestmod)
-

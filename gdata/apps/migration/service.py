@@ -37,182 +37,182 @@ API_VER = '2.0'
 
 
 class MigrationService(gdata.apps.service.AppsService):
-  """Client for the EMAPI migration service.  Use either ImportMail to import
-  one message at a time, or AddMailEntry and ImportMultipleMails to import a
-  bunch of messages at a time.
-  """
-
-  def __init__(self, email=None, password=None, domain=None, source=None,
-               server='apps-apis.google.com', additional_headers=None):
-    gdata.apps.service.AppsService.__init__(
-        self, email=email, password=password, domain=domain, source=source,
-        server=server, additional_headers=additional_headers)
-    self.mail_batch = migration.BatchMailEventFeed()
-    self.mail_entries = []
-    self.exceptions = 0
-
-  def _BaseURL(self):
-    return '/a/feeds/migration/%s/%s' % (API_VER, self.domain)
-
-  def ImportMail(self, user_name, mail_message, mail_item_properties,
-                 mail_labels):
-    """Imports a single mail message.
-
-    Args:
-      user_name: The username to import messages to.
-      mail_message: An RFC822 format email message.
-      mail_item_properties: A list of Gmail properties to apply to the message.
-      mail_labels: A list of labels to apply to the message.
-
-    Returns:
-      A MailEntry representing the successfully imported message.
-
-    Raises:
-      AppsForYourDomainException: An error occurred importing the message.
+    """Client for the EMAPI migration service.  Use either ImportMail to import
+    one message at a time, or AddMailEntry and ImportMultipleMails to import a
+    bunch of messages at a time.
     """
-    uri = '%s/%s/mail' % (self._BaseURL(), user_name)
 
-    mail_entry = migration.MailEntry()
-    mail_entry.rfc822_msg = migration.Rfc822Msg(text=(base64.b64encode(
-        mail_message)))
-    mail_entry.rfc822_msg.encoding = 'base64'
-    mail_entry.mail_item_property = map(
-        lambda x: migration.MailItemProperty(value=x), mail_item_properties)
-    mail_entry.label = map(lambda x: migration.Label(label_name=x),
-                           mail_labels)
+    def __init__(self, email=None, password=None, domain=None, source=None,
+                 server='apps-apis.google.com', additional_headers=None):
+        gdata.apps.service.AppsService.__init__(
+            self, email=email, password=password, domain=domain, source=source,
+            server=server, additional_headers=additional_headers)
+        self.mail_batch = migration.BatchMailEventFeed()
+        self.mail_entries = []
+        self.exceptions = 0
 
-    try:
-      return migration.MailEntryFromString(str(self.Post(mail_entry, uri)))
-    except gdata.service.RequestError, e:
-      # Store the number of failed imports when importing several at a time 
-      self.exceptions += 1
-      raise gdata.apps.service.AppsForYourDomainException(e.args[0])
+    def _BaseURL(self):
+        return '/a/feeds/migration/%s/%s' % (API_VER, self.domain)
 
-  def AddBatchEntry(self, mail_message, mail_item_properties,
-                    mail_labels):
-    """Adds a message to the current batch that you later will submit.
-    
-    Deprecated, use AddMailEntry instead
+    def ImportMail(self, user_name, mail_message, mail_item_properties,
+                   mail_labels):
+        """Imports a single mail message.
 
-    Args:
-      mail_message: An RFC822 format email message.
-      mail_item_properties: A list of Gmail properties to apply to the message.
-      mail_labels: A list of labels to apply to the message.
+        Args:
+          user_name: The username to import messages to.
+          mail_message: An RFC822 format email message.
+          mail_item_properties: A list of Gmail properties to apply to the message.
+          mail_labels: A list of labels to apply to the message.
 
-    Returns:
-      The length of the MailEntry representing the message.
-    """
-    deprecation("calling deprecated method AddBatchEntry")
-    mail_entry = migration.BatchMailEntry()
-    mail_entry.rfc822_msg = migration.Rfc822Msg(text=(base64.b64encode(
-        mail_message)))
-    mail_entry.rfc822_msg.encoding = 'base64'
-    mail_entry.mail_item_property = map(
-        lambda x: migration.MailItemProperty(value=x), mail_item_properties)
-    mail_entry.label = map(lambda x: migration.Label(label_name=x),
-                           mail_labels)
+        Returns:
+          A MailEntry representing the successfully imported message.
 
-    self.mail_batch.AddBatchEntry(mail_entry)
+        Raises:
+          AppsForYourDomainException: An error occurred importing the message.
+        """
+        uri = '%s/%s/mail' % (self._BaseURL(), user_name)
 
-    return len(str(mail_entry))
+        mail_entry = migration.MailEntry()
+        mail_entry.rfc822_msg = migration.Rfc822Msg(text=(base64.b64encode(
+            mail_message)))
+        mail_entry.rfc822_msg.encoding = 'base64'
+        mail_entry.mail_item_property = map(
+            lambda x: migration.MailItemProperty(value=x), mail_item_properties)
+        mail_entry.label = map(lambda x: migration.Label(label_name=x),
+                               mail_labels)
 
-  def SubmitBatch(self, user_name):
-    """Sends all the mail items you have added to the batch to the server.
-    
-    Deprecated, use ImportMultipleMails instead
+        try:
+            return migration.MailEntryFromString(str(self.Post(mail_entry, uri)))
+        except gdata.service.RequestError, e:
+            # Store the number of failed imports when importing several at a time
+            self.exceptions += 1
+            raise gdata.apps.service.AppsForYourDomainException(e.args[0])
 
-    Args:
-      user_name: The username to import messages to.
+    def AddBatchEntry(self, mail_message, mail_item_properties,
+                      mail_labels):
+        """Adds a message to the current batch that you later will submit.
 
-    Returns:
-      An HTTPResponse from the web service call.
+        Deprecated, use AddMailEntry instead
 
-    Raises:
-      AppsForYourDomainException: An error occurred importing the batch.
-    """
-    deprecation("calling deprecated method SubmitBatch")
-    uri = '%s/%s/mail/batch' % (self._BaseURL(), user_name)
+        Args:
+          mail_message: An RFC822 format email message.
+          mail_item_properties: A list of Gmail properties to apply to the message.
+          mail_labels: A list of labels to apply to the message.
 
-    try:
-      self.result = self.Post(self.mail_batch, uri,
-                              converter=migration.BatchMailEventFeedFromString)
-    except gdata.service.RequestError, e:
-      raise gdata.apps.service.AppsForYourDomainException(e.args[0])
+        Returns:
+          The length of the MailEntry representing the message.
+        """
+        deprecation("calling deprecated method AddBatchEntry")
+        mail_entry = migration.BatchMailEntry()
+        mail_entry.rfc822_msg = migration.Rfc822Msg(text=(base64.b64encode(
+            mail_message)))
+        mail_entry.rfc822_msg.encoding = 'base64'
+        mail_entry.mail_item_property = map(
+            lambda x: migration.MailItemProperty(value=x), mail_item_properties)
+        mail_entry.label = map(lambda x: migration.Label(label_name=x),
+                               mail_labels)
 
-    self.mail_batch = migration.BatchMailEventFeed()
+        self.mail_batch.AddBatchEntry(mail_entry)
 
-    return self.result
+        return len(str(mail_entry))
 
-  def AddMailEntry(self, mail_message, mail_item_properties=None,
-                   mail_labels=None, identifier=None):
-    """Prepares a list of mail messages to import using ImportMultipleMails.
-    
-    Args:
-      mail_message: An RFC822 format email message as a string.
-      mail_item_properties: List of Gmail properties to apply to the
-          message.
-      mail_labels: List of Gmail labels to apply to the message.
-      identifier: The optional file identifier string
-    
-    Returns:
-      The number of email messages to be imported.
-    """
-    mail_entry_properties = MailEntryProperties(
-        mail_message=mail_message,
-        mail_item_properties=mail_item_properties,
-        mail_labels=mail_labels,
-        identifier=identifier)
+    def SubmitBatch(self, user_name):
+        """Sends all the mail items you have added to the batch to the server.
 
-    self.mail_entries.append(mail_entry_properties)
-    return len(self.mail_entries)
+        Deprecated, use ImportMultipleMails instead
 
-  def ImportMultipleMails(self, user_name, threads_per_batch=20):
-    """Launches separate threads to import every message added by AddMailEntry.
-    
-    Args:
-      user_name: The user account name to import messages to.
-      threads_per_batch: Number of messages to import at a time.
-    
-    Returns:
-      The number of email messages that were successfully migrated.
-    
-    Raises:
-      Exception: An error occurred while importing mails.
-    """
-    num_entries = len(self.mail_entries)
+        Args:
+          user_name: The username to import messages to.
 
-    if not num_entries:
-      return 0
+        Returns:
+          An HTTPResponse from the web service call.
 
-    threads = []
-    for mail_entry_properties in self.mail_entries:
-      t = threading.Thread(name=mail_entry_properties.identifier,
-                           target=self.ImportMail,
-                           args=(user_name, mail_entry_properties.mail_message,
-                                 mail_entry_properties.mail_item_properties,
-                                 mail_entry_properties.mail_labels))
-      threads.append(t)
-    try:
-      # Determine the number of batches needed with threads_per_batch in each
-      batches = num_entries / threads_per_batch + (
-          0 if num_entries % threads_per_batch == 0 else 1)
-      batch_min = 0
-      # Start the threads, one batch at a time
-      for batch in range(batches):
-        batch_max = ((batch + 1) * threads_per_batch
-                     if (batch + 1) * threads_per_batch < num_entries
-                     else num_entries)
-        for i in range(batch_min, batch_max):
-          threads[i].start()
-          time.sleep(1)
+        Raises:
+          AppsForYourDomainException: An error occurred importing the batch.
+        """
+        deprecation("calling deprecated method SubmitBatch")
+        uri = '%s/%s/mail/batch' % (self._BaseURL(), user_name)
 
-        for i in range(batch_min, batch_max):
-          threads[i].join()
+        try:
+            self.result = self.Post(self.mail_batch, uri,
+                                    converter=migration.BatchMailEventFeedFromString)
+        except gdata.service.RequestError, e:
+            raise gdata.apps.service.AppsForYourDomainException(e.args[0])
 
-        batch_min = batch_max
+        self.mail_batch = migration.BatchMailEventFeed()
 
-      self.mail_entries = []
-    except Exception, e:
-      raise Exception(e.args[0])
-    else:
-      return num_entries - self.exceptions
+        return self.result
+
+    def AddMailEntry(self, mail_message, mail_item_properties=None,
+                     mail_labels=None, identifier=None):
+        """Prepares a list of mail messages to import using ImportMultipleMails.
+
+        Args:
+          mail_message: An RFC822 format email message as a string.
+          mail_item_properties: List of Gmail properties to apply to the
+              message.
+          mail_labels: List of Gmail labels to apply to the message.
+          identifier: The optional file identifier string
+
+        Returns:
+          The number of email messages to be imported.
+        """
+        mail_entry_properties = MailEntryProperties(
+            mail_message=mail_message,
+            mail_item_properties=mail_item_properties,
+            mail_labels=mail_labels,
+            identifier=identifier)
+
+        self.mail_entries.append(mail_entry_properties)
+        return len(self.mail_entries)
+
+    def ImportMultipleMails(self, user_name, threads_per_batch=20):
+        """Launches separate threads to import every message added by AddMailEntry.
+
+        Args:
+          user_name: The user account name to import messages to.
+          threads_per_batch: Number of messages to import at a time.
+
+        Returns:
+          The number of email messages that were successfully migrated.
+
+        Raises:
+          Exception: An error occurred while importing mails.
+        """
+        num_entries = len(self.mail_entries)
+
+        if not num_entries:
+            return 0
+
+        threads = []
+        for mail_entry_properties in self.mail_entries:
+            t = threading.Thread(name=mail_entry_properties.identifier,
+                                 target=self.ImportMail,
+                                 args=(user_name, mail_entry_properties.mail_message,
+                                       mail_entry_properties.mail_item_properties,
+                                       mail_entry_properties.mail_labels))
+            threads.append(t)
+        try:
+            # Determine the number of batches needed with threads_per_batch in each
+            batches = num_entries / threads_per_batch + (
+                0 if num_entries % threads_per_batch == 0 else 1)
+            batch_min = 0
+            # Start the threads, one batch at a time
+            for batch in range(batches):
+                batch_max = ((batch + 1) * threads_per_batch
+                             if (batch + 1) * threads_per_batch < num_entries
+                             else num_entries)
+                for i in range(batch_min, batch_max):
+                    threads[i].start()
+                    time.sleep(1)
+
+                for i in range(batch_min, batch_max):
+                    threads[i].join()
+
+                batch_min = batch_max
+
+            self.mail_entries = []
+        except Exception, e:
+            raise Exception(e.args[0])
+        else:
+            return num_entries - self.exceptions

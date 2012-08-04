@@ -14,4 +14,4 @@ try:
     import twisted
     del twisted
 except ImportError:
-   del __all__[__all__.index("TLSTwistedProtocolWrapper")]
+    del __all__[__all__.index("TLSTwistedProtocolWrapper")]

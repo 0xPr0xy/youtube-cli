@@ -127,5 +127,3 @@ class Session:
                                 createByteArraySequence([]), 48)
         self.sharedKey = True
         return self
-
-

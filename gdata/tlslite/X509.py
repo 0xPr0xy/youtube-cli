@@ -129,5 +129,3 @@ class X509:
 
     def writeBytes(self):
         return self.bytes
-
-

@@ -783,7 +783,7 @@ class EventManager(_Ctype):
 
     @note: Only a single notification can be registered
     for each event type in an EventManager instance.
-    
+
     '''
 
     _callback_handler = None
@@ -860,7 +860,7 @@ class Instance(_Ctype):
       - a string
       - a list of strings as first parameters
       - the parameters given as the constructor parameters (must be strings)
-    
+
     '''
 
     def __new__(cls, *args):
@@ -1323,7 +1323,7 @@ class Instance(_Ctype):
 
 class Log(_Ctype):
     '''Create a new VLC log instance.
-    
+
     '''
 
     def __new__(cls, ptr=_internal_guard):
@@ -1368,7 +1368,7 @@ class Log(_Ctype):
 
 class LogIterator(_Ctype):
     '''Create a new VLC log iterator.
-    
+
     '''
 
     def __new__(cls, ptr=_internal_guard):
@@ -1401,11 +1401,11 @@ class LogIterator(_Ctype):
 
 class Media(_Ctype):
     '''Create a new Media instance.
-    
+
     Usage: Media(MRL, *options)
 
     See vlc.Instance.media_new documentation for details.
-    
+
     '''
 
     def __new__(cls, *args):
@@ -1682,11 +1682,11 @@ class MediaLibrary(_Ctype):
 
 class MediaList(_Ctype):
     '''Create a new MediaList instance.
-    
+
     Usage: MediaList(list_of_MRLs)
 
     See vlc.Instance.media_list_new documentation for details.
-    
+
     '''
 
     def __new__(cls, *args):
@@ -1702,10 +1702,10 @@ class MediaList(_Ctype):
 
     def get_instance(self):
         return getattr(self, '_instance', None)
-    
+
     def add_media(self, mrl):
         """Add media instance to media list.
-        
+
         The L{lock} should be held upon entering this function.
         @param p_md: a media instance or a MRL.
         @return: 0 on success, -1 if the media list is read-only.
@@ -1822,7 +1822,7 @@ class MediaListPlayer(_Ctype):
     It may take as parameter either:
       - a vlc.Instance
       - nothing
-    
+
     '''
 
     def __new__(cls, arg=None):
@@ -1948,13 +1948,13 @@ class MediaPlayer(_Ctype):
     It may take as parameter either:
       - a string (media URI), options... In this case, a vlc.Instance will be created.
       - a vlc.Instance, a string (media URI), options...
-    
+
     '''
 
     def __new__(cls, *args):
         if len(args) == 1 and isinstance(args[0], _Ints):
             return _Constructor(cls, args[0])
-        
+
         if args and isinstance(args[0], Instance):
             instance = args[0]
             args = args[1:]
@@ -2026,13 +2026,13 @@ class MediaPlayer(_Ctype):
         Specify where the media player should render its video
         output. If LibVLC was built without Win32/Win64 API output
         support, then this has no effects.
-           
+
         @param drawable: windows handle of the drawable.
         """
         if not isinstance(drawable, ctypes.c_void_p):
             drawable = ctypes.c_void_p(int(drawable))
         libvlc_media_player_set_hwnd(self, drawable)
-            
+
     def video_get_width(self, num=0):
         """Get the width of a video in pixels.
 
@@ -2163,12 +2163,12 @@ class MediaPlayer(_Ctype):
         If you want to use it along with Qt4 see the QMacCocoaViewContainer. Then
         the following code should work:
         @begincode
-        
+
             NSView *video = [[NSView alloc] init];
             QMacCocoaViewContainer *container = new QMacCocoaViewContainer(video, parent);
             L{set_nsobject}(mp, video);
             [video release];
-        
+
         @endcode
         You can find a live example in VLCVideoView in VLCKit.framework.
         @param drawable: the drawable that is either an NSView or an object following the VLCOpenGLVideoViewEmbedding protocol.
@@ -3976,12 +3976,12 @@ def libvlc_media_player_set_nsobject(p_mi, drawable):
     If you want to use it along with Qt4 see the QMacCocoaViewContainer. Then
     the following code should work:
     @begincode
-    
+
         NSView *video = [[NSView alloc] init];
         QMacCocoaViewContainer *container = new QMacCocoaViewContainer(video, parent);
         L{libvlc_media_player_set_nsobject}(mp, video);
         [video release];
-    
+
     @endcode
     You can find a live example in VLCVideoView in VLCKit.framework.
     @param p_mi: the Media Player.
@@ -5491,7 +5491,7 @@ if __name__ == '__main__':
             fd = sys.stdin.fileno()
             old = termios.tcgetattr(fd)
             # print fd
-            # print old 
+            # print old
             try:
                 tty.setraw(fd)
                 ch = sys.stdin.read(1)

@@ -774,7 +774,7 @@ class TLSRecordLayer:
 
             #If the connection is closed, raise a socket error
             if len(s)==0:
-                    raise TLSAbruptCloseError()
+                raise TLSAbruptCloseError()
 
             bytes += stringToBytes(s)
             if len(bytes) == r.length:
@@ -1120,4 +1120,3 @@ class TLSRecordLayer:
                          imac_sha.digest()).digest()
 
         return stringToBytes(md5Str + shaStr)
-

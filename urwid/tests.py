@@ -2031,7 +2031,7 @@ class LineBoxTest(unittest.TestCase):
                 B("\xe2\x94\x90"), B("\xe2\x94\x82"), B("\xe2\x94\x82"),
                 B("\xe2\x94\x94"), B("\xe2\x94\x80"), B("\xe2\x94\x98")))
 
-        nums = [B(str(n)) for n in range(8)] 
+        nums = [B(str(n)) for n in range(8)]
         b = dict(zip(["tlcorner", "tline", "trcorner", "lline", "rline",
             "blcorner", "bline", "brcorner"], nums))
         l = urwid.LineBox(t, **b).render((3,)).text

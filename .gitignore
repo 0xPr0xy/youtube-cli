@@ -2,3 +2,4 @@
 *.pyd
 .DS_Store
 .gitignore
+.youtube-cli.log

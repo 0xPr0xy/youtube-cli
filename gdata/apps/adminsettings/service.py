@@ -29,443 +29,443 @@ import gdata.service
 API_VER='2.0'
 
 class AdminSettingsService(gdata.apps.service.PropertyService):
-  """Client for the Google Apps Admin Settings service."""
+    """Client for the Google Apps Admin Settings service."""
 
-  def _serviceUrl(self, setting_id, domain=None):
-    if domain is None:
-      domain = self.domain
-    return '/a/feeds/domain/%s/%s/%s' % (API_VER, domain, setting_id)
+    def _serviceUrl(self, setting_id, domain=None):
+        if domain is None:
+            domain = self.domain
+        return '/a/feeds/domain/%s/%s/%s' % (API_VER, domain, setting_id)
 
-  def genericGet(self, location):
-    """Generic HTTP Get Wrapper
+    def genericGet(self, location):
+        """Generic HTTP Get Wrapper
 
-    Args:
-      location: relative uri to Get
+        Args:
+          location: relative uri to Get
 
-    Returns:
-      A dict containing the result of the get operation."""
+        Returns:
+          A dict containing the result of the get operation."""
 
-    uri = self._serviceUrl(location)
-    try:
-      return self._GetProperties(uri)
-    except gdata.service.RequestError, e:
-      raise AppsForYourDomainException(e.args[0])
+        uri = self._serviceUrl(location)
+        try:
+            return self._GetProperties(uri)
+        except gdata.service.RequestError, e:
+            raise AppsForYourDomainException(e.args[0])
 
-  def GetDefaultLanguage(self):
-    """Gets Domain Default Language
+    def GetDefaultLanguage(self):
+        """Gets Domain Default Language
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns:
-      Default Language as a string.  All possible values are listed at:
-        http://code.google.com/apis/apps/email_settings/developers_guide_protocol.html#GA_email_language_tags"""
+        Returns:
+          Default Language as a string.  All possible values are listed at:
+            http://code.google.com/apis/apps/email_settings/developers_guide_protocol.html#GA_email_language_tags"""
 
-    result = self.genericGet('general/defaultLanguage')
-    return result['defaultLanguage']
+        result = self.genericGet('general/defaultLanguage')
+        return result['defaultLanguage']
 
-  def UpdateDefaultLanguage(self, defaultLanguage):
-    """Updates Domain Default Language
+    def UpdateDefaultLanguage(self, defaultLanguage):
+        """Updates Domain Default Language
 
-    Args:
-      defaultLanguage: Domain Language to set
-        possible values are at:
-        http://code.google.com/apis/apps/email_settings/developers_guide_protocol.html#GA_email_language_tags
+        Args:
+          defaultLanguage: Domain Language to set
+            possible values are at:
+            http://code.google.com/apis/apps/email_settings/developers_guide_protocol.html#GA_email_language_tags
 
-    Returns:
-      A dict containing the result of the put operation"""
+        Returns:
+          A dict containing the result of the put operation"""
 
-    uri = self._serviceUrl('general/defaultLanguage')
-    properties = {'defaultLanguage': defaultLanguage}
-    return self._PutProperties(uri, properties)
+        uri = self._serviceUrl('general/defaultLanguage')
+        properties = {'defaultLanguage': defaultLanguage}
+        return self._PutProperties(uri, properties)
 
-  def GetOrganizationName(self):
-    """Gets Domain Default Language
+    def GetOrganizationName(self):
+        """Gets Domain Default Language
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns:
-      Organization Name as a string."""
+        Returns:
+          Organization Name as a string."""
 
-    result = self.genericGet('general/organizationName')
-    return result['organizationName']
+        result = self.genericGet('general/organizationName')
+        return result['organizationName']
 
 
-  def UpdateOrganizationName(self, organizationName):
-    """Updates Organization Name
+    def UpdateOrganizationName(self, organizationName):
+        """Updates Organization Name
 
-    Args:
-      organizationName: Name of organization
+        Args:
+          organizationName: Name of organization
 
-    Returns:
-      A dict containing the result of the put operation"""
+        Returns:
+          A dict containing the result of the put operation"""
 
-    uri = self._serviceUrl('general/organizationName')
-    properties = {'organizationName': organizationName}
-    return self._PutProperties(uri, properties)
+        uri = self._serviceUrl('general/organizationName')
+        properties = {'organizationName': organizationName}
+        return self._PutProperties(uri, properties)
 
-  def GetMaximumNumberOfUsers(self):
-    """Gets Maximum Number of Users Allowed
+    def GetMaximumNumberOfUsers(self):
+        """Gets Maximum Number of Users Allowed
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: An integer, the maximum number of users"""
+        Returns: An integer, the maximum number of users"""
 
-    result = self.genericGet('general/maximumNumberOfUsers')
-    return int(result['maximumNumberOfUsers'])
+        result = self.genericGet('general/maximumNumberOfUsers')
+        return int(result['maximumNumberOfUsers'])
 
-  def GetCurrentNumberOfUsers(self):
-    """Gets Current Number of Users
+    def GetCurrentNumberOfUsers(self):
+        """Gets Current Number of Users
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: An integer, the current number of users"""
+        Returns: An integer, the current number of users"""
 
-    result = self.genericGet('general/currentNumberOfUsers')
-    return int(result['currentNumberOfUsers'])
+        result = self.genericGet('general/currentNumberOfUsers')
+        return int(result['currentNumberOfUsers'])
 
-  def IsDomainVerified(self):
-    """Is the domain verified
+    def IsDomainVerified(self):
+        """Is the domain verified
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: Boolean, is domain verified"""
+        Returns: Boolean, is domain verified"""
 
-    result = self.genericGet('accountInformation/isVerified')
-    if result['isVerified'] == 'true':
-      return True
-    else:
-      return False
+        result = self.genericGet('accountInformation/isVerified')
+        if result['isVerified'] == 'true':
+            return True
+        else:
+            return False
 
-  def GetSupportPIN(self):
-    """Gets Support PIN
+    def GetSupportPIN(self):
+        """Gets Support PIN
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the Support PIN"""
+        Returns: A string, the Support PIN"""
 
-    result = self.genericGet('accountInformation/supportPIN')
-    return result['supportPIN']
+        result = self.genericGet('accountInformation/supportPIN')
+        return result['supportPIN']
 
-  def GetEdition(self):
-    """Gets Google Apps Domain Edition
+    def GetEdition(self):
+        """Gets Google Apps Domain Edition
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the domain's edition (premier, education, partner)"""
+        Returns: A string, the domain's edition (premier, education, partner)"""
 
-    result = self.genericGet('accountInformation/edition')
-    return result['edition']
+        result = self.genericGet('accountInformation/edition')
+        return result['edition']
 
-  def GetCustomerPIN(self):
-    """Gets Customer PIN
+    def GetCustomerPIN(self):
+        """Gets Customer PIN
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the customer PIN"""
+        Returns: A string, the customer PIN"""
 
-    result = self.genericGet('accountInformation/customerPIN')
-    return result['customerPIN']
+        result = self.genericGet('accountInformation/customerPIN')
+        return result['customerPIN']
 
-  def GetCreationTime(self):
-    """Gets Domain Creation Time
+    def GetCreationTime(self):
+        """Gets Domain Creation Time
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the domain's creation time"""
+        Returns: A string, the domain's creation time"""
 
-    result = self.genericGet('accountInformation/creationTime')
-    return result['creationTime']
+        result = self.genericGet('accountInformation/creationTime')
+        return result['creationTime']
 
-  def GetCountryCode(self):
-    """Gets Domain Country Code
+    def GetCountryCode(self):
+        """Gets Domain Country Code
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the domain's country code. Possible values at:
-      http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm"""
+        Returns: A string, the domain's country code. Possible values at:
+          http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm"""
 
-    result = self.genericGet('accountInformation/countryCode')
-    return result['countryCode']
+        result = self.genericGet('accountInformation/countryCode')
+        return result['countryCode']
 
-  def GetAdminSecondaryEmail(self):
-    """Gets Domain Admin Secondary Email Address
+    def GetAdminSecondaryEmail(self):
+        """Gets Domain Admin Secondary Email Address
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: A string, the secondary email address for domain admin"""
+        Returns: A string, the secondary email address for domain admin"""
 
-    result = self.genericGet('accountInformation/adminSecondaryEmail')
-    return result['adminSecondaryEmail']
+        result = self.genericGet('accountInformation/adminSecondaryEmail')
+        return result['adminSecondaryEmail']
 
-  def UpdateAdminSecondaryEmail(self, adminSecondaryEmail):
-    """Gets Domain Creation Time
+    def UpdateAdminSecondaryEmail(self, adminSecondaryEmail):
+        """Gets Domain Creation Time
 
-    Args:
-      adminSecondaryEmail: string, secondary email address of admin
+        Args:
+          adminSecondaryEmail: string, secondary email address of admin
 
-    Returns: A dict containing the result of the put operation"""
+        Returns: A dict containing the result of the put operation"""
 
-    uri = self._serviceUrl('accountInformation/adminSecondaryEmail')
-    properties = {'adminSecondaryEmail': adminSecondaryEmail}
-    return self._PutProperties(uri, properties)
+        uri = self._serviceUrl('accountInformation/adminSecondaryEmail')
+        properties = {'adminSecondaryEmail': adminSecondaryEmail}
+        return self._PutProperties(uri, properties)
 
-  def GetDomainLogo(self):
-    """Gets Domain Logo
+    def GetDomainLogo(self):
+        """Gets Domain Logo
 
-    This function does not make use of the Google Apps Admin Settings API,
-    it does an HTTP Get of a url specific to the Google Apps domain. It is
-    included for completeness sake.
+        This function does not make use of the Google Apps Admin Settings API,
+        it does an HTTP Get of a url specific to the Google Apps domain. It is
+        included for completeness sake.
 
-    Args:
-      None
+        Args:
+          None
 
-    Returns: binary image file"""
- 
-    import urllib
-    url = 'http://www.google.com/a/cpanel/'+self.domain+'/images/logo.gif'
-    response = urllib.urlopen(url)
-    return response.read()
+        Returns: binary image file"""
 
-  def UpdateDomainLogo(self, logoImage):
-    """Update Domain's Custom Logo
+        import urllib
+        url = 'http://www.google.com/a/cpanel/'+self.domain+'/images/logo.gif'
+        response = urllib.urlopen(url)
+        return response.read()
 
-    Args:
-      logoImage: binary image data
+    def UpdateDomainLogo(self, logoImage):
+        """Update Domain's Custom Logo
 
-    Returns: A dict containing the result of the put operation"""
+        Args:
+          logoImage: binary image data
 
-    from base64 import b64encode
-    uri = self._serviceUrl('appearance/customLogo')
-    properties = {'logoImage': b64encode(logoImage)}
-    return self._PutProperties(uri, properties)
+        Returns: A dict containing the result of the put operation"""
 
-  def GetCNAMEVerificationStatus(self):
-    """Gets Domain CNAME Verification Status
+        from base64 import b64encode
+        uri = self._serviceUrl('appearance/customLogo')
+        properties = {'logoImage': b64encode(logoImage)}
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def GetCNAMEVerificationStatus(self):
+        """Gets Domain CNAME Verification Status
 
-    Returns: A dict {recordName, verified, verifiedMethod}"""
+        Args:
+          None
 
-    return self.genericGet('verification/cname')
+        Returns: A dict {recordName, verified, verifiedMethod}"""
 
-  def UpdateCNAMEVerificationStatus(self, verified):
-    """Updates CNAME Verification Status
+        return self.genericGet('verification/cname')
 
-    Args:
-      verified: boolean, True will retry verification process
+    def UpdateCNAMEVerificationStatus(self, verified):
+        """Updates CNAME Verification Status
 
-    Returns: A dict containing the result of the put operation"""
+        Args:
+          verified: boolean, True will retry verification process
 
-    uri = self._serviceUrl('verification/cname')
-    properties = self.GetCNAMEVerificationStatus()
-    properties['verified'] = verified
-    return self._PutProperties(uri, properties)
+        Returns: A dict containing the result of the put operation"""
 
-  def GetMXVerificationStatus(self):
-    """Gets Domain MX Verification Status
+        uri = self._serviceUrl('verification/cname')
+        properties = self.GetCNAMEVerificationStatus()
+        properties['verified'] = verified
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def GetMXVerificationStatus(self):
+        """Gets Domain MX Verification Status
 
-    Returns: A dict {verified, verifiedMethod}"""
+        Args:
+          None
 
-    return self.genericGet('verification/mx')
+        Returns: A dict {verified, verifiedMethod}"""
 
-  def UpdateMXVerificationStatus(self, verified):
-    """Updates MX Verification Status
+        return self.genericGet('verification/mx')
 
-    Args:
-      verified: boolean, True will retry verification process
+    def UpdateMXVerificationStatus(self, verified):
+        """Updates MX Verification Status
 
-    Returns: A dict containing the result of the put operation"""
+        Args:
+          verified: boolean, True will retry verification process
 
-    uri = self._serviceUrl('verification/mx')
-    properties = self.GetMXVerificationStatus()
-    properties['verified'] = verified
-    return self._PutProperties(uri, properties)
+        Returns: A dict containing the result of the put operation"""
 
-  def GetSSOSettings(self):
-    """Gets Domain Single Sign-On Settings
+        uri = self._serviceUrl('verification/mx')
+        properties = self.GetMXVerificationStatus()
+        properties['verified'] = verified
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def GetSSOSettings(self):
+        """Gets Domain Single Sign-On Settings
 
-    Returns: A dict {samlSignonUri, samlLogoutUri, changePasswordUri, enableSSO, ssoWhitelist, useDomainSpecificIssuer}"""
+        Args:
+          None
 
-    return self.genericGet('sso/general')
+        Returns: A dict {samlSignonUri, samlLogoutUri, changePasswordUri, enableSSO, ssoWhitelist, useDomainSpecificIssuer}"""
 
-  def UpdateSSOSettings(self, enableSSO=None, samlSignonUri=None,
-                        samlLogoutUri=None, changePasswordUri=None,
-                        ssoWhitelist=None, useDomainSpecificIssuer=None):
-    """Update SSO Settings.
+        return self.genericGet('sso/general')
 
-    Args:
-      enableSSO: boolean, SSO Master on/off switch
-      samlSignonUri: string, SSO Login Page
-      samlLogoutUri: string, SSO Logout Page
-      samlPasswordUri: string, SSO Password Change Page
-      ssoWhitelist: string, Range of IP Addresses which will see SSO
-      useDomainSpecificIssuer: boolean, Include Google Apps Domain in Issuer
+    def UpdateSSOSettings(self, enableSSO=None, samlSignonUri=None,
+                          samlLogoutUri=None, changePasswordUri=None,
+                          ssoWhitelist=None, useDomainSpecificIssuer=None):
+        """Update SSO Settings.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('sso/general')
+        Args:
+          enableSSO: boolean, SSO Master on/off switch
+          samlSignonUri: string, SSO Login Page
+          samlLogoutUri: string, SSO Logout Page
+          samlPasswordUri: string, SSO Password Change Page
+          ssoWhitelist: string, Range of IP Addresses which will see SSO
+          useDomainSpecificIssuer: boolean, Include Google Apps Domain in Issuer
 
-    #Get current settings, replace Nones with ''
-    properties = self.GetSSOSettings()
-    if properties['samlSignonUri'] == None:
-      properties['samlSignonUri'] = ''
-    if properties['samlLogoutUri'] == None:
-      properties['samlLogoutUri'] = ''
-    if properties['changePasswordUri'] == None:
-      properties['changePasswordUri'] = ''
-    if properties['ssoWhitelist'] == None:
-      properties['ssoWhitelist'] = ''
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('sso/general')
 
-    #update only the values we were passed
-    if enableSSO != None:
-      properties['enableSSO'] = gdata.apps.service._bool2str(enableSSO)
-    if samlSignonUri != None:
-      properties['samlSignonUri'] = samlSignonUri
-    if samlLogoutUri != None:
-      properties['samlLogoutUri'] = samlLogoutUri
-    if changePasswordUri != None:
-      properties['changePasswordUri'] = changePasswordUri
-    if ssoWhitelist != None:
-      properties['ssoWhitelist'] = ssoWhitelist
-    if useDomainSpecificIssuer != None:
-      properties['useDomainSpecificIssuer'] = gdata.apps.service._bool2str(useDomainSpecificIssuer)
+        #Get current settings, replace Nones with ''
+        properties = self.GetSSOSettings()
+        if properties['samlSignonUri'] == None:
+            properties['samlSignonUri'] = ''
+        if properties['samlLogoutUri'] == None:
+            properties['samlLogoutUri'] = ''
+        if properties['changePasswordUri'] == None:
+            properties['changePasswordUri'] = ''
+        if properties['ssoWhitelist'] == None:
+            properties['ssoWhitelist'] = ''
 
-    return self._PutProperties(uri, properties)
+        #update only the values we were passed
+        if enableSSO != None:
+            properties['enableSSO'] = gdata.apps.service._bool2str(enableSSO)
+        if samlSignonUri != None:
+            properties['samlSignonUri'] = samlSignonUri
+        if samlLogoutUri != None:
+            properties['samlLogoutUri'] = samlLogoutUri
+        if changePasswordUri != None:
+            properties['changePasswordUri'] = changePasswordUri
+        if ssoWhitelist != None:
+            properties['ssoWhitelist'] = ssoWhitelist
+        if useDomainSpecificIssuer != None:
+            properties['useDomainSpecificIssuer'] = gdata.apps.service._bool2str(useDomainSpecificIssuer)
 
-  def GetSSOKey(self):
-    """Gets Domain Single Sign-On Signing Key
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def GetSSOKey(self):
+        """Gets Domain Single Sign-On Signing Key
 
-    Returns: A dict {modulus, exponent, algorithm, format}"""
+        Args:
+          None
 
-    return self.genericGet('sso/signingkey')
+        Returns: A dict {modulus, exponent, algorithm, format}"""
 
-  def UpdateSSOKey(self, signingKey):
-    """Update SSO Settings.
+        return self.genericGet('sso/signingkey')
 
-    Args:
-      signingKey: string, public key to be uploaded
+    def UpdateSSOKey(self, signingKey):
+        """Update SSO Settings.
 
-    Returns:
-      A dict containing the result of the update operation."""
+        Args:
+          signingKey: string, public key to be uploaded
 
-    uri = self._serviceUrl('sso/signingkey')
-    properties = {'signingKey': signingKey}
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation."""
 
-  def IsUserMigrationEnabled(self):
-    """Is User Migration Enabled
+        uri = self._serviceUrl('sso/signingkey')
+        properties = {'signingKey': signingKey}
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def IsUserMigrationEnabled(self):
+        """Is User Migration Enabled
 
-    Returns:
-      boolean, is user migration enabled"""
+        Args:
+          None
 
-    result = self.genericGet('email/migration')
-    if result['enableUserMigration'] == 'true':
-      return True
-    else:
-      return False
+        Returns:
+          boolean, is user migration enabled"""
 
-  def UpdateUserMigrationStatus(self, enableUserMigration):
-    """Update User Migration Status
+        result = self.genericGet('email/migration')
+        if result['enableUserMigration'] == 'true':
+            return True
+        else:
+            return False
 
-    Args:
-      enableUserMigration: boolean, user migration enable/disable
+    def UpdateUserMigrationStatus(self, enableUserMigration):
+        """Update User Migration Status
 
-    Returns:
-      A dict containing the result of the update operation."""
+        Args:
+          enableUserMigration: boolean, user migration enable/disable
 
-    uri = self._serviceUrl('email/migration')
-    properties = {'enableUserMigration': enableUserMigration}
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation."""
 
-  def GetOutboundGatewaySettings(self):
-    """Get Outbound Gateway Settings
+        uri = self._serviceUrl('email/migration')
+        properties = {'enableUserMigration': enableUserMigration}
+        return self._PutProperties(uri, properties)
 
-    Args:
-      None
+    def GetOutboundGatewaySettings(self):
+        """Get Outbound Gateway Settings
 
-    Returns:
-      A dict {smartHost, smtpMode}"""
+        Args:
+          None
 
-    uri = self._serviceUrl('email/gateway')
-    try:
-      return self._GetProperties(uri)
-    except gdata.service.RequestError, e:
-      raise AppsForYourDomainException(e.args[0])
-    except TypeError:
-      #if no outbound gateway is set, we get a TypeError,
-      #catch it and return nothing...
-      return {'smartHost': None, 'smtpMode': None}
+        Returns:
+          A dict {smartHost, smtpMode}"""
 
-  def UpdateOutboundGatewaySettings(self, smartHost=None, smtpMode=None):
-    """Update Outbound Gateway Settings
+        uri = self._serviceUrl('email/gateway')
+        try:
+            return self._GetProperties(uri)
+        except gdata.service.RequestError, e:
+            raise AppsForYourDomainException(e.args[0])
+        except TypeError:
+            #if no outbound gateway is set, we get a TypeError,
+            #catch it and return nothing...
+            return {'smartHost': None, 'smtpMode': None}
 
-    Args:
-      smartHost: string, ip address or hostname of outbound gateway
-      smtpMode: string, SMTP or SMTP_TLS
+    def UpdateOutboundGatewaySettings(self, smartHost=None, smtpMode=None):
+        """Update Outbound Gateway Settings
 
-    Returns:
-      A dict containing the result of the update operation."""
+        Args:
+          smartHost: string, ip address or hostname of outbound gateway
+          smtpMode: string, SMTP or SMTP_TLS
 
-    uri = self._serviceUrl('email/gateway')
+        Returns:
+          A dict containing the result of the update operation."""
 
-    #Get current settings, replace Nones with ''
-    properties = GetOutboundGatewaySettings()
-    if properties['smartHost'] == None:
-      properties['smartHost'] = ''
-    if properties['smtpMode'] == None:
-      properties['smtpMode'] = ''
+        uri = self._serviceUrl('email/gateway')
 
-    #If we were passed new values for smartHost or smtpMode, update them
-    if smartHost != None:
-      properties['smartHost'] = smartHost
-    if smtpMode != None:
-      properties['smtpMode'] = smtpMode
+        #Get current settings, replace Nones with ''
+        properties = GetOutboundGatewaySettings()
+        if properties['smartHost'] == None:
+            properties['smartHost'] = ''
+        if properties['smtpMode'] == None:
+            properties['smtpMode'] = ''
 
-    return self._PutProperties(uri, properties)
+        #If we were passed new values for smartHost or smtpMode, update them
+        if smartHost != None:
+            properties['smartHost'] = smartHost
+        if smtpMode != None:
+            properties['smtpMode'] = smtpMode
 
-  def AddEmailRoute(self, routeDestination, routeRewriteTo, routeEnabled, bounceNotifications, accountHandling):
-    """Adds Domain Email Route
+        return self._PutProperties(uri, properties)
 
-    Args:
-      routeDestination: string, destination ip address or hostname
-      routeRewriteTo: boolean, rewrite smtp envelop To:
-      routeEnabled: boolean, enable disable email routing
-      bounceNotifications: boolean, send bound notificiations to sender
-      accountHandling: string, which to route, "allAccounts", "provisionedAccounts", "unknownAccounts"
+    def AddEmailRoute(self, routeDestination, routeRewriteTo, routeEnabled, bounceNotifications, accountHandling):
+        """Adds Domain Email Route
 
-    Returns:
-      A dict containing the result of the update operation."""
+        Args:
+          routeDestination: string, destination ip address or hostname
+          routeRewriteTo: boolean, rewrite smtp envelop To:
+          routeEnabled: boolean, enable disable email routing
+          bounceNotifications: boolean, send bound notificiations to sender
+          accountHandling: string, which to route, "allAccounts", "provisionedAccounts", "unknownAccounts"
 
-    uri = self._serviceUrl('emailrouting')
-    properties = {}
-    properties['routeDestination'] = routeDestination
-    properties['routeRewriteTo'] = gdata.apps.service._bool2str(routeRewriteTo)
-    properties['routeEnabled'] = gdata.apps.service._bool2str(routeEnabled)
-    properties['bounceNotifications'] = gdata.apps.service._bool2str(bounceNotifications)
-    properties['accountHandling'] = accountHandling
-    return self._PostProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation."""
+
+        uri = self._serviceUrl('emailrouting')
+        properties = {}
+        properties['routeDestination'] = routeDestination
+        properties['routeRewriteTo'] = gdata.apps.service._bool2str(routeRewriteTo)
+        properties['routeEnabled'] = gdata.apps.service._bool2str(routeEnabled)
+        properties['bounceNotifications'] = gdata.apps.service._bool2str(bounceNotifications)
+        properties['accountHandling'] = accountHandling
+        return self._PostProperties(uri, properties)

@@ -25,19 +25,19 @@ import base64
 
 
 class BasicAuth(object):
-  """Sets the Authorization header as defined in RFC1945"""
+    """Sets the Authorization header as defined in RFC1945"""
 
-  def __init__(self, user_id, password):
-    self.basic_cookie = base64.encodestring(
-        '%s:%s' % (user_id, password)).strip()
+    def __init__(self, user_id, password):
+        self.basic_cookie = base64.encodestring(
+            '%s:%s' % (user_id, password)).strip()
 
-  def modify_request(self, http_request):
-    http_request.headers['Authorization'] = 'Basic %s' % self.basic_cookie
+    def modify_request(self, http_request):
+        http_request.headers['Authorization'] = 'Basic %s' % self.basic_cookie
 
-  ModifyRequest = modify_request
+    ModifyRequest = modify_request
 
 
 class NoAuth(object):
 
-  def modify_request(self, http_request):
-    pass
+    def modify_request(self, http_request):
+        pass

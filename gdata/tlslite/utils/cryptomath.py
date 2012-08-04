@@ -8,9 +8,9 @@ import math
 import base64
 import binascii
 if sys.version_info[:2] <= (2, 4):
-  from sha import sha as sha1
+    from sha import sha as sha1
 else:
-  from hashlib import sha1
+    from hashlib import sha1
 
 from compat import *
 

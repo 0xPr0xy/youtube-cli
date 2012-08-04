@@ -56,624 +56,624 @@ RESTRICTEDDOWNLOAD_LABEL = 'restricted-download'
 
 
 class ResourceId(atom.core.XmlElement):
-  """The DocList gd:resourceId element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'resourceId'
+    """The DocList gd:resourceId element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'resourceId'
 
 
 class LastModifiedBy(atom.data.Person):
-  """The DocList gd:lastModifiedBy element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'lastModifiedBy'
+    """The DocList gd:lastModifiedBy element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'lastModifiedBy'
 
 
 class LastViewed(atom.data.Person):
-  """The DocList gd:lastViewed element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'lastViewed'
+    """The DocList gd:lastViewed element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'lastViewed'
 
 
 class WritersCanInvite(atom.core.XmlElement):
-  """The DocList docs:writersCanInvite element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'writersCanInvite'
-  value = 'value'
+    """The DocList docs:writersCanInvite element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'writersCanInvite'
+    value = 'value'
 
 
 class Deleted(atom.core.XmlElement):
-  """The DocList gd:deleted element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'deleted'
+    """The DocList gd:deleted element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'deleted'
 
 
 class QuotaBytesUsed(atom.core.XmlElement):
-  """The DocList gd:quotaBytesUsed element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'quotaBytesUsed'
+    """The DocList gd:quotaBytesUsed element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'quotaBytesUsed'
 
 
 class Publish(atom.core.XmlElement):
-  """The DocList docs:publish element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'publish'
-  value = 'value'
+    """The DocList docs:publish element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'publish'
+    value = 'value'
 
 
 class PublishAuto(atom.core.XmlElement):
-  """The DocList docs:publishAuto element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'publishAuto'
-  value = 'value'
+    """The DocList docs:publishAuto element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'publishAuto'
+    value = 'value'
 
 
 class PublishOutsideDomain(atom.core.XmlElement):
-  """The DocList docs:publishOutsideDomain element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'publishOutsideDomain'
-  value = 'value'
+    """The DocList docs:publishOutsideDomain element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'publishOutsideDomain'
+    value = 'value'
 
 
 class Filename(atom.core.XmlElement):
-  """The DocList docs:filename element."""
-  _qname = DOCUMENTS_TEMPLATE % 'filename'
+    """The DocList docs:filename element."""
+    _qname = DOCUMENTS_TEMPLATE % 'filename'
 
 
 class SuggestedFilename(atom.core.XmlElement):
-  """The DocList docs:suggestedFilename element."""
-  _qname = DOCUMENTS_TEMPLATE % 'suggestedFilename'
+    """The DocList docs:suggestedFilename element."""
+    _qname = DOCUMENTS_TEMPLATE % 'suggestedFilename'
 
 
 class CategoryFinder(object):
-  """Mixin to provide category finding functionality.
+    """Mixin to provide category finding functionality.
 
-  Analogous to atom.data.LinkFinder, but a simpler API, specialized for
-  DocList categories.
-  """
-
-  def add_category(self, scheme, term, label):
-    """Add a category for a scheme, term and label.
-
-    Args:
-      scheme: The scheme for the category.
-      term: The term for the category.
-      label: The label for the category
-
-    Returns:
-      The newly created atom.data.Category.
+    Analogous to atom.data.LinkFinder, but a simpler API, specialized for
+    DocList categories.
     """
-    category = atom.data.Category(scheme=scheme, term=term, label=label)
-    self.category.append(category)
-    return category
 
-  AddCategory = add_category
+    def add_category(self, scheme, term, label):
+        """Add a category for a scheme, term and label.
 
-  def get_categories(self, scheme):
-    """Fetch the category elements for a scheme.
+        Args:
+          scheme: The scheme for the category.
+          term: The term for the category.
+          label: The label for the category
 
-    Args:
-      scheme: The scheme to fetch the elements for.
+        Returns:
+          The newly created atom.data.Category.
+        """
+        category = atom.data.Category(scheme=scheme, term=term, label=label)
+        self.category.append(category)
+        return category
 
-    Returns:
-      Generator of atom.data.Category elements.
-    """
-    for category in self.category:
-      if category.scheme == scheme:
-        yield category
+    AddCategory = add_category
 
-  GetCategories = get_categories
+    def get_categories(self, scheme):
+        """Fetch the category elements for a scheme.
 
-  def remove_categories(self, scheme):
-    """Remove category elements for a scheme.
+        Args:
+          scheme: The scheme to fetch the elements for.
 
-    Args:
-      scheme: The scheme of category to remove.
-    """
-    for category in list(self.get_categories(scheme)):
-      self.category.remove(category)
+        Returns:
+          Generator of atom.data.Category elements.
+        """
+        for category in self.category:
+            if category.scheme == scheme:
+                yield category
 
-  RemoveCategories = remove_categories
+    GetCategories = get_categories
 
-  def get_first_category(self, scheme):
-    """Fetch the first category element for a scheme.
+    def remove_categories(self, scheme):
+        """Remove category elements for a scheme.
 
-    Args:
-      scheme: The scheme of category to return.
+        Args:
+          scheme: The scheme of category to remove.
+        """
+        for category in list(self.get_categories(scheme)):
+            self.category.remove(category)
 
-    Returns:
-      atom.data.Category if found or None.
-    """
-    try:
-      return self.get_categories(scheme).next()
-    except StopIteration, e:
-      # The entry doesn't have the category
-      return None
+    RemoveCategories = remove_categories
 
-  GetFirstCategory = get_first_category
+    def get_first_category(self, scheme):
+        """Fetch the first category element for a scheme.
 
-  def set_resource_type(self, label):
-    """Set the document type for an entry, by building the appropriate
-    atom.data.Category
+        Args:
+          scheme: The scheme of category to return.
 
-    Args:
-      label: str The value for the category entry. If None is passed the
-      category is removed and not set.
+        Returns:
+          atom.data.Category if found or None.
+        """
+        try:
+            return self.get_categories(scheme).next()
+        except StopIteration, e:
+            # The entry doesn't have the category
+            return None
 
-    Returns:
-      An atom.data.Category or None if label is None.
-    """
-    self.remove_categories(DATA_KIND_SCHEME)
-    if label is not None:
-      return self.add_category(scheme=DATA_KIND_SCHEME,
-                               term='%s#%s' % (DOCUMENTS_NS, label),
-                               label=label)
-    else:
-      return None
+    GetFirstCategory = get_first_category
 
-  SetResourceType = set_resource_type
+    def set_resource_type(self, label):
+        """Set the document type for an entry, by building the appropriate
+        atom.data.Category
 
-  def get_resource_type(self):
-    """Extracts the type of document this Resource is.
+        Args:
+          label: str The value for the category entry. If None is passed the
+          category is removed and not set.
 
-    This method returns the type of document the Resource represents. Possible
-    values are document, presentation, drawing, spreadsheet, file, folder,
-    form, item, or pdf.
+        Returns:
+          An atom.data.Category or None if label is None.
+        """
+        self.remove_categories(DATA_KIND_SCHEME)
+        if label is not None:
+            return self.add_category(scheme=DATA_KIND_SCHEME,
+                                     term='%s#%s' % (DOCUMENTS_NS, label),
+                                     label=label)
+        else:
+            return None
 
-    'folder' is a possible return value of this method because, for legacy
-    support, we have not yet renamed the folder keyword to collection in
-    the API itself.
+    SetResourceType = set_resource_type
 
-    Returns:
-      String representing the type of document.
-    """
-    category = self.get_first_category(DATA_KIND_SCHEME)
-    if category is not None:
-      return category.label
-    else:
-      return None
+    def get_resource_type(self):
+        """Extracts the type of document this Resource is.
 
-  GetResourceType = get_resource_type
+        This method returns the type of document the Resource represents. Possible
+        values are document, presentation, drawing, spreadsheet, file, folder,
+        form, item, or pdf.
 
-  def get_labels(self):
-    """Extracts the labels for this Resource.
+        'folder' is a possible return value of this method because, for legacy
+        support, we have not yet renamed the folder keyword to collection in
+        the API itself.
 
-    This method returns the labels as a set, for example: 'hidden', 'starred',
-    'viewed'.
+        Returns:
+          String representing the type of document.
+        """
+        category = self.get_first_category(DATA_KIND_SCHEME)
+        if category is not None:
+            return category.label
+        else:
+            return None
 
-    Returns:
-      Set of string labels.
-    """
-    return set(category.label for category in
-               self.get_categories(LABELS_SCHEME))
+    GetResourceType = get_resource_type
 
-  GetLabels = get_labels
+    def get_labels(self):
+        """Extracts the labels for this Resource.
 
-  def has_label(self, label):
-    """Whether this Resource has a label.
+        This method returns the labels as a set, for example: 'hidden', 'starred',
+        'viewed'.
 
-    Args:
-      label: The str label to test for
+        Returns:
+          Set of string labels.
+        """
+        return set(category.label for category in
+                   self.get_categories(LABELS_SCHEME))
 
-    Returns:
-      Boolean value indicating presence of label.
-    """
-    return label in self.get_labels()
+    GetLabels = get_labels
 
-  HasLabel = has_label
+    def has_label(self, label):
+        """Whether this Resource has a label.
 
-  def add_label(self, label):
-    """Add a label, if it is not present.
+        Args:
+          label: The str label to test for
 
-    Args:
-      label: The str label to set
-    """
-    if not self.has_label(label):
-      self.add_category(scheme=LABELS_SCHEME,
-                        term='%s#%s' % (LABELS_NS, label),
-                        label=label)
-  AddLabel = add_label
+        Returns:
+          Boolean value indicating presence of label.
+        """
+        return label in self.get_labels()
 
-  def remove_label(self, label):
-    """Remove a label, if it is present.
+    HasLabel = has_label
 
-    Args:
-      label: The str label to remove
-    """
-    for category in self.get_categories(LABELS_SCHEME):
-      if category.label == label:
-        self.category.remove(category)
+    def add_label(self, label):
+        """Add a label, if it is not present.
 
-  RemoveLabel = remove_label
+        Args:
+          label: The str label to set
+        """
+        if not self.has_label(label):
+            self.add_category(scheme=LABELS_SCHEME,
+                              term='%s#%s' % (LABELS_NS, label),
+                              label=label)
+    AddLabel = add_label
 
-  def is_starred(self):
-    """Whether this Resource is starred.
+    def remove_label(self, label):
+        """Remove a label, if it is present.
 
-    Returns:
-      Boolean value indicating that the resource is starred.
-    """
-    return self.has_label(STARRED_LABEL)
+        Args:
+          label: The str label to remove
+        """
+        for category in self.get_categories(LABELS_SCHEME):
+            if category.label == label:
+                self.category.remove(category)
 
-  IsStarred = is_starred
+    RemoveLabel = remove_label
 
-  def is_hidden(self):
-    """Whether this Resource is hidden.
+    def is_starred(self):
+        """Whether this Resource is starred.
 
-    Returns:
-      Boolean value indicating that the resource is hidden.
-    """
-    return self.has_label(HIDDEN_LABEL)
+        Returns:
+          Boolean value indicating that the resource is starred.
+        """
+        return self.has_label(STARRED_LABEL)
 
-  IsHidden = is_hidden
+    IsStarred = is_starred
 
-  def is_viewed(self):
-    """Whether this Resource is viewed.
+    def is_hidden(self):
+        """Whether this Resource is hidden.
 
-    Returns:
-      Boolean value indicating that the resource is viewed.
-    """
-    return self.has_label(VIEWED_LABEL)
+        Returns:
+          Boolean value indicating that the resource is hidden.
+        """
+        return self.has_label(HIDDEN_LABEL)
 
-  IsViewed = is_viewed
+    IsHidden = is_hidden
 
-  def is_trashed(self):
-    """Whether this resource is trashed.
+    def is_viewed(self):
+        """Whether this Resource is viewed.
 
-    Returns:
-      Boolean value indicating that the resource is trashed.
-    """
-    return self.has_label(TRASHED_LABEL)
+        Returns:
+          Boolean value indicating that the resource is viewed.
+        """
+        return self.has_label(VIEWED_LABEL)
 
-  IsTrashed = is_trashed
+    IsViewed = is_viewed
 
-  def is_mine(self):
-    """Whether this resource is marked as mine.
+    def is_trashed(self):
+        """Whether this resource is trashed.
 
-    Returns:
-      Boolean value indicating that the resource is marked as mine.
-    """
-    return self.has_label(MINE_LABEL)
+        Returns:
+          Boolean value indicating that the resource is trashed.
+        """
+        return self.has_label(TRASHED_LABEL)
 
-  IsMine = is_mine
+    IsTrashed = is_trashed
 
-  def is_private(self):
-    """Whether this resource is private.
+    def is_mine(self):
+        """Whether this resource is marked as mine.
 
-    Returns:
-      Boolean value indicating that the resource is private.
-    """
-    return self.has_label(PRIVATE_LABEL)
+        Returns:
+          Boolean value indicating that the resource is marked as mine.
+        """
+        return self.has_label(MINE_LABEL)
 
-  IsPrivate = is_private
+    IsMine = is_mine
 
-  def is_shared_with_domain(self):
-    """Whether this resource is shared with the domain.
+    def is_private(self):
+        """Whether this resource is private.
 
-    Returns:
-      Boolean value indicating that the resource is shared with the domain.
-    """
-    return self.has_label(SHAREDWITHDOMAIN_LABEL)
+        Returns:
+          Boolean value indicating that the resource is private.
+        """
+        return self.has_label(PRIVATE_LABEL)
 
-  IsSharedWithDomain = is_shared_with_domain
+    IsPrivate = is_private
 
-  def is_restricted_download(self):
-    """Whether this resource is restricted download.
+    def is_shared_with_domain(self):
+        """Whether this resource is shared with the domain.
 
-    Returns:
-      Boolean value indicating whether the resource is restricted download.
-    """
-    return self.has_label(RESTRICTEDDOWNLOAD_LABEL)
+        Returns:
+          Boolean value indicating that the resource is shared with the domain.
+        """
+        return self.has_label(SHAREDWITHDOMAIN_LABEL)
 
-  IsRestrictedDownload = is_restricted_download
+    IsSharedWithDomain = is_shared_with_domain
+
+    def is_restricted_download(self):
+        """Whether this resource is restricted download.
+
+        Returns:
+          Boolean value indicating whether the resource is restricted download.
+        """
+        return self.has_label(RESTRICTEDDOWNLOAD_LABEL)
+
+    IsRestrictedDownload = is_restricted_download
 
 
 class AclEntry(gdata.acl.data.AclEntry, gdata.data.BatchEntry):
-  """Resource ACL entry."""
-  @staticmethod
-  def get_instance(role=None, scope_type=None, scope_value=None, key=False):
-    entry = AclEntry()
+    """Resource ACL entry."""
+    @staticmethod
+    def get_instance(role=None, scope_type=None, scope_value=None, key=False):
+        entry = AclEntry()
 
-    if role is not None:
-      if isinstance(role, basestring):
-        role = gdata.acl.data.AclRole(value=role)
+        if role is not None:
+            if isinstance(role, basestring):
+                role = gdata.acl.data.AclRole(value=role)
 
-      if key:
-        entry.with_key = gdata.acl.data.AclWithKey(key='', role=role)
-      else:
-        entry.role = role
+            if key:
+                entry.with_key = gdata.acl.data.AclWithKey(key='', role=role)
+            else:
+                entry.role = role
 
-    if scope_type is not None:
-      if scope_value is not None:
-        entry.scope = gdata.acl.data.AclScope(type=scope_type,
-                                              value=scope_value)
-      else:
-        entry.scope = gdata.acl.data.AclScope(type=scope_type)
-    return entry
+        if scope_type is not None:
+            if scope_value is not None:
+                entry.scope = gdata.acl.data.AclScope(type=scope_type,
+                                                      value=scope_value)
+            else:
+                entry.scope = gdata.acl.data.AclScope(type=scope_type)
+        return entry
 
-  GetInstance = get_instance
+    GetInstance = get_instance
 
 
 class AclFeed(gdata.acl.data.AclFeed):
-  """Resource ACL feed."""
-  entry = [AclEntry]
+    """Resource ACL feed."""
+    entry = [AclEntry]
 
 
 class Resource(gdata.data.GDEntry, CategoryFinder):
-  """DocList version of an Atom Entry."""
+    """DocList version of an Atom Entry."""
 
-  last_viewed = LastViewed
-  last_modified_by = LastModifiedBy
-  resource_id = ResourceId
-  deleted = Deleted
-  writers_can_invite = WritersCanInvite
-  quota_bytes_used = QuotaBytesUsed
-  feed_link = [gdata.data.FeedLink]
-  filename = Filename
-  suggested_filename = SuggestedFilename
-  # Only populated if you request /feeds/default/private/expandAcl
-  acl_feed = AclFeed
+    last_viewed = LastViewed
+    last_modified_by = LastModifiedBy
+    resource_id = ResourceId
+    deleted = Deleted
+    writers_can_invite = WritersCanInvite
+    quota_bytes_used = QuotaBytesUsed
+    feed_link = [gdata.data.FeedLink]
+    filename = Filename
+    suggested_filename = SuggestedFilename
+    # Only populated if you request /feeds/default/private/expandAcl
+    acl_feed = AclFeed
 
-  def __init__(self, type=None, title=None, **kwargs):
-    super(Resource, self).__init__(**kwargs)
-    if isinstance(type, basestring):
-      self.set_resource_type(type)
+    def __init__(self, type=None, title=None, **kwargs):
+        super(Resource, self).__init__(**kwargs)
+        if isinstance(type, basestring):
+            self.set_resource_type(type)
 
-    if title is not None:
-      if isinstance(title, basestring):
-        self.title = atom.data.Title(text=title)
-      else:
-        self.title = title
+        if title is not None:
+            if isinstance(title, basestring):
+                self.title = atom.data.Title(text=title)
+            else:
+                self.title = title
 
-  def get_acl_feed_link(self):
-    """Extracts the Resource's ACL feed <gd:feedLink>.
+    def get_acl_feed_link(self):
+        """Extracts the Resource's ACL feed <gd:feedLink>.
 
-    Returns:
-      A gdata.data.FeedLink object.
-    """
-    for feed_link in self.feed_link:
-      if feed_link.rel == ACL_FEEDLINK_REL:
-        return feed_link
-    return None
+        Returns:
+          A gdata.data.FeedLink object.
+        """
+        for feed_link in self.feed_link:
+            if feed_link.rel == ACL_FEEDLINK_REL:
+                return feed_link
+        return None
 
-  GetAclFeedLink = get_acl_feed_link
+    GetAclFeedLink = get_acl_feed_link
 
-  def get_revisions_feed_link(self):
-    """Extracts the Resource's revisions feed <gd:feedLink>.
+    def get_revisions_feed_link(self):
+        """Extracts the Resource's revisions feed <gd:feedLink>.
 
-    Returns:
-      A gdata.data.FeedLink object.
-    """
-    for feed_link in self.feed_link:
-      if feed_link.rel == REVISION_FEEDLINK_REL:
-        return feed_link
-    return None
+        Returns:
+          A gdata.data.FeedLink object.
+        """
+        for feed_link in self.feed_link:
+            if feed_link.rel == REVISION_FEEDLINK_REL:
+                return feed_link
+        return None
 
-  GetRevisionsFeedLink = get_revisions_feed_link
+    GetRevisionsFeedLink = get_revisions_feed_link
 
-  def get_resumable_create_media_link(self):
-    """Extracts the Resource's resumable create link.
+    def get_resumable_create_media_link(self):
+        """Extracts the Resource's resumable create link.
 
-    Returns:
-      A gdata.data.FeedLink object.
-    """
-    return self.get_link(RESUMABLE_CREATE_MEDIA_LINK_REL)
+        Returns:
+          A gdata.data.FeedLink object.
+        """
+        return self.get_link(RESUMABLE_CREATE_MEDIA_LINK_REL)
 
-  GetResumableCreateMediaLink = get_resumable_create_media_link
+    GetResumableCreateMediaLink = get_resumable_create_media_link
 
-  def get_resumable_edit_media_link(self):
-    """Extracts the Resource's resumable update link.
+    def get_resumable_edit_media_link(self):
+        """Extracts the Resource's resumable update link.
 
-    Returns:
-      A gdata.data.FeedLink object.
-    """
-    return self.get_link(RESUMABLE_EDIT_MEDIA_LINK_REL)
+        Returns:
+          A gdata.data.FeedLink object.
+        """
+        return self.get_link(RESUMABLE_EDIT_MEDIA_LINK_REL)
 
-  GetResumableEditMediaLink = get_resumable_edit_media_link
+    GetResumableEditMediaLink = get_resumable_edit_media_link
 
-  def in_collections(self):
-    """Returns the parents link(s) (collections) of this entry."""
-    links = []
-    for link in self.link:
-      if link.rel == PARENT_LINK_REL and link.href:
-        links.append(link)
-    return links
+    def in_collections(self):
+        """Returns the parents link(s) (collections) of this entry."""
+        links = []
+        for link in self.link:
+            if link.rel == PARENT_LINK_REL and link.href:
+                links.append(link)
+        return links
 
-  InCollections = in_collections
+    InCollections = in_collections
 
 
 class ResourceFeed(gdata.data.GDFeed):
-  """Main feed containing a list of resources."""
-  entry = [Resource]
+    """Main feed containing a list of resources."""
+    entry = [Resource]
 
 
 class Revision(gdata.data.GDEntry):
-  """Resource Revision entry."""
-  publish = Publish
-  publish_auto = PublishAuto
-  publish_outside_domain = PublishOutsideDomain
+    """Resource Revision entry."""
+    publish = Publish
+    publish_auto = PublishAuto
+    publish_outside_domain = PublishOutsideDomain
 
-  def find_publish_link(self):
-    """Get the link that points to the published resource on the web.
+    def find_publish_link(self):
+        """Get the link that points to the published resource on the web.
 
-    Returns:
-      A str for the URL in the link with a rel ending in #publish.
-    """
-    return self.find_url(PUBLISH_LINK_REL)
+        Returns:
+          A str for the URL in the link with a rel ending in #publish.
+        """
+        return self.find_url(PUBLISH_LINK_REL)
 
-  FindPublishLink = find_publish_link
+    FindPublishLink = find_publish_link
 
-  def get_publish_link(self):
-    """Get the link that points to the published resource on the web.
+    def get_publish_link(self):
+        """Get the link that points to the published resource on the web.
 
-    Returns:
-      A gdata.data.Link for the link with a rel ending in #publish.
-    """
-    return self.get_link(PUBLISH_LINK_REL)
+        Returns:
+          A gdata.data.Link for the link with a rel ending in #publish.
+        """
+        return self.get_link(PUBLISH_LINK_REL)
 
-  GetPublishLink = get_publish_link
+    GetPublishLink = get_publish_link
 
 
 class RevisionFeed(gdata.data.GDFeed):
-  """A DocList Revision feed."""
-  entry = [Revision]
+    """A DocList Revision feed."""
+    entry = [Revision]
 
 
 class ArchiveResourceId(atom.core.XmlElement):
-  """The DocList docs:removed element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveResourceId'
+    """The DocList docs:removed element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveResourceId'
 
 
 class ArchiveFailure(atom.core.XmlElement):
-  """The DocList docs:archiveFailure element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveFailure'
+    """The DocList docs:archiveFailure element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveFailure'
 
 
 class ArchiveComplete(atom.core.XmlElement):
-  """The DocList docs:archiveComplete element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveComplete'
+    """The DocList docs:archiveComplete element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveComplete'
 
 
 class ArchiveTotal(atom.core.XmlElement):
-  """The DocList docs:archiveTotal element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveTotal'
+    """The DocList docs:archiveTotal element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveTotal'
 
 
 class ArchiveTotalComplete(atom.core.XmlElement):
-  """The DocList docs:archiveTotalComplete element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveTotalComplete'
+    """The DocList docs:archiveTotalComplete element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveTotalComplete'
 
 
 class ArchiveTotalFailure(atom.core.XmlElement):
-  """The DocList docs:archiveTotalFailure element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveTotalFailure'
+    """The DocList docs:archiveTotalFailure element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveTotalFailure'
 
 
 class ArchiveConversion(atom.core.XmlElement):
-  """The DocList docs:removed element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveConversion'
-  source = 'source'
-  target = 'target'
+    """The DocList docs:removed element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveConversion'
+    source = 'source'
+    target = 'target'
 
 
 class ArchiveNotify(atom.core.XmlElement):
-  """The DocList docs:archiveNotify element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveNotify'
+    """The DocList docs:archiveNotify element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveNotify'
 
 
 class ArchiveStatus(atom.core.XmlElement):
-  """The DocList docs:archiveStatus element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveStatus'
+    """The DocList docs:archiveStatus element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveStatus'
 
 
 class ArchiveNotifyStatus(atom.core.XmlElement):
-  """The DocList docs:archiveNotifyStatus element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'archiveNotifyStatus'
+    """The DocList docs:archiveNotifyStatus element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'archiveNotifyStatus'
 
 
 class Archive(gdata.data.GDEntry):
-  """Archive entry."""
-  archive_resource_ids = [ArchiveResourceId]
-  status = ArchiveStatus
-  date_completed = ArchiveComplete
-  num_resources = ArchiveTotal
-  num_complete_resources = ArchiveTotalComplete
-  num_failed_resources = ArchiveTotalFailure
-  failed_resource_ids = [ArchiveFailure]
-  notify_status = ArchiveNotifyStatus
-  conversions = [ArchiveConversion]
-  notification_email = ArchiveNotify
-  size = QuotaBytesUsed
+    """Archive entry."""
+    archive_resource_ids = [ArchiveResourceId]
+    status = ArchiveStatus
+    date_completed = ArchiveComplete
+    num_resources = ArchiveTotal
+    num_complete_resources = ArchiveTotalComplete
+    num_failed_resources = ArchiveTotalFailure
+    failed_resource_ids = [ArchiveFailure]
+    notify_status = ArchiveNotifyStatus
+    conversions = [ArchiveConversion]
+    notification_email = ArchiveNotify
+    size = QuotaBytesUsed
 
-  @staticmethod
-  def from_resource_list(resources):
-    resource_ids = []
-    for resource in resources:
-      id = ArchiveResourceId(text=resource.resource_id.text)
-      resource_ids.append(id)
-    return Archive(archive_resource_ids=resource_ids)
+    @staticmethod
+    def from_resource_list(resources):
+        resource_ids = []
+        for resource in resources:
+            id = ArchiveResourceId(text=resource.resource_id.text)
+            resource_ids.append(id)
+        return Archive(archive_resource_ids=resource_ids)
 
-  FromResourceList = from_resource_list
+    FromResourceList = from_resource_list
 
 
 class Removed(atom.core.XmlElement):
-  """The DocList docs:removed element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'removed'
+    """The DocList docs:removed element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'removed'
 
 
 class Changestamp(atom.core.XmlElement):
-  """The DocList docs:changestamp element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'changestamp'
-  value = 'value'
+    """The DocList docs:changestamp element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'changestamp'
+    value = 'value'
 
 
 class Change(Resource):
-  """Change feed entry."""
-  changestamp = Changestamp
-  removed = Removed
+    """Change feed entry."""
+    changestamp = Changestamp
+    removed = Removed
 
 
 class ChangeFeed(gdata.data.GDFeed):
-  """DocList Changes feed."""
-  entry = [Change]
+    """DocList Changes feed."""
+    entry = [Change]
 
 
 class QuotaBytesTotal(atom.core.XmlElement):
-  """The DocList gd:quotaBytesTotal element."""
-  _qname = gdata.data.GDATA_TEMPLATE  % 'quotaBytesTotal'
+    """The DocList gd:quotaBytesTotal element."""
+    _qname = gdata.data.GDATA_TEMPLATE  % 'quotaBytesTotal'
 
 
 class QuotaBytesUsedInTrash(atom.core.XmlElement):
-  """The DocList docs:quotaBytesUsedInTrash element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'quotaBytesUsedInTrash'
+    """The DocList docs:quotaBytesUsedInTrash element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'quotaBytesUsedInTrash'
 
 
 class ImportFormat(atom.core.XmlElement):
-  """The DocList docs:importFormat element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'importFormat'
-  source = 'source'
-  target = 'target'
+    """The DocList docs:importFormat element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'importFormat'
+    source = 'source'
+    target = 'target'
 
 
 class ExportFormat(atom.core.XmlElement):
-  """The DocList docs:exportFormat element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'exportFormat'
-  source = 'source'
-  target = 'target'
+    """The DocList docs:exportFormat element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'exportFormat'
+    source = 'source'
+    target = 'target'
 
 
 class FeatureName(atom.core.XmlElement):
-  """The DocList docs:featureName element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'featureName'
+    """The DocList docs:featureName element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'featureName'
 
 
 class FeatureRate(atom.core.XmlElement):
-  """The DocList docs:featureRate element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'featureRate'
+    """The DocList docs:featureRate element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'featureRate'
 
 
 class Feature(atom.core.XmlElement):
-  """The DocList docs:feature element."""
-  _qname = DOCUMENTS_TEMPLATE  % 'feature'
-  name = FeatureName
-  rate = FeatureRate
+    """The DocList docs:feature element."""
+    _qname = DOCUMENTS_TEMPLATE  % 'feature'
+    name = FeatureName
+    rate = FeatureRate
 
 
 class MaxUploadSize(atom.core.XmlElement):
-  """The DocList docs:maxUploadSize element."""
-  _qname = DOCUMENTS_TEMPLATE % 'maxUploadSize'
-  kind = 'kind'
+    """The DocList docs:maxUploadSize element."""
+    _qname = DOCUMENTS_TEMPLATE % 'maxUploadSize'
+    kind = 'kind'
 
 
 class AdditionalRoleSet(atom.core.XmlElement):
-  """The DocList docs:additionalRoleSet element."""
-  _qname = DOCUMENTS_TEMPLATE % 'additionalRoleSet'
-  primaryRole = 'primaryRole'
-  additional_role = [gdata.acl.data.AclAdditionalRole]
+    """The DocList docs:additionalRoleSet element."""
+    _qname = DOCUMENTS_TEMPLATE % 'additionalRoleSet'
+    primaryRole = 'primaryRole'
+    additional_role = [gdata.acl.data.AclAdditionalRole]
 
 
 class AdditionalRoleInfo(atom.core.XmlElement):
-  """The DocList docs:additionalRoleInfo element."""
-  _qname = DOCUMENTS_TEMPLATE % 'additionalRoleInfo'
-  kind = 'kind'
-  additional_role_set = [AdditionalRoleSet]
+    """The DocList docs:additionalRoleInfo element."""
+    _qname = DOCUMENTS_TEMPLATE % 'additionalRoleInfo'
+    kind = 'kind'
+    additional_role_set = [AdditionalRoleSet]
 
 
 class Metadata(gdata.data.GDEntry):
-  """Metadata entry for a user."""
-  quota_bytes_total = QuotaBytesTotal
-  quota_bytes_used = QuotaBytesUsed
-  quota_bytes_used_in_trash = QuotaBytesUsedInTrash
-  import_formats = [ImportFormat]
-  export_formats = [ExportFormat]
-  features = [Feature]
-  max_upload_sizes = [MaxUploadSize]
-  additional_role_info = [AdditionalRoleInfo]
+    """Metadata entry for a user."""
+    quota_bytes_total = QuotaBytesTotal
+    quota_bytes_used = QuotaBytesUsed
+    quota_bytes_used_in_trash = QuotaBytesUsedInTrash
+    import_formats = [ImportFormat]
+    export_formats = [ExportFormat]
+    features = [Feature]
+    max_upload_sizes = [MaxUploadSize]
+    additional_role_info = [AdditionalRoleInfo]

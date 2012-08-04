@@ -37,228 +37,228 @@ MAIL_FROM_NOW_ON='MAIL_FROM_NOW_ON'
 
 
 class EmailSettingsService(gdata.apps.service.PropertyService):
-  """Client for the Google Apps Email Settings service."""
+    """Client for the Google Apps Email Settings service."""
 
-  def _serviceUrl(self, setting_id, username, domain=None):
-    if domain is None:
-      domain = self.domain
-    return '/a/feeds/emailsettings/%s/%s/%s/%s' % (API_VER, domain, username,
-                                                   setting_id)
+    def _serviceUrl(self, setting_id, username, domain=None):
+        if domain is None:
+            domain = self.domain
+        return '/a/feeds/emailsettings/%s/%s/%s/%s' % (API_VER, domain, username,
+                                                       setting_id)
 
-  def CreateLabel(self, username, label):
-    """Create a label.
+    def CreateLabel(self, username, label):
+        """Create a label.
 
-    Args:
-      username: User to create label for.
-      label: Label to create.
+        Args:
+          username: User to create label for.
+          label: Label to create.
 
-    Returns:
-      A dict containing the result of the create operation.
-    """
-    uri = self._serviceUrl('label', username)
-    properties = {'label': label}
-    return self._PostProperties(uri, properties)
+        Returns:
+          A dict containing the result of the create operation.
+        """
+        uri = self._serviceUrl('label', username)
+        properties = {'label': label}
+        return self._PostProperties(uri, properties)
 
-  def CreateFilter(self, username, from_=None, to=None, subject=None,
-                   has_the_word=None, does_not_have_the_word=None,
-                   has_attachment=None, label=None, should_mark_as_read=None,
-                   should_archive=None):
-    """Create a filter.
+    def CreateFilter(self, username, from_=None, to=None, subject=None,
+                     has_the_word=None, does_not_have_the_word=None,
+                     has_attachment=None, label=None, should_mark_as_read=None,
+                     should_archive=None):
+        """Create a filter.
 
-    Args:
-      username: User to create filter for.
-      from_: Filter from string.
-      to: Filter to string.
-      subject: Filter subject.
-      has_the_word: Words to filter in.
-      does_not_have_the_word: Words to filter out.
-      has_attachment:  Boolean for message having attachment.
-      label: Label to apply.
-      should_mark_as_read: Boolean for marking message as read.
-      should_archive: Boolean for archiving message.
+        Args:
+          username: User to create filter for.
+          from_: Filter from string.
+          to: Filter to string.
+          subject: Filter subject.
+          has_the_word: Words to filter in.
+          does_not_have_the_word: Words to filter out.
+          has_attachment:  Boolean for message having attachment.
+          label: Label to apply.
+          should_mark_as_read: Boolean for marking message as read.
+          should_archive: Boolean for archiving message.
 
-    Returns:
-      A dict containing the result of the create operation.
-    """
-    uri = self._serviceUrl('filter', username)
-    properties = {}
-    properties['from'] = from_
-    properties['to'] = to
-    properties['subject'] = subject
-    properties['hasTheWord'] = has_the_word
-    properties['doesNotHaveTheWord'] = does_not_have_the_word
-    properties['hasAttachment'] = gdata.apps.service._bool2str(has_attachment)
-    properties['label'] = label
-    properties['shouldMarkAsRead'] = gdata.apps.service._bool2str(should_mark_as_read)
-    properties['shouldArchive'] = gdata.apps.service._bool2str(should_archive)
-    return self._PostProperties(uri, properties)
+        Returns:
+          A dict containing the result of the create operation.
+        """
+        uri = self._serviceUrl('filter', username)
+        properties = {}
+        properties['from'] = from_
+        properties['to'] = to
+        properties['subject'] = subject
+        properties['hasTheWord'] = has_the_word
+        properties['doesNotHaveTheWord'] = does_not_have_the_word
+        properties['hasAttachment'] = gdata.apps.service._bool2str(has_attachment)
+        properties['label'] = label
+        properties['shouldMarkAsRead'] = gdata.apps.service._bool2str(should_mark_as_read)
+        properties['shouldArchive'] = gdata.apps.service._bool2str(should_archive)
+        return self._PostProperties(uri, properties)
 
-  def CreateSendAsAlias(self, username, name, address, reply_to=None,
-                        make_default=None):
-    """Create alias to send mail as.
+    def CreateSendAsAlias(self, username, name, address, reply_to=None,
+                          make_default=None):
+        """Create alias to send mail as.
 
-    Args:
-      username: User to create alias for.
-      name: Name of alias.
-      address: Email address to send from.
-      reply_to: Email address to reply to.
-      make_default: Boolean for whether this is the new default sending alias.
+        Args:
+          username: User to create alias for.
+          name: Name of alias.
+          address: Email address to send from.
+          reply_to: Email address to reply to.
+          make_default: Boolean for whether this is the new default sending alias.
 
-    Returns:
-      A dict containing the result of the create operation.
-    """
-    uri = self._serviceUrl('sendas', username)
-    properties = {}
-    properties['name'] = name
-    properties['address'] = address
-    properties['replyTo'] = reply_to
-    properties['makeDefault'] = gdata.apps.service._bool2str(make_default)
-    return self._PostProperties(uri, properties)
+        Returns:
+          A dict containing the result of the create operation.
+        """
+        uri = self._serviceUrl('sendas', username)
+        properties = {}
+        properties['name'] = name
+        properties['address'] = address
+        properties['replyTo'] = reply_to
+        properties['makeDefault'] = gdata.apps.service._bool2str(make_default)
+        return self._PostProperties(uri, properties)
 
-  def UpdateWebClipSettings(self, username, enable):
-    """Update WebClip Settings
+    def UpdateWebClipSettings(self, username, enable):
+        """Update WebClip Settings
 
-    Args:
-      username: User to update forwarding for.
-      enable: Boolean whether to enable Web Clip.
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('webclip', username)
-    properties = {}
-    properties['enable'] = gdata.apps.service._bool2str(enable)
-    return self._PutProperties(uri, properties)
+        Args:
+          username: User to update forwarding for.
+          enable: Boolean whether to enable Web Clip.
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('webclip', username)
+        properties = {}
+        properties['enable'] = gdata.apps.service._bool2str(enable)
+        return self._PutProperties(uri, properties)
 
-  def UpdateForwarding(self, username, enable, forward_to=None, action=None):
-    """Update forwarding settings.
+    def UpdateForwarding(self, username, enable, forward_to=None, action=None):
+        """Update forwarding settings.
 
-    Args:
-      username: User to update forwarding for.
-      enable: Boolean whether to enable this forwarding rule.
-      forward_to: Email address to forward to.
-      action: Action to take after forwarding.
+        Args:
+          username: User to update forwarding for.
+          enable: Boolean whether to enable this forwarding rule.
+          forward_to: Email address to forward to.
+          action: Action to take after forwarding.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('forwarding', username)
-    properties = {}
-    properties['enable'] = gdata.apps.service._bool2str(enable)
-    if enable is True:
-      properties['forwardTo'] = forward_to
-      properties['action'] = action
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('forwarding', username)
+        properties = {}
+        properties['enable'] = gdata.apps.service._bool2str(enable)
+        if enable is True:
+            properties['forwardTo'] = forward_to
+            properties['action'] = action
+        return self._PutProperties(uri, properties)
 
-  def UpdatePop(self, username, enable, enable_for=None, action=None):
-    """Update POP3 settings.
+    def UpdatePop(self, username, enable, enable_for=None, action=None):
+        """Update POP3 settings.
 
-    Args:
-      username: User to update POP3 settings for.
-      enable: Boolean whether to enable POP3.
-      enable_for: Which messages to make available via POP3.
-      action: Action to take after user retrieves email via POP3.
+        Args:
+          username: User to update POP3 settings for.
+          enable: Boolean whether to enable POP3.
+          enable_for: Which messages to make available via POP3.
+          action: Action to take after user retrieves email via POP3.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('pop', username)
-    properties = {}
-    properties['enable'] = gdata.apps.service._bool2str(enable)
-    if enable is True:
-      properties['enableFor'] = enable_for
-      properties['action'] = action
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('pop', username)
+        properties = {}
+        properties['enable'] = gdata.apps.service._bool2str(enable)
+        if enable is True:
+            properties['enableFor'] = enable_for
+            properties['action'] = action
+        return self._PutProperties(uri, properties)
 
-  def UpdateImap(self, username, enable):
-    """Update IMAP settings.
+    def UpdateImap(self, username, enable):
+        """Update IMAP settings.
 
-    Args:
-      username: User to update IMAP settings for.
-      enable: Boolean whether to enable IMAP.
+        Args:
+          username: User to update IMAP settings for.
+          enable: Boolean whether to enable IMAP.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('imap', username)
-    properties = {'enable': gdata.apps.service._bool2str(enable)}
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('imap', username)
+        properties = {'enable': gdata.apps.service._bool2str(enable)}
+        return self._PutProperties(uri, properties)
 
-  def UpdateVacation(self, username, enable, subject=None, message=None,
-                     contacts_only=None):
-    """Update vacation settings.
+    def UpdateVacation(self, username, enable, subject=None, message=None,
+                       contacts_only=None):
+        """Update vacation settings.
 
-    Args:
-      username: User to update vacation settings for.
-      enable: Boolean whether to enable vacation responses.
-      subject: Vacation message subject.
-      message: Vacation message body.
-      contacts_only: Boolean whether to send message only to contacts.
+        Args:
+          username: User to update vacation settings for.
+          enable: Boolean whether to enable vacation responses.
+          subject: Vacation message subject.
+          message: Vacation message body.
+          contacts_only: Boolean whether to send message only to contacts.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('vacation', username)
-    properties = {}
-    properties['enable'] = gdata.apps.service._bool2str(enable)
-    if enable is True:
-      properties['subject'] = subject
-      properties['message'] = message
-      properties['contactsOnly'] = gdata.apps.service._bool2str(contacts_only)
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('vacation', username)
+        properties = {}
+        properties['enable'] = gdata.apps.service._bool2str(enable)
+        if enable is True:
+            properties['subject'] = subject
+            properties['message'] = message
+            properties['contactsOnly'] = gdata.apps.service._bool2str(contacts_only)
+        return self._PutProperties(uri, properties)
 
-  def UpdateSignature(self, username, signature):
-    """Update signature.
+    def UpdateSignature(self, username, signature):
+        """Update signature.
 
-    Args:
-      username: User to update signature for.
-      signature: Signature string.
+        Args:
+          username: User to update signature for.
+          signature: Signature string.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('signature', username)
-    properties = {'signature': signature}
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('signature', username)
+        properties = {'signature': signature}
+        return self._PutProperties(uri, properties)
 
-  def UpdateLanguage(self, username, language):
-    """Update user interface language.
+    def UpdateLanguage(self, username, language):
+        """Update user interface language.
 
-    Args:
-      username: User to update language for.
-      language: Language code.
+        Args:
+          username: User to update language for.
+          language: Language code.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('language', username)
-    properties = {'language': language}
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('language', username)
+        properties = {'language': language}
+        return self._PutProperties(uri, properties)
 
-  def UpdateGeneral(self, username, page_size=None, shortcuts=None, arrows=None,
-                    snippets=None, unicode=None):
-    """Update general settings.
+    def UpdateGeneral(self, username, page_size=None, shortcuts=None, arrows=None,
+                      snippets=None, unicode=None):
+        """Update general settings.
 
-    Args:
-      username: User to update general settings for.
-      page_size: Number of messages to show.
-      shortcuts: Boolean whether shortcuts are enabled.
-      arrows: Boolean whether arrows are enabled.
-      snippets: Boolean whether snippets are enabled.
-      unicode: Wheter unicode is enabled.
+        Args:
+          username: User to update general settings for.
+          page_size: Number of messages to show.
+          shortcuts: Boolean whether shortcuts are enabled.
+          arrows: Boolean whether arrows are enabled.
+          snippets: Boolean whether snippets are enabled.
+          unicode: Wheter unicode is enabled.
 
-    Returns:
-      A dict containing the result of the update operation.
-    """
-    uri = self._serviceUrl('general', username)
-    properties = {}
-    if page_size != None:
-      properties['pageSize'] = str(page_size)
-    if shortcuts != None:
-      properties['shortcuts'] = gdata.apps.service._bool2str(shortcuts)
-    if arrows != None:
-      properties['arrows'] = gdata.apps.service._bool2str(arrows)
-    if snippets != None:
-      properties['snippets'] = gdata.apps.service._bool2str(snippets)
-    if unicode != None:
-      properties['unicode'] = gdata.apps.service._bool2str(unicode)
-    return self._PutProperties(uri, properties)
+        Returns:
+          A dict containing the result of the update operation.
+        """
+        uri = self._serviceUrl('general', username)
+        properties = {}
+        if page_size != None:
+            properties['pageSize'] = str(page_size)
+        if shortcuts != None:
+            properties['shortcuts'] = gdata.apps.service._bool2str(shortcuts)
+        if arrows != None:
+            properties['arrows'] = gdata.apps.service._bool2str(arrows)
+        if snippets != None:
+            properties['snippets'] = gdata.apps.service._bool2str(snippets)
+        if unicode != None:
+            properties['unicode'] = gdata.apps.service._bool2str(unicode)
+        return self._PutProperties(uri, properties)

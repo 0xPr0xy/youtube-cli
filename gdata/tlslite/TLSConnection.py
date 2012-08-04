@@ -1546,8 +1546,8 @@ class TLSConnection(TLSRecordLayer):
                             yield result
                         raise
             except:
-                    self._shutdown(False)
-                    raise
+                self._shutdown(False)
+                raise
         else:
             try:
                 for result in handshaker:

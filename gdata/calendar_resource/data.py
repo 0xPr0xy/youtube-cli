@@ -45,162 +45,162 @@ RESOURCE_EMAIL_NAME = 'resourceEmail'
 
 
 class CalendarResourceEntry(gdata.data.GDEntry):
-  """Represents a Calendar Resource entry in object form."""
+    """Represents a Calendar Resource entry in object form."""
 
-  property = [gdata.apps_property.AppsProperty]
+    property = [gdata.apps_property.AppsProperty]
 
-  def _GetProperty(self, name):
-    """Get the apps:property value with the given name.
+    def _GetProperty(self, name):
+        """Get the apps:property value with the given name.
 
-    Args:
-      name: string Name of the apps:property value to get.
+        Args:
+          name: string Name of the apps:property value to get.
 
-    Returns:
-      The apps:property value with the given name, or None if the name was
-      invalid.
-    """
+        Returns:
+          The apps:property value with the given name, or None if the name was
+          invalid.
+        """
 
-    for p in self.property:
-      if p.name == name:
-        return p.value
-    return None
+        for p in self.property:
+            if p.name == name:
+                return p.value
+        return None
 
-  def _SetProperty(self, name, value):
-    """Set the apps:property value with the given name to the given value.
+    def _SetProperty(self, name, value):
+        """Set the apps:property value with the given name to the given value.
 
-    Args:
-      name: string Name of the apps:property value to set.
-      value: string Value to give the apps:property value with the given name.
-    """
+        Args:
+          name: string Name of the apps:property value to set.
+          value: string Value to give the apps:property value with the given name.
+        """
 
-    for i in range(len(self.property)):
-      if self.property[i].name == name:
-        self.property[i].value = value
-        return
-    self.property.append(gdata.apps_property.AppsProperty(name=name, value=value))
+        for i in range(len(self.property)):
+            if self.property[i].name == name:
+                self.property[i].value = value
+                return
+        self.property.append(gdata.apps_property.AppsProperty(name=name, value=value))
 
-  def GetResourceId(self):
-    """Get the resource ID of this Calendar Resource object.
+    def GetResourceId(self):
+        """Get the resource ID of this Calendar Resource object.
 
-    Returns:
-      The resource ID of this Calendar Resource object as a string or None.
-    """
+        Returns:
+          The resource ID of this Calendar Resource object as a string or None.
+        """
 
-    return self._GetProperty(RESOURCE_ID_NAME)
+        return self._GetProperty(RESOURCE_ID_NAME)
 
-  def SetResourceId(self, value):
-    """Set the resource ID of this Calendar Resource object.
+    def SetResourceId(self, value):
+        """Set the resource ID of this Calendar Resource object.
 
-    Args:
-      value: string The new resource ID value to give this object.
-    """
+        Args:
+          value: string The new resource ID value to give this object.
+        """
 
-    self._SetProperty(RESOURCE_ID_NAME, value)
+        self._SetProperty(RESOURCE_ID_NAME, value)
 
-  resource_id = pyproperty(GetResourceId, SetResourceId)
+    resource_id = pyproperty(GetResourceId, SetResourceId)
 
-  def GetResourceCommonName(self):
-    """Get the common name of this Calendar Resource object.
+    def GetResourceCommonName(self):
+        """Get the common name of this Calendar Resource object.
 
-    Returns:
-      The common name of this Calendar Resource object as a string or None.
-    """
+        Returns:
+          The common name of this Calendar Resource object as a string or None.
+        """
 
-    return self._GetProperty(RESOURCE_COMMON_NAME_NAME)
+        return self._GetProperty(RESOURCE_COMMON_NAME_NAME)
 
-  def SetResourceCommonName(self, value):
-    """Set the common name of this Calendar Resource object.
+    def SetResourceCommonName(self, value):
+        """Set the common name of this Calendar Resource object.
 
-    Args:
-      value: string The new common name value to give this object.
-    """
+        Args:
+          value: string The new common name value to give this object.
+        """
 
-    self._SetProperty(RESOURCE_COMMON_NAME_NAME, value)
+        self._SetProperty(RESOURCE_COMMON_NAME_NAME, value)
 
-  resource_common_name = pyproperty(
-      GetResourceCommonName,
-      SetResourceCommonName)
+    resource_common_name = pyproperty(
+        GetResourceCommonName,
+        SetResourceCommonName)
 
-  def GetResourceDescription(self):
-    """Get the description of this Calendar Resource object.
+    def GetResourceDescription(self):
+        """Get the description of this Calendar Resource object.
 
-    Returns:
-      The description of this Calendar Resource object as a string or None.
-    """
+        Returns:
+          The description of this Calendar Resource object as a string or None.
+        """
 
-    return self._GetProperty(RESOURCE_DESCRIPTION_NAME)
+        return self._GetProperty(RESOURCE_DESCRIPTION_NAME)
 
-  def SetResourceDescription(self, value):
-    """Set the description of this Calendar Resource object.
-    
-    Args:
-      value: string The new description value to give this object.
-    """
+    def SetResourceDescription(self, value):
+        """Set the description of this Calendar Resource object.
 
-    self._SetProperty(RESOURCE_DESCRIPTION_NAME, value)
+        Args:
+          value: string The new description value to give this object.
+        """
 
-  resource_description = pyproperty(
-      GetResourceDescription,
-      SetResourceDescription)
+        self._SetProperty(RESOURCE_DESCRIPTION_NAME, value)
 
-  def GetResourceType(self):
-    """Get the type of this Calendar Resource object.
+    resource_description = pyproperty(
+        GetResourceDescription,
+        SetResourceDescription)
 
-    Returns:
-      The type of this Calendar Resource object as a string or None.
-    """
+    def GetResourceType(self):
+        """Get the type of this Calendar Resource object.
 
-    return self._GetProperty(RESOURCE_TYPE_NAME)
+        Returns:
+          The type of this Calendar Resource object as a string or None.
+        """
 
-  def SetResourceType(self, value):
-    """Set the type value of this Calendar Resource object.
+        return self._GetProperty(RESOURCE_TYPE_NAME)
 
-    Args:
-      value: string The new type value to give this object.
-    """
+    def SetResourceType(self, value):
+        """Set the type value of this Calendar Resource object.
 
-    self._SetProperty(RESOURCE_TYPE_NAME, value)
+        Args:
+          value: string The new type value to give this object.
+        """
 
-  resource_type = pyproperty(GetResourceType, SetResourceType)
+        self._SetProperty(RESOURCE_TYPE_NAME, value)
 
-  def GetResourceEmail(self):
-    """Get the email of this Calendar Resource object.
-    
-    Returns:
-    The email of this Calendar Resource object as a string or None.
-    """
-    
-    return self._GetProperty(RESOURCE_EMAIL_NAME)
-    
-  resource_email = pyproperty(GetResourceEmail)
+    resource_type = pyproperty(GetResourceType, SetResourceType)
 
-  def __init__(self, resource_id=None, resource_common_name=None,
-               resource_description=None, resource_type=None, *args, **kwargs):
-    """Constructs a new CalendarResourceEntry object with the given arguments.
+    def GetResourceEmail(self):
+        """Get the email of this Calendar Resource object.
 
-    Args:
-      resource_id: string (optional) The resource ID to give this new object.
-      resource_common_name: string (optional) The common name to give this new
-                            object.
-      resource_description: string (optional) The description to give this new
-                            object.
-      resource_type: string (optional) The type to give this new object.
-      args: The other parameters to pass to gdata.entry.GDEntry constructor. 
-      kwargs: The other parameters to pass to gdata.entry.GDEntry constructor. 
-    """
-    super(CalendarResourceEntry, self).__init__(*args, **kwargs)
-    if resource_id:
-      self.resource_id = resource_id
-    if resource_common_name:
-      self.resource_common_name = resource_common_name
-    if resource_description:
-      self.resource_description = resource_description
-    if resource_type:
-      self.resource_type = resource_type
+        Returns:
+        The email of this Calendar Resource object as a string or None.
+        """
+
+        return self._GetProperty(RESOURCE_EMAIL_NAME)
+
+    resource_email = pyproperty(GetResourceEmail)
+
+    def __init__(self, resource_id=None, resource_common_name=None,
+                 resource_description=None, resource_type=None, *args, **kwargs):
+        """Constructs a new CalendarResourceEntry object with the given arguments.
+
+        Args:
+          resource_id: string (optional) The resource ID to give this new object.
+          resource_common_name: string (optional) The common name to give this new
+                                object.
+          resource_description: string (optional) The description to give this new
+                                object.
+          resource_type: string (optional) The type to give this new object.
+          args: The other parameters to pass to gdata.entry.GDEntry constructor.
+          kwargs: The other parameters to pass to gdata.entry.GDEntry constructor.
+        """
+        super(CalendarResourceEntry, self).__init__(*args, **kwargs)
+        if resource_id:
+            self.resource_id = resource_id
+        if resource_common_name:
+            self.resource_common_name = resource_common_name
+        if resource_description:
+            self.resource_description = resource_description
+        if resource_type:
+            self.resource_type = resource_type
 
 
 class CalendarResourceFeed(gdata.data.GDFeed):
-  """Represents a feed of CalendarResourceEntry objects."""
+    """Represents a feed of CalendarResourceEntry objects."""
 
-  # Override entry so that this feed knows how to type its list of entries.
-  entry = [CalendarResourceEntry]
+    # Override entry so that this feed knows how to type its list of entries.
+    entry = [CalendarResourceEntry]

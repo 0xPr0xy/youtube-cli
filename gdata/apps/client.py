@@ -24,180 +24,180 @@ import gdata.service
 
 
 class AppsClient(gdata.client.GDClient):
-  """Client extension for the Google Provisioning API service.
+    """Client extension for the Google Provisioning API service.
 
-  Attributes:
-    host: string The hostname for the Provisioning API service.
-    api_version: string The version of the Provisioning API.
-  """
-
-  host = 'apps-apis.google.com'
-  api_version = '2.0'
-  auth_service = 'apps'
-  auth_scopes = gdata.gauth.AUTH_SCOPES['apps']
-
-  def __init__(self, domain, auth_token=None, **kwargs):
-    """Constructs a new client for the Provisioning API.
-
-    Args:
-      domain: string Google Apps domain name.
-      auth_token: (optional) gdata.gauth.ClientLoginToken, AuthSubToken, or
-          OAuthToken which authorizes client to make calls to Provisioning API.
-    """
-    gdata.client.GDClient.__init__(self, auth_token=auth_token, **kwargs)
-    self.domain = domain
-
-  def _baseURL(self):
-    return '/a/feeds/%s' % self.domain
-
-  def _userURL(self):
-    return '%s/user/%s' % (self._baseURL(), self.api_version)
-
-  def _nicknameURL(self):
-    return '%s/nickname/%s' % (self._baseURL(), self.api_version)
-
-  def RetrieveAllPages(self, feed, desired_class=gdata.data.GDFeed):
-    """Retrieve all pages and add all elements.
-
-    Args:
-      feed: gdata.data.GDFeed object with linked elements.
-      desired_class: type of feed to be returned.
-
-    Returns:
-      desired_class: subclass of gdata.data.GDFeed. 
+    Attributes:
+      host: string The hostname for the Provisioning API service.
+      api_version: string The version of the Provisioning API.
     """
 
-    next = feed.GetNextLink()
-    while next is not None:
-      next_feed = self.GetFeed(next.href, desired_class=desired_class)
-      for a_entry in next_feed.entry:
-        feed.entry.append(a_entry)
-      next = next_feed.GetNextLink()
-    return feed
+    host = 'apps-apis.google.com'
+    api_version = '2.0'
+    auth_service = 'apps'
+    auth_scopes = gdata.gauth.AUTH_SCOPES['apps']
 
-  def CreateUser(self, user_name, family_name, given_name, password,
-                 suspended=False, admin=None, quota_limit=None,
-                 password_hash_function=None,
-                 agreed_to_terms=None, change_password=None):
-    """Create a user account."""
+    def __init__(self, domain, auth_token=None, **kwargs):
+        """Constructs a new client for the Provisioning API.
 
-    uri = self._userURL()
-    user_entry = gdata.apps.data.UserEntry()
-    user_entry.login = gdata.apps.data.Login(user_name=user_name,
-        password=password, suspended=suspended, admin=admin,
-        hash_function_name=password_hash_function,
-        agreed_to_terms=agreed_to_terms,
-        change_password=change_password)
-    user_entry.name = gdata.apps.data.Name(family_name=family_name,
-                                           given_name=given_name)
-    return self.Post(user_entry, uri)
+        Args:
+          domain: string Google Apps domain name.
+          auth_token: (optional) gdata.gauth.ClientLoginToken, AuthSubToken, or
+              OAuthToken which authorizes client to make calls to Provisioning API.
+        """
+        gdata.client.GDClient.__init__(self, auth_token=auth_token, **kwargs)
+        self.domain = domain
 
-  def RetrieveUser(self, user_name):
-    """Retrieve a user account.
+    def _baseURL(self):
+        return '/a/feeds/%s' % self.domain
 
-    Args:
-      user_name: string user_name to be retrieved.
+    def _userURL(self):
+        return '%s/user/%s' % (self._baseURL(), self.api_version)
 
-    Returns:
-      gdata.apps.data.UserEntry
-    """
+    def _nicknameURL(self):
+        return '%s/nickname/%s' % (self._baseURL(), self.api_version)
 
-    uri = '%s/%s' % (self._userURL(), user_name)
-    return self.GetEntry(uri, desired_class=gdata.apps.data.UserEntry)
+    def RetrieveAllPages(self, feed, desired_class=gdata.data.GDFeed):
+        """Retrieve all pages and add all elements.
 
-  def RetrievePageOfUsers(self, start_username=None):
-    """Retrieve one page of users in this domain.
+        Args:
+          feed: gdata.data.GDFeed object with linked elements.
+          desired_class: type of feed to be returned.
 
-    Args:
-      start_username: string user to start from for retrieving a page of users.
+        Returns:
+          desired_class: subclass of gdata.data.GDFeed.
+        """
 
-    Returns:
-      gdata.apps.data.UserFeed
-    """
+        next = feed.GetNextLink()
+        while next is not None:
+            next_feed = self.GetFeed(next.href, desired_class=desired_class)
+            for a_entry in next_feed.entry:
+                feed.entry.append(a_entry)
+            next = next_feed.GetNextLink()
+        return feed
 
-    uri = self._userURL()
-    if start_username is not None:
-      uri += '?startUsername=%s' % start_username
-    return self.GetFeed(uri, desired_class=gdata.apps.data.UserFeed)
+    def CreateUser(self, user_name, family_name, given_name, password,
+                   suspended=False, admin=None, quota_limit=None,
+                   password_hash_function=None,
+                   agreed_to_terms=None, change_password=None):
+        """Create a user account."""
 
-  def RetrieveAllUsers(self):
-    """Retrieve all users in this domain.
+        uri = self._userURL()
+        user_entry = gdata.apps.data.UserEntry()
+        user_entry.login = gdata.apps.data.Login(user_name=user_name,
+            password=password, suspended=suspended, admin=admin,
+            hash_function_name=password_hash_function,
+            agreed_to_terms=agreed_to_terms,
+            change_password=change_password)
+        user_entry.name = gdata.apps.data.Name(family_name=family_name,
+                                               given_name=given_name)
+        return self.Post(user_entry, uri)
 
-    Returns:
-      gdata.apps.data.UserFeed
-    """
+    def RetrieveUser(self, user_name):
+        """Retrieve a user account.
 
-    ret = self.RetrievePageOfUsers()
-    # pagination
-    return self.RetrieveAllPages(ret, gdata.apps.data.UserFeed)
+        Args:
+          user_name: string user_name to be retrieved.
 
-  def UpdateUser(self, user_name, user_entry):
-    """Update a user account.
+        Returns:
+          gdata.apps.data.UserEntry
+        """
 
-    Args:
-      user_name: string user_name to be updated.
-      user_entry: gdata.apps.data.UserEntry updated user entry.
+        uri = '%s/%s' % (self._userURL(), user_name)
+        return self.GetEntry(uri, desired_class=gdata.apps.data.UserEntry)
 
-    Returns:
-      gdata.apps.data.UserEntry
-    """
+    def RetrievePageOfUsers(self, start_username=None):
+        """Retrieve one page of users in this domain.
 
-    uri = '%s/%s' % (self._userURL(), user_name)
-    return self.Update(entry=user_entry, uri=uri)
+        Args:
+          start_username: string user to start from for retrieving a page of users.
 
-  def DeleteUser(self, user_name):
-    """Delete a user account."""
+        Returns:
+          gdata.apps.data.UserFeed
+        """
 
-    uri = '%s/%s' % (self._userURL(), user_name)
-    self.Delete(uri)
+        uri = self._userURL()
+        if start_username is not None:
+            uri += '?startUsername=%s' % start_username
+        return self.GetFeed(uri, desired_class=gdata.apps.data.UserFeed)
 
-  def CreateNickname(self, user_name, nickname):
-    """Create a nickname for a user.
+    def RetrieveAllUsers(self):
+        """Retrieve all users in this domain.
 
-    Args:
-      user_name: string user whose nickname is being created.
-      nickname: string nickname.
+        Returns:
+          gdata.apps.data.UserFeed
+        """
 
-    Returns:
-      gdata.apps.data.NicknameEntry
-    """
+        ret = self.RetrievePageOfUsers()
+        # pagination
+        return self.RetrieveAllPages(ret, gdata.apps.data.UserFeed)
 
-    uri = self._nicknameURL()
-    nickname_entry = gdata.apps.data.NicknameEntry()
-    nickname_entry.login = gdata.apps.data.Login(user_name=user_name)
-    nickname_entry.nickname = gdata.apps.data.Nickname(name=nickname)
-    return self.Post(nickname_entry, uri)
+    def UpdateUser(self, user_name, user_entry):
+        """Update a user account.
 
-  def RetrieveNickname(self, nickname):
-    """Retrieve a nickname.
+        Args:
+          user_name: string user_name to be updated.
+          user_entry: gdata.apps.data.UserEntry updated user entry.
 
-    Args:
-      nickname: string nickname to be retrieved.
+        Returns:
+          gdata.apps.data.UserEntry
+        """
 
-    Returns:
-      gdata.apps.data.NicknameEntry
-    """
+        uri = '%s/%s' % (self._userURL(), user_name)
+        return self.Update(entry=user_entry, uri=uri)
 
-    uri = '%s/%s' % (self._nicknameURL(), nickname)
-    return self.GetEntry(uri, desired_class=gdata.apps.data.NicknameEntry)
+    def DeleteUser(self, user_name):
+        """Delete a user account."""
 
-  def RetrieveNicknames(self, user_name):
-    """Retrieve nicknames of the user.
+        uri = '%s/%s' % (self._userURL(), user_name)
+        self.Delete(uri)
 
-    Args:
-      user_name: string user whose nicknames are retrieved.
+    def CreateNickname(self, user_name, nickname):
+        """Create a nickname for a user.
 
-    Returns:
-      gdata.apps.data.NicknameFeed
-    """
+        Args:
+          user_name: string user whose nickname is being created.
+          nickname: string nickname.
 
-    uri = '%s?username=%s' % (self._nicknameURL(), user_name)
-    ret = self.GetFeed(uri, desired_class=gdata.apps.data.NicknameFeed)
-    # pagination
-    return self.RetrieveAllPages(ret, gdata.apps.data.NicknameFeed)
+        Returns:
+          gdata.apps.data.NicknameEntry
+        """
 
-  def DeleteNickname(self, nickname):
-    """Delete a nickname."""
+        uri = self._nicknameURL()
+        nickname_entry = gdata.apps.data.NicknameEntry()
+        nickname_entry.login = gdata.apps.data.Login(user_name=user_name)
+        nickname_entry.nickname = gdata.apps.data.Nickname(name=nickname)
+        return self.Post(nickname_entry, uri)
 
-    uri = '%s/%s' % (self._nicknameURL(), nickname)
-    self.Delete(uri)
+    def RetrieveNickname(self, nickname):
+        """Retrieve a nickname.
+
+        Args:
+          nickname: string nickname to be retrieved.
+
+        Returns:
+          gdata.apps.data.NicknameEntry
+        """
+
+        uri = '%s/%s' % (self._nicknameURL(), nickname)
+        return self.GetEntry(uri, desired_class=gdata.apps.data.NicknameEntry)
+
+    def RetrieveNicknames(self, user_name):
+        """Retrieve nicknames of the user.
+
+        Args:
+          user_name: string user whose nicknames are retrieved.
+
+        Returns:
+          gdata.apps.data.NicknameFeed
+        """
+
+        uri = '%s?username=%s' % (self._nicknameURL(), user_name)
+        ret = self.GetFeed(uri, desired_class=gdata.apps.data.NicknameFeed)
+        # pagination
+        return self.RetrieveAllPages(ret, gdata.apps.data.NicknameFeed)
+
+    def DeleteNickname(self, nickname):
+        """Delete a nickname."""
+
+        uri = '%s/%s' % (self._nicknameURL(), nickname)
+        self.Delete(uri)

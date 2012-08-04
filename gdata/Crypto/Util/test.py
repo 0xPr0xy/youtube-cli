@@ -29,7 +29,7 @@ def print_timing (size, delta, verbose):
             print 'Unable to measure time -- elapsed time too small'
         else:
             print '%.2f K/sec' % (size/delta)
-            
+
 def exerciseBlockCipher(cipher, verbose):
     import string, time
     try:
@@ -198,29 +198,29 @@ def TestStreamModules(args=['arc4', 'XOR'], verbose=1):
         # Test ARC4 stream cipher
         arc4=exerciseStreamCipher('ARC4', verbose)
         if (arc4!=None):
-                for entry in testdata.arc4:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=arc4.new(key)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('ARC4 failed on entry '+`entry`)
+            for entry in testdata.arc4:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=arc4.new(key)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('ARC4 failed on entry '+`entry`)
 
     if 'xor' in args:
         # Test XOR stream cipher
         XOR=exerciseStreamCipher('XOR', verbose)
         if (XOR!=None):
-                for entry in testdata.xor:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=XOR.new(key)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('XOR failed on entry '+`entry`)
+            for entry in testdata.xor:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=XOR.new(key)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('XOR failed on entry '+`entry`)
 
 
 def TestBlockModules(args=['aes', 'arc2', 'des', 'blowfish', 'cast', 'des3',
@@ -231,110 +231,110 @@ def TestBlockModules(args=['aes', 'arc2', 'des', 'blowfish', 'cast', 'des3',
     if 'aes' in args:
         ciph=exerciseBlockCipher('AES', verbose)        # AES
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.aes:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('AES failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.aes:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('AES failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
 
-                for entry in testdata.aes_modes:
-                    mode, key, plain, cipher, kw = entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, mode, **kw)
-                    obj2=ciph.new(key, mode, **kw)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('AES encrypt failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
+            for entry in testdata.aes_modes:
+                mode, key, plain, cipher, kw = entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, mode, **kw)
+                obj2=ciph.new(key, mode, **kw)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('AES encrypt failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
 
-                    plain2=obj2.decrypt(ciphertext)
-                    if plain2!=plain:
-                        die('AES decrypt failed on entry '+`entry`)
-                        for i in plain2:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
+                plain2=obj2.decrypt(ciphertext)
+                if plain2!=plain:
+                    die('AES decrypt failed on entry '+`entry`)
+                    for i in plain2:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
 
 
     if 'arc2' in args:
         ciph=exerciseBlockCipher('ARC2', verbose)           # Alleged RC2
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.arc2:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('ARC2 failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        print
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.arc2:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('ARC2 failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    print
 
     if 'blowfish' in args:
         ciph=exerciseBlockCipher('Blowfish',verbose)# Bruce Schneier's Blowfish cipher
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.blowfish:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('Blowfish failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.blowfish:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('Blowfish failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
 
     if 'cast' in args:
         ciph=exerciseBlockCipher('CAST', verbose)        # CAST-128
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.cast:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('CAST failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.cast:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('CAST failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
 
-                if 0:
-                    # The full-maintenance test; it requires 4 million encryptions,
-                    # and correspondingly is quite time-consuming.  I've disabled
-                    # it; it's faster to compile block/cast.c with -DTEST and run
-                    # the resulting program.
-                    a = b = '\x01\x23\x45\x67\x12\x34\x56\x78\x23\x45\x67\x89\x34\x56\x78\x9A'
+            if 0:
+                # The full-maintenance test; it requires 4 million encryptions,
+                # and correspondingly is quite time-consuming.  I've disabled
+                # it; it's faster to compile block/cast.c with -DTEST and run
+                # the resulting program.
+                a = b = '\x01\x23\x45\x67\x12\x34\x56\x78\x23\x45\x67\x89\x34\x56\x78\x9A'
 
-                    for i in range(0, 1000000):
-                        obj = cast.new(b, cast.MODE_ECB)
-                        a = obj.encrypt(a[:8]) + obj.encrypt(a[-8:])
-                        obj = cast.new(a, cast.MODE_ECB)
-                        b = obj.encrypt(b[:8]) + obj.encrypt(b[-8:])
+                for i in range(0, 1000000):
+                    obj = cast.new(b, cast.MODE_ECB)
+                    a = obj.encrypt(a[:8]) + obj.encrypt(a[-8:])
+                    obj = cast.new(a, cast.MODE_ECB)
+                    b = obj.encrypt(b[:8]) + obj.encrypt(b[-8:])
 
-                    if a!="\xEE\xA9\xD0\xA2\x49\xFD\x3B\xA6\xB3\x43\x6F\xB8\x9D\x6D\xCA\x92":
-                        if verbose: print 'CAST test failed: value of "a" doesn\'t match'
-                    if b!="\xB2\xC9\x5E\xB0\x0C\x31\xAD\x71\x80\xAC\x05\xB8\xE8\x3D\x69\x6E":
-                        if verbose: print 'CAST test failed: value of "b" doesn\'t match'
+                if a!="\xEE\xA9\xD0\xA2\x49\xFD\x3B\xA6\xB3\x43\x6F\xB8\x9D\x6D\xCA\x92":
+                    if verbose: print 'CAST test failed: value of "a" doesn\'t match'
+                if b!="\xB2\xC9\x5E\xB0\x0C\x31\xAD\x71\x80\xAC\x05\xB8\xE8\x3D\x69\x6E":
+                    if verbose: print 'CAST test failed: value of "b" doesn\'t match'
 
     if 'des' in args:
         # Test/benchmark DES block cipher
@@ -392,62 +392,59 @@ def TestBlockModules(args=['aes', 'arc2', 'des', 'blowfish', 'cast', 'des3',
     if 'des3' in args:
         ciph=exerciseBlockCipher('DES3', verbose)        # Triple DES
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.des3:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('DES3 failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
-                for entry in testdata.des3_cbc:
-                    key, iv, plain, cipher=entry
-                    key, iv, cipher=binascii.a2b_hex(key),binascii.a2b_hex(iv),binascii.a2b_hex(cipher)
-                    obj1=ciph.new(key, ciph.MODE_CBC, iv)
-                    obj2=ciph.new(key, ciph.MODE_CBC, iv)
-                    ciphertext=obj1.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('DES3 CBC mode failed on entry '+`entry`)
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.des3:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('DES3 failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print
+            for entry in testdata.des3_cbc:
+                key, iv, plain, cipher=entry
+                key, iv, cipher=binascii.a2b_hex(key),binascii.a2b_hex(iv),binascii.a2b_hex(cipher)
+                obj1=ciph.new(key, ciph.MODE_CBC, iv)
+                obj2=ciph.new(key, ciph.MODE_CBC, iv)
+                ciphertext=obj1.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('DES3 CBC mode failed on entry '+`entry`)
 
     if 'idea' in args:
         ciph=exerciseBlockCipher('IDEA', verbose)       # IDEA block cipher
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.idea:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key, ciph.MODE_ECB)
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('IDEA failed on entry '+`entry`)
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.idea:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key, ciph.MODE_ECB)
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('IDEA failed on entry '+`entry`)
 
     if 'rc5' in args:
         # Ronald Rivest's RC5 algorithm
         ciph=exerciseBlockCipher('RC5', verbose)
         if (ciph!=None):
-                if verbose: print '  Verifying against test suite...'
-                for entry in testdata.rc5:
-                    key,plain,cipher=entry
-                    key=binascii.a2b_hex(key)
-                    plain=binascii.a2b_hex(plain)
-                    cipher=binascii.a2b_hex(cipher)
-                    obj=ciph.new(key[4:], ciph.MODE_ECB,
-                                 version =ord(key[0]),
-                                 word_size=ord(key[1]),
-                                 rounds  =ord(key[2]) )
-                    ciphertext=obj.encrypt(plain)
-                    if (ciphertext!=cipher):
-                        die('RC5 failed on entry '+`entry`)
-                        for i in ciphertext:
-                            if verbose: print hex(ord(i)),
-                        if verbose: print
-
-
-
+            if verbose: print '  Verifying against test suite...'
+            for entry in testdata.rc5:
+                key,plain,cipher=entry
+                key=binascii.a2b_hex(key)
+                plain=binascii.a2b_hex(plain)
+                cipher=binascii.a2b_hex(cipher)
+                obj=ciph.new(key[4:], ciph.MODE_ECB,
+                             version =ord(key[0]),
+                             word_size=ord(key[1]),
+                             rounds  =ord(key[2]) )
+                ciphertext=obj.encrypt(plain)
+                if (ciphertext!=cipher):
+                    die('RC5 failed on entry '+`entry`)
+                    for i in ciphertext:
+                        if verbose: print hex(ord(i)),
+                    if verbose: print

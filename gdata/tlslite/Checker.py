@@ -119,9 +119,9 @@ class Checker:
                             raise TLSValidationError("X.509 validation failure")
                         if self.x509CommonName and \
                                (chain.getCommonName() != self.x509CommonName):
-                           raise TLSAuthorizationError(\
-                               "X.509 Common Name mismatch: %s, %s" % \
-                               (chain.getCommonName(), self.x509CommonName))
+                            raise TLSAuthorizationError(\
+                                "X.509 Common Name mismatch: %s, %s" % \
+                                (chain.getCommonName(), self.x509CommonName))
                 elif chain:
                     raise TLSAuthenticationTypeError()
                 else:
@@ -143,4 +143,3 @@ class Checker:
                     raise TLSAuthenticationTypeError()
                 else:
                     raise TLSNoAuthenticationError()
-

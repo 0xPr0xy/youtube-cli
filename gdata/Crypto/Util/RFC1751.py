@@ -338,5 +338,3 @@ if __name__=='__main__':
         k2=english_to_key(words)
         if k2!=key:
             print 'english_to_key fails on key', repr(key), ', producing', repr(k2)
-
-

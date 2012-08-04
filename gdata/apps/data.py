@@ -28,56 +28,56 @@ import gdata.data
 
 class Login(atom.core.XmlElement):
 
-  _qname = gdata.apps.APPS_TEMPLATE % 'login'
-  user_name = 'userName'
-  password = 'password'
-  hash_function_name = 'hashFunctionName'
-  suspended = 'suspended'
-  admin = 'admin'
-  agreed_to_terms = 'agreedToTerms'
-  change_password = 'changePasswordAtNextLogin'
-  ip_whitelisted = 'ipWhitelisted'
+    _qname = gdata.apps.APPS_TEMPLATE % 'login'
+    user_name = 'userName'
+    password = 'password'
+    hash_function_name = 'hashFunctionName'
+    suspended = 'suspended'
+    admin = 'admin'
+    agreed_to_terms = 'agreedToTerms'
+    change_password = 'changePasswordAtNextLogin'
+    ip_whitelisted = 'ipWhitelisted'
 
 
 class Name(atom.core.XmlElement):
 
-  _qname = gdata.apps.APPS_TEMPLATE % 'name'
-  given_name = 'givenName'
-  family_name = 'familyName'
+    _qname = gdata.apps.APPS_TEMPLATE % 'name'
+    given_name = 'givenName'
+    family_name = 'familyName'
 
 
 class Quota(atom.core.XmlElement):
 
-  _qname = gdata.apps.APPS_TEMPLATE % 'quota'
-  limit = 'limit'
+    _qname = gdata.apps.APPS_TEMPLATE % 'quota'
+    limit = 'limit'
 
 
 class UserEntry(gdata.data.GDEntry):
 
-  _qname = atom.data.ATOM_TEMPLATE % 'entry'
-  login = Login
-  name = Name
-  quota = Quota
+    _qname = atom.data.ATOM_TEMPLATE % 'entry'
+    login = Login
+    name = Name
+    quota = Quota
 
 
 class UserFeed(gdata.data.GDFeed):
 
-  entry = [UserEntry]
+    entry = [UserEntry]
 
 
 class Nickname(atom.core.XmlElement):
 
-  _qname = gdata.apps.APPS_TEMPLATE % 'nickname'
-  name = 'name'
+    _qname = gdata.apps.APPS_TEMPLATE % 'nickname'
+    name = 'name'
 
 
 class NicknameEntry(gdata.data.GDEntry):
 
-  _qname = atom.data.ATOM_TEMPLATE % 'entry'
-  nickname = Nickname
-  login = Login
+    _qname = atom.data.ATOM_TEMPLATE % 'entry'
+    nickname = Nickname
+    login = Login
 
 
 class NicknameFeed(gdata.data.GDFeed):
 
-  entry = [NicknameEntry]
+    entry = [NicknameEntry]

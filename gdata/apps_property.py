@@ -33,7 +33,7 @@ import gdata.apps
 
 
 class AppsProperty(atom.core.XmlElement):
-  """Represents an <apps:property> element in a feed."""
-  _qname = gdata.apps.APPS_TEMPLATE % 'property'
-  name = 'name'
-  value = 'value'
+    """Represents an <apps:property> element in a feed."""
+    _qname = gdata.apps.APPS_TEMPLATE % 'property'
+    name = 'name'
+    value = 'value'

@@ -66,7 +66,7 @@ class SelectableIcon(Text):
             c = CompositeCanvas(c)
             c.cursor = self.get_cursor_coords(size)
         return c
-    
+
     def get_cursor_coords(self, size):
         """
         Return the position of the cursor if visible.  This method
@@ -92,7 +92,7 @@ class CheckBoxError(Exception):
     pass
 
 class CheckBox(WidgetWrap):
-    states = { 
+    states = {
         True: SelectableIcon("[X]"),
         False: SelectableIcon("[ ]"),
         'mixed': SelectableIcon("[#]") }
@@ -102,7 +102,7 @@ class CheckBox(WidgetWrap):
     # sent when the state of this widget is modified
     # (this variable is picked up by the MetaSignals metaclass)
     signals = ["change"]
-    
+
     def __init__(self, label, state=False, has_mixed=False,
              on_state_change=None, user_data=None):
         """
@@ -188,11 +188,11 @@ class CheckBox(WidgetWrap):
 
         state -- True, False or "mixed"
         do_callback -- False to supress signal from this change
-        
+
         >>> changes = []
-        >>> def callback_a(cb, state, user_data): 
+        >>> def callback_a(cb, state, user_data):
         ...     changes.append("A %r %r" % (state, user_data))
-        >>> def callback_b(cb, state): 
+        >>> def callback_b(cb, state):
         ...     changes.append("B %r" % state)
         >>> cb = CheckBox('test', False, False)
         >>> connect_signal(cb, 'change', callback_a, "user_a")
@@ -228,15 +228,15 @@ class CheckBox(WidgetWrap):
             ('fixed', self.reserve_columns, self.states[state] ),
             self._label ] )
         self._w.focus_col = 0
-        
+
     def get_state(self):
         """Return the state of the checkbox."""
         return self._state
     state = property(get_state, set_state)
-        
+
     def keypress(self, size, key):
         """
-        Toggle state on 'activate' command.  
+        Toggle state on 'activate' command.
 
         >>> assert CheckBox._command_map[' '] == 'activate'
         >>> assert CheckBox._command_map['enter'] == 'activate'
@@ -253,13 +253,13 @@ class CheckBox(WidgetWrap):
         """
         if self._command_map[key] != 'activate':
             return key
-        
+
         self.toggle_state()
-        
+
     def toggle_state(self):
         """
         Cycle to the next valid state.
-        
+
         >>> cb = CheckBox("3-state", has_mixed=True)
         >>> cb.state
         False
@@ -286,7 +286,7 @@ class CheckBox(WidgetWrap):
     def mouse_event(self, size, event, button, x, y, focus):
         """
         Toggle state on button 1 press.
-        
+
         >>> size = (20,)
         >>> cb = CheckBox("clickme")
         >>> cb.state
@@ -300,10 +300,10 @@ class CheckBox(WidgetWrap):
             return False
         self.toggle_state()
         return True
-    
-        
+
+
 class RadioButton(CheckBox):
-    states = { 
+    states = {
         True: SelectableIcon("(X)"),
         False: SelectableIcon("( )"),
         'mixed': SelectableIcon("(#)") }
@@ -344,12 +344,12 @@ class RadioButton(CheckBox):
             state = not group
 
         self.group = group
-        self.__super.__init__(label, state, False, on_state_change, 
+        self.__super.__init__(label, state, False, on_state_change,
             user_data)
         group.append(self)
-    
 
-    
+
+
     def set_state(self, state, do_callback=True):
         """
         Set the RadioButton state.
@@ -393,12 +393,12 @@ class RadioButton(CheckBox):
             if cb is self: continue
             if cb._state:
                 cb.set_state(False)
-    
-    
+
+
     def toggle_state(self):
         """
         Set state to True.
-        
+
         >>> bgroup = [] # button group
         >>> b1 = RadioButton(bgroup, "Agree")
         >>> b2 = RadioButton(bgroup, "Disagree")
@@ -413,20 +413,20 @@ class RadioButton(CheckBox):
         """
         self.set_state(True)
 
-            
+
 
 class Button(WidgetWrap):
     button_left = Text("<")
     button_right = Text(">")
 
     signals = ["click"]
-    
+
     def __init__(self, label, on_press=None, user_data=None):
         """
         label -- markup for button label
         on_press, user_data -- shorthand for connect_signal()
             function call for a single callback
-        
+
         Signals supported: 'click'
         Register signal handler with:
           connect_signal(button, 'click', callback [,user_data])
@@ -440,7 +440,7 @@ class Button(WidgetWrap):
         >>> b.render((15,), focus=True).text # ... = b in Python 3
         [...'< Cancel      >']
         """
-        self._label = SelectableIcon("", 0)    
+        self._label = SelectableIcon("", 0)
         cols = Columns([
             ('fixed', 1, self.button_left),
             self._label,
@@ -489,7 +489,7 @@ class Button(WidgetWrap):
     def keypress(self, size, key):
         """
         Send 'click' signal on 'activate' command.
-        
+
         >>> assert Button._command_map[' '] == 'activate'
         >>> assert Button._command_map['enter'] == 'activate'
         >>> size = (15,)

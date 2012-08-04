@@ -41,7 +41,7 @@ class ExitMainLoop(Exception):
     pass
 
 class MainLoop(object):
-    def __init__(self, widget, palette=[], screen=None, 
+    def __init__(self, widget, palette=[], screen=None,
         handle_mouse=True, input_filter=None, unhandled_input=None,
         event_loop=None, pop_ups=False):
         """
@@ -130,7 +130,7 @@ class MainLoop(object):
 
     def set_alarm_at(self, tm, callback, user_data=None):
         """
-        Schedule at tm time that will call 
+        Schedule at tm time that will call
         callback(main_loop, user_data) from the within the run()
         function.
 
@@ -234,11 +234,11 @@ class MainLoop(object):
 
     def run(self):
         """
-        Start the main loop handling input events and updating 
-        the screen.  The loop will continue until an ExitMainLoop 
-        exception is raised.  
-        
-        This function will call screen.run_wrapper() if screen.start() 
+        Start the main loop handling input events and updating
+        the screen.  The loop will continue until an ExitMainLoop
+        exception is raised.
+
+        This function will call screen.run_wrapper() if screen.start()
         has not already been called.
 
         >>> w = _refl("widget")   # _refl prints out function calls
@@ -274,7 +274,7 @@ class MainLoop(object):
                 self.screen.run_wrapper(self._run)
         except ExitMainLoop:
             pass
-    
+
     def _run(self):
         if self.handle_mouse:
             self.screen.set_mouse_tracking()
@@ -345,12 +345,12 @@ class MainLoop(object):
         self._input_timeout = None
 
         max_wait, keys, raw = self.screen.get_input_nonblocking()
-        
+
         if max_wait is not None:
             # if get_input_nonblocking wants to be called back
             # make sure it happens with an alarm
-            self._input_timeout = self.event_loop.alarm(max_wait, 
-                lambda: self._update(timeout=True)) 
+            self._input_timeout = self.event_loop.alarm(max_wait,
+                lambda: self._update(timeout=True))
 
         keys = self.input_filter(keys, raw)
 
@@ -364,7 +364,7 @@ class MainLoop(object):
         This method is used when the screen does not support using
         external event loops.
 
-        The alarms stored in the SelectEventLoop in self.event_loop 
+        The alarms stored in the SelectEventLoop in self.event_loop
         are modified by this method.
         """
         next_alarm = None
@@ -383,28 +383,28 @@ class MainLoop(object):
                 else:
                     self.screen.set_input_timeouts(None)
                 keys, raw = self.screen.get_input(True)
-                if not keys and next_alarm: 
+                if not keys and next_alarm:
                     sec = next_alarm[0] - time.time()
                     if sec <= 0:
                         break
 
             keys = self.input_filter(keys, raw)
-            
+
             if keys:
                 self.process_input(keys)
-            
+
             while next_alarm:
                 sec = next_alarm[0] - time.time()
                 if sec > 0:
                     break
                 tm, callback, user_data = next_alarm
                 callback(self, user_data)
-                
+
                 if self._alarms:
                     next_alarm = heapq.heappop(self.event_loop._alarms)
                 else:
                     next_alarm = None
-            
+
             if 'window resize' in keys:
                 self.screen_size = None
 
@@ -418,7 +418,7 @@ class MainLoop(object):
         keys -- list of input returned from self.screen.get_input()
 
         Returns True if any key was handled by a widget or the
-        unhandled_input() method.         
+        unhandled_input() method.
 
         >>> w = _refl("widget")
         >>> w.selectable_rval = True
@@ -546,7 +546,7 @@ class SelectEventLoop(object):
 
         seconds -- floating point time to wait before calling callback
         callback -- function to call from event loop
-        """ 
+        """
         tm = time.time() + seconds
         heapq.heappush(self._alarms, (tm, callback))
         return (tm, callback)
@@ -604,8 +604,8 @@ class SelectEventLoop(object):
 
     def enter_idle(self, callback):
         """
-        Add a callback for entering idle.  
-        
+        Add a callback for entering idle.
+
         Returns a handle that may be passed to remove_idle()
         """
         self._idle_handle += 1
@@ -686,7 +686,7 @@ class SelectEventLoop(object):
                         raise
         except ExitMainLoop:
             pass
-        
+
 
     def _loop(self):
         """
@@ -697,7 +697,7 @@ class SelectEventLoop(object):
             if self._alarms:
                 tm = self._alarms[0][0]
                 timeout = max(0, tm - time.time())
-            if self._did_something and (not self._alarms or 
+            if self._did_something and (not self._alarms or
                     (self._alarms and timeout > 0)):
                 timeout = 0
                 tm = 'idle'
@@ -869,7 +869,7 @@ if not PYTHON3:
             """
             Start the event loop.  Exit the loop when any callback raises
             an exception.  If ExitMainLoop is raised, exit cleanly.
-            
+
             >>> import os
             >>> rd, wr = os.pipe()
             >>> os.write(wr, "data") # something to read from rd
@@ -923,7 +923,7 @@ if not PYTHON3:
         def handle_exit(self,f):
             """
             Decorator that cleanly exits the GLibEventLoop if ExitMainLoop is
-            thrown inside of the wrapped function.  Store the exception info if 
+            thrown inside of the wrapped function.  Store the exception info if
             some other exception occurs, it will be reraised after the loop quits.
             f -- function to be wrapped
 
@@ -1198,7 +1198,7 @@ def _refl(name, rval=None, exit=False):
                 args = args + ", "
             args = args + ", ".join([k+"="+repr(v) for k,v in argd.items()])
             print self._name+"("+args+")"
-            if exit: 
+            if exit:
                 raise ExitMainLoop()
             return self._rval
         def __getattr__(self, attr):

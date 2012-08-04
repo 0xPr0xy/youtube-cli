@@ -30,26 +30,24 @@ NB_TEMPLATE = '{http://schemas.google.com/notes/2008/}%s'
 
 
 class ComesAfter(atom.core.XmlElement):
-  """Preceding element."""
-  _qname = NB_TEMPLATE % 'comesAfter'
-  id = 'id'
+    """Preceding element."""
+    _qname = NB_TEMPLATE % 'comesAfter'
+    id = 'id'
 
 
 class NoteEntry(gdata.data.GDEntry):
-  """Describes a note entry in the feed of a user's notebook."""
+    """Describes a note entry in the feed of a user's notebook."""
 
 
 class NotebookFeed(gdata.data.GDFeed):
-  """Describes a notebook feed."""
-  entry = [NoteEntry]
+    """Describes a notebook feed."""
+    entry = [NoteEntry]
 
 
 class NotebookListEntry(gdata.data.GDEntry):
-  """Describes a note list entry in the feed of a user's list of public notebooks."""
+    """Describes a note list entry in the feed of a user's list of public notebooks."""
 
 
 class NotebookListFeed(gdata.data.GDFeed):
-  """Describes a notebook list feed."""
-  entry = [NotebookListEntry]
-
-
+    """Describes a notebook list feed."""
+    entry = [NotebookListEntry]

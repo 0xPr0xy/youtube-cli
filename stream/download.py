@@ -772,7 +772,7 @@ class FileDownloader(object):
                 raise MaxDownloadsReached()
 
         filename = self.prepare_filename(info_dict)
-        
+
         # Forced printings
         if self.params.get('forcetitle', False):
             print info_dict['title'].encode(preferredencoding(), 'xmlcharrefreplace')
@@ -848,7 +848,7 @@ class FileDownloader(object):
                 except (ContentTooShortError, ), err:
                     self.trouble(u'ERROR: content too short (expected %s bytes and served %s)' % (err.expected, err.downloaded))
                     return
-    
+
             if success:
                 try:
                     self.post_process(filename, info_dict)
@@ -1189,7 +1189,7 @@ class YoutubeIE(InfoExtractor):
         '43': '360x640',
         '44': '480x854',
         '45': '720x1280',
-    }   
+    }
     IE_NAME = u'youtube'
 
     def report_lang(self):
@@ -3034,14 +3034,14 @@ class BlipTVIE(InfoExtractor):
                     data = json_data['Post']
                 else:
                     data = json_data
-    
+
                 upload_date = datetime.datetime.strptime(data['datestamp'], '%m-%d-%y %H:%M%p').strftime('%Y%m%d')
                 video_url = data['media']['url']
                 umobj = re.match(self._URL_EXT, video_url)
                 if umobj is None:
                     raise ValueError('Can not determine filename extension')
                 ext = umobj.group(1)
-    
+
                 info = {
                     'id': data['item_id'],
                     'url': video_url,
@@ -3075,7 +3075,7 @@ class MyVideoIE(InfoExtractor):
 
     def __init__(self, downloader=None):
         InfoExtractor.__init__(self, downloader)
-    
+
     def report_download_webpage(self, video_id):
         """Report webpage download."""
         self._downloader.to_screen(u'[myvideo] %s: Downloading webpage' % video_id)
@@ -3142,7 +3142,7 @@ class ComedyCentralIE(InfoExtractor):
 
     def report_extraction(self, episode_id):
         self._downloader.to_screen(u'[comedycentral] %s: Extracting information' % episode_id)
-    
+
     def report_config_download(self, episode_id):
         self._downloader.to_screen(u'[comedycentral] %s: Downloading configuration' % episode_id)
 
@@ -3569,7 +3569,7 @@ class SoundcloudIE(InfoExtractor):
         mobj = re.search('track-description-value"><p>(.*?)</p>', webpage)
         if mobj:
             description = mobj.group(1)
-        
+
         # upload date
         upload_date = None
         mobj = re.search("pretty-date'>on ([\w]+ [\d]+, [\d]+ \d+:\d+)</abbr></h2>", webpage)
@@ -3704,7 +3704,7 @@ class MixcloudIE(InfoExtractor):
             url_list = jsonData[fmt][bitrate]
         except TypeError: # we have no bitrate info.
             url_list = jsonData[fmt]
-                
+
         return url_list
 
     def check_urls(self, url_list):
@@ -3824,7 +3824,7 @@ class StanfordOpenClassroomIE(InfoExtractor):
             info = {
                 'id': _simplify_title(course + '_' + video),
             }
-    
+
             self.report_extraction(info['id'])
             baseUrl = 'http://openclassroom.stanford.edu/MainFolder/courses/' + course + '/videos/'
             xmlUrl = baseUrl + video + '.xml'
@@ -3958,7 +3958,7 @@ class MTVIE(InfoExtractor):
             self._downloader.trouble(u'ERROR: unable to extract performer')
             return
         performer = _unescapeHTML(mobj.group(1).decode('iso-8859-1'))
-        video_title = performer + ' - ' + song_name 
+        video_title = performer + ' - ' + song_name
 
         mobj = re.search(r'<meta name="mtvn_uri" content="([^"]+)"/>', webpage)
         if mobj is None:
@@ -4200,7 +4200,7 @@ def updateSelf(downloader, filename):
         try:
             urlh = urllib.urlopen(UPDATE_URL)
             newcontent = urlh.read()
-            
+
             vmatch = re.search("__version__ = '([^']+)'", newcontent)
             if vmatch is not None and vmatch.group(1) == __version__:
                 downloader.to_screen(u'youtube-dl is up-to-date (' + __version__ + ')')
@@ -4424,8 +4424,8 @@ def parseOpts(url):
         userConf = os.path.join(xdg_config_home, 'youtube-dl.conf')
     else:
         userConf = os.path.join(os.path.expanduser('~'), '.config', 'youtube-dl.conf')
-    
-    
+
+
     url_list = []
     url_list.append(url)
     #xxx
@@ -4629,7 +4629,7 @@ def _real_main(url):
             parser.error(u'you must provide at least one URL')
         else:
             sys.exit()
-    
+
     try:
         retcode = fd.download(all_urls)
     except MaxDownloadsReached:

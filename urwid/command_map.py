@@ -36,7 +36,7 @@ class CommandMap(object):
         'page up': 'cursor page up',
         'page down': 'cursor page down',
         'home': 'cursor max left',
-        'end': 'cursor max right', 
+        'end': 'cursor max right',
         ' ': 'activate',
         'enter': 'activate',
     }

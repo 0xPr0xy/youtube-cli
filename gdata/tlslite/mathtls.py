@@ -88,10 +88,10 @@ def PAD(n, x):
     return s
 
 def makeU(N, A, B):
-  return stringToNumber(sha.sha(PAD(N, A) + PAD(N, B)).digest())
+    return stringToNumber(sha.sha(PAD(N, A) + PAD(N, B)).digest())
 
 def makeK(N, g):
-  return stringToNumber(sha.sha(numberToString(N) + PAD(N, g)).digest())
+    return stringToNumber(sha.sha(numberToString(N) + PAD(N, g)).digest())
 
 
 """

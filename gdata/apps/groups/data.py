@@ -49,188 +49,187 @@ DIRECT_MEMBER = 'directMember'
 
 
 class GroupEntry(gdata.apps.apps_property_entry.AppsPropertyEntry):
-  """Represents a group entry in object form."""
+    """Represents a group entry in object form."""
 
-  def GetGroupId(self):
-    """Get groupId of the GroupEntry object.
+    def GetGroupId(self):
+        """Get groupId of the GroupEntry object.
 
-    Returns:
-      The groupId this GroupEntry object as a string or None.
-    """
-    return self._GetProperty(GROUP_ID)
+        Returns:
+          The groupId this GroupEntry object as a string or None.
+        """
+        return self._GetProperty(GROUP_ID)
 
-  def SetGroupId(self, value):
-    """Set the groupId of this GroupEntry object.
+    def SetGroupId(self, value):
+        """Set the groupId of this GroupEntry object.
 
-    Args:
-      value: string The new groupId to give this object.
-    """
-    self._SetProperty(GROUP_ID, value)
+        Args:
+          value: string The new groupId to give this object.
+        """
+        self._SetProperty(GROUP_ID, value)
 
-  group_id = pyproperty(GetGroupId, SetGroupId)
+    group_id = pyproperty(GetGroupId, SetGroupId)
 
-  def GetGroupName(self):
-    """Get the groupName of the GroupEntry object.
+    def GetGroupName(self):
+        """Get the groupName of the GroupEntry object.
 
-    Returns:
-      The groupName of this GroupEntry object as a string or None.
-    """
-    return self._GetProperty(GROUP_NAME)
+        Returns:
+          The groupName of this GroupEntry object as a string or None.
+        """
+        return self._GetProperty(GROUP_NAME)
 
-  def SetGroupName(self, value):
-    """Set the groupName of this GroupEntry object.
+    def SetGroupName(self, value):
+        """Set the groupName of this GroupEntry object.
 
-    Args:
-      value: string The new groupName to give this object.
-    """
-    self._SetProperty(GROUP_NAME, value)
+        Args:
+          value: string The new groupName to give this object.
+        """
+        self._SetProperty(GROUP_NAME, value)
 
-  group_name = pyproperty(GetGroupName, SetGroupName)
+    group_name = pyproperty(GetGroupName, SetGroupName)
 
-  def GetDescription(self):
-    """Get the description of the GroupEntry object.
+    def GetDescription(self):
+        """Get the description of the GroupEntry object.
 
-    Returns:
-      The description of this GroupEntry object as a string or None.
-    """
-    return self._GetProperty(DESCRIPTION)
+        Returns:
+          The description of this GroupEntry object as a string or None.
+        """
+        return self._GetProperty(DESCRIPTION)
 
-  def SetDescription(self, value):
-    """Set the description of this GroupEntry object.
+    def SetDescription(self, value):
+        """Set the description of this GroupEntry object.
 
-    Args:
-      value: string The new description to give this object.
-    """
-    self._SetProperty(DESCRIPTION, value)
+        Args:
+          value: string The new description to give this object.
+        """
+        self._SetProperty(DESCRIPTION, value)
 
-  description = pyproperty(GetDescription, SetDescription)
+    description = pyproperty(GetDescription, SetDescription)
 
-  def GetEmailPermission(self):
-    """Get the emailPermission of the GroupEntry object.
+    def GetEmailPermission(self):
+        """Get the emailPermission of the GroupEntry object.
 
-    Returns:
-      The emailPermission of this GroupEntry object as a string or None.
-    """
-    return self._GetProperty(EMAIL_PERMISSION)
+        Returns:
+          The emailPermission of this GroupEntry object as a string or None.
+        """
+        return self._GetProperty(EMAIL_PERMISSION)
 
-  def SetEmailPermission(self, value):
-    """Set the emailPermission of this GroupEntry object.
+    def SetEmailPermission(self, value):
+        """Set the emailPermission of this GroupEntry object.
 
-    Args:
-      value: string The new emailPermission to give this object.
-    """
-    self._SetProperty(EMAIL_PERMISSION, value)
+        Args:
+          value: string The new emailPermission to give this object.
+        """
+        self._SetProperty(EMAIL_PERMISSION, value)
 
-  email_permission = pyproperty(GetEmailPermission, SetEmailPermission)
+    email_permission = pyproperty(GetEmailPermission, SetEmailPermission)
 
-  def __init__(self, group_id=None, group_name=None, description=None,
-               email_permission=None, *args, **kwargs):
-    """Constructs a new GroupEntry object with the given arguments.
+    def __init__(self, group_id=None, group_name=None, description=None,
+                 email_permission=None, *args, **kwargs):
+        """Constructs a new GroupEntry object with the given arguments.
 
-    Args:
-      group_id: string identifier of the group.
-      group_name: string name of the group.
-      description: string (optional) the group description.
-      email_permisison: string (optional) permission level of the group.
-    """
-    super(GroupEntry, self).__init__(*args, **kwargs)
-    if group_id:
-      self.group_id = group_id
-    if group_name:
-      self.group_name = group_name
-    if description:
-      self.description = description
-    if email_permission:
-      self.email_permission = email_permission
+        Args:
+          group_id: string identifier of the group.
+          group_name: string name of the group.
+          description: string (optional) the group description.
+          email_permisison: string (optional) permission level of the group.
+        """
+        super(GroupEntry, self).__init__(*args, **kwargs)
+        if group_id:
+            self.group_id = group_id
+        if group_name:
+            self.group_name = group_name
+        if description:
+            self.description = description
+        if email_permission:
+            self.email_permission = email_permission
 
 
 class GroupFeed(gdata.data.GDFeed):
-  """Represents a feed of GroupEntry objects."""
+    """Represents a feed of GroupEntry objects."""
 
-  # Override entry so that this feed knows how to type its list of entries.
-  entry = [GroupEntry]
+    # Override entry so that this feed knows how to type its list of entries.
+    entry = [GroupEntry]
 
 
 class GroupMemberEntry(gdata.apps.apps_property_entry.AppsPropertyEntry):
-  """Represents a group member in object form."""
+    """Represents a group member in object form."""
 
-  def GetMemberId(self):
-    """Get the memberId of the GroupMember object.
+    def GetMemberId(self):
+        """Get the memberId of the GroupMember object.
 
-    Returns:
-      The memberId of this GroupMember object as a string.
-    """
-    return self._GetProperty(MEMBER_ID)
+        Returns:
+          The memberId of this GroupMember object as a string.
+        """
+        return self._GetProperty(MEMBER_ID)
 
-  def SetMemberId(self, value):
-    """Set the memberId of this GroupMember object.
+    def SetMemberId(self, value):
+        """Set the memberId of this GroupMember object.
 
-    Args:
-      value: string The new memberId to give this object.
-    """
-    self._SetProperty(MEMBER_ID, value)
+        Args:
+          value: string The new memberId to give this object.
+        """
+        self._SetProperty(MEMBER_ID, value)
 
-  member_id = pyproperty(GetMemberId, SetMemberId)
+    member_id = pyproperty(GetMemberId, SetMemberId)
 
-  def GetMemberType(self):
-    """Get the memberType(User, Group) of the GroupMember object.
+    def GetMemberType(self):
+        """Get the memberType(User, Group) of the GroupMember object.
 
-    Returns:
-      The memberType of this GroupMember object as a string or None.
-    """
-    return self._GetProperty(MEMBER_TYPE)
+        Returns:
+          The memberType of this GroupMember object as a string or None.
+        """
+        return self._GetProperty(MEMBER_TYPE)
 
-  def SetMemberType(self, value):
-    """Set the memberType of this GroupMember object.
+    def SetMemberType(self, value):
+        """Set the memberType of this GroupMember object.
 
-    Args:
-      value: string The new memberType to give this object.
-    """
-    self._SetProperty(MEMBER_TYPE, value)
+        Args:
+          value: string The new memberType to give this object.
+        """
+        self._SetProperty(MEMBER_TYPE, value)
 
-  member_type = pyproperty(GetMemberType, SetMemberType)
+    member_type = pyproperty(GetMemberType, SetMemberType)
 
-  def GetDirectMember(self):
-    """Get the directMember of the GroupMember object.
+    def GetDirectMember(self):
+        """Get the directMember of the GroupMember object.
 
-    Returns:
-      The directMember of this GroupMember object as a bool or None.
-    """
-    return self._GetProperty(DIRECT_MEMBER)
+        Returns:
+          The directMember of this GroupMember object as a bool or None.
+        """
+        return self._GetProperty(DIRECT_MEMBER)
 
-  def SetDirectMember(self, value):
-    """Set the memberType of this GroupMember object.
+    def SetDirectMember(self, value):
+        """Set the memberType of this GroupMember object.
 
-    Args:
-      value: string The new memberType to give this object.
-    """
-    self._SetProperty(DIRECT_MEMBER, value)
+        Args:
+          value: string The new memberType to give this object.
+        """
+        self._SetProperty(DIRECT_MEMBER, value)
 
-  direct_member = pyproperty(GetDirectMember, SetDirectMember)
+    direct_member = pyproperty(GetDirectMember, SetDirectMember)
 
-  def __init__(self, member_id=None, member_type=None,
-               direct_member=None, *args, **kwargs):
-    """Constructs a new GroupMemberEntry object with the given arguments.
+    def __init__(self, member_id=None, member_type=None,
+                 direct_member=None, *args, **kwargs):
+        """Constructs a new GroupMemberEntry object with the given arguments.
 
-    Args:
-      member_id: string identifier of group member object.
-      member_type: string (optional) member type of group member object.
-      direct_member: bool (optional) if group member object is direct member.
-      args: The other parameters to pass to gdata.entry.GDEntry constructor.
-      kwargs: The other parameters to pass to gdata.entry.GDEntry constructor.
-    """
-    super(GroupMemberEntry, self).__init__(*args, **kwargs)
-    if member_id:
-      self.member_id = member_id
-    if member_type:
-      self.member_type = member_type
-    if direct_member:
-      self.direct_member = direct_member
+        Args:
+          member_id: string identifier of group member object.
+          member_type: string (optional) member type of group member object.
+          direct_member: bool (optional) if group member object is direct member.
+          args: The other parameters to pass to gdata.entry.GDEntry constructor.
+          kwargs: The other parameters to pass to gdata.entry.GDEntry constructor.
+        """
+        super(GroupMemberEntry, self).__init__(*args, **kwargs)
+        if member_id:
+            self.member_id = member_id
+        if member_type:
+            self.member_type = member_type
+        if direct_member:
+            self.direct_member = direct_member
 
 
 class GroupMemberFeed(gdata.data.GDFeed):
-  """Represents a feed of GroupMemberEntry objects."""
+    """Represents a feed of GroupMemberEntry objects."""
 
-  # Override entry so that this feed knows how to type its list of entries.
-  entry = [GroupMemberEntry]
-
+    # Override entry so that this feed knows how to type its list of entries.
+    entry = [GroupMemberEntry]

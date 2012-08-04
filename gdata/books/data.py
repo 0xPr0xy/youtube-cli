@@ -31,60 +31,58 @@ GBS_TEMPLATE = '{http://schemas.google.com/books/2008/}%s'
 
 
 class CollectionEntry(gdata.data.GDEntry):
-  """Describes an entry in a feed of collections."""
+    """Describes an entry in a feed of collections."""
 
 
 class CollectionFeed(gdata.data.BatchFeed):
-  """Describes a Book Search collection feed."""
-  entry = [CollectionEntry]
+    """Describes a Book Search collection feed."""
+    entry = [CollectionEntry]
 
 
 class Embeddability(atom.core.XmlElement):
-  """Describes an embeddability."""
-  _qname = GBS_TEMPLATE % 'embeddability'
-  value = 'value'
+    """Describes an embeddability."""
+    _qname = GBS_TEMPLATE % 'embeddability'
+    value = 'value'
 
 
 class OpenAccess(atom.core.XmlElement):
-  """Describes an open access."""
-  _qname = GBS_TEMPLATE % 'openAccess'
-  value = 'value'
+    """Describes an open access."""
+    _qname = GBS_TEMPLATE % 'openAccess'
+    value = 'value'
 
 
 class Review(atom.core.XmlElement):
-  """User-provided review."""
-  _qname = GBS_TEMPLATE % 'review'
-  lang = 'lang'
-  type = 'type'
+    """User-provided review."""
+    _qname = GBS_TEMPLATE % 'review'
+    lang = 'lang'
+    type = 'type'
 
 
 class Viewability(atom.core.XmlElement):
-  """Describes a viewability."""
-  _qname = GBS_TEMPLATE % 'viewability'
-  value = 'value'
+    """Describes a viewability."""
+    _qname = GBS_TEMPLATE % 'viewability'
+    value = 'value'
 
 
 class VolumeEntry(gdata.data.GDEntry):
-  """Describes an entry in a feed of Book Search volumes."""
-  comments = gdata.data.Comments
-  language = [gdata.dublincore.data.Language]
-  open_access = OpenAccess
-  format = [gdata.dublincore.data.Format]
-  dc_title = [gdata.dublincore.data.Title]
-  viewability = Viewability
-  embeddability = Embeddability
-  creator = [gdata.dublincore.data.Creator]
-  rating = gdata.data.Rating
-  description = [gdata.dublincore.data.Description]
-  publisher = [gdata.dublincore.data.Publisher]
-  date = [gdata.dublincore.data.Date]
-  subject = [gdata.dublincore.data.Subject]
-  identifier = [gdata.dublincore.data.Identifier]
-  review = Review
+    """Describes an entry in a feed of Book Search volumes."""
+    comments = gdata.data.Comments
+    language = [gdata.dublincore.data.Language]
+    open_access = OpenAccess
+    format = [gdata.dublincore.data.Format]
+    dc_title = [gdata.dublincore.data.Title]
+    viewability = Viewability
+    embeddability = Embeddability
+    creator = [gdata.dublincore.data.Creator]
+    rating = gdata.data.Rating
+    description = [gdata.dublincore.data.Description]
+    publisher = [gdata.dublincore.data.Publisher]
+    date = [gdata.dublincore.data.Date]
+    subject = [gdata.dublincore.data.Subject]
+    identifier = [gdata.dublincore.data.Identifier]
+    review = Review
 
 
 class VolumeFeed(gdata.data.BatchFeed):
-  """Describes a Book Search volume feed."""
-  entry = [VolumeEntry]
-
-
+    """Describes a Book Search volume feed."""
+    entry = [VolumeEntry]

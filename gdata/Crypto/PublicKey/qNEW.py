@@ -167,4 +167,3 @@ class qNEWobj(pubkey.pubkey):
         return construct((self.p, self.q, self.g, self.y))
 
 object = qNEWobj
-

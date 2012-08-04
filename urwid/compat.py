@@ -44,5 +44,3 @@ else:
     chr2 = chr
     B = lambda x: x
     bytes3 = lambda x: bytes().join([chr(c) for c in x])
-
-

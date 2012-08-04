@@ -74,7 +74,7 @@ class Signals(object):
         callback -- the function to call when that signal is sent
         user_arg -- optional additional argument to callback, if None
             no arguments will be added
-        
+
         When a matching signal is sent, callback will be called with
         all the positional parameters sent with the signal.  If user_arg
         is not None it will be sent added to the end of the positional
@@ -86,7 +86,7 @@ class Signals(object):
                 (name, obj)
         d = setdefaultattr(obj, self._signal_attr, {})
         d.setdefault(name, []).append((callback, user_arg))
-        
+
     def disconnect(self, obj, name, callback, user_arg=None):
         """
         Available as:
@@ -101,7 +101,7 @@ class Signals(object):
         if (callback, user_arg) not in d[name]:
             return
         d[name].remove((callback, user_arg))
- 
+
     def emit(self, obj, name, *args):
         """
         Available as:
@@ -131,4 +131,3 @@ emit_signal = _signals.emit
 register_signal = _signals.register
 connect_signal = _signals.connect
 disconnect_signal = _signals.disconnect
-
