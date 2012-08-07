@@ -17,8 +17,6 @@ import urwid
 # http://excess.org/urwid/reference.html
 
 
-
-
 class CustomEdit(urwid.Edit):
 
 	__metaclass__ = urwid.signals.MetaSignals
@@ -127,7 +125,7 @@ class YoutubeClient:
 				self.time = False
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 		self.execute()
 
@@ -153,7 +151,7 @@ class YoutubeClient:
 			self.loop.run()
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 
@@ -163,7 +161,7 @@ class YoutubeClient:
 			download.main(entry)
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 	def downloadFeed(self,feed):
@@ -173,7 +171,7 @@ class YoutubeClient:
 				download.main(entry.media.player.url)
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 
@@ -187,7 +185,7 @@ class YoutubeClient:
 			urls.append(str(url))
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 		player = YoutubePlayer(urls)
 
@@ -203,7 +201,7 @@ class YoutubeClient:
 			urls.append(str(url))
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 		player = YoutubePlayer(urls)
 
@@ -242,7 +240,7 @@ class YoutubeClient:
 				self.search(feed)
 
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 	def keystroke (self,input):
@@ -253,7 +251,7 @@ class YoutubeClient:
 				self.edit()
 
 			except Exception as e:
-				self.logging.exception(e)
+				logging.exception(e)
 
 
 		if input is 'enter':
@@ -263,7 +261,7 @@ class YoutubeClient:
 				self.stream(self.focus)
 
 			except Exception as e:
-				self.logging.exception(e)
+				logging.exception(e)
 
 
 		if input is ' ':
@@ -273,7 +271,7 @@ class YoutubeClient:
 				self.download(self.focus)
 
 			except Exception as e:
-				self.logging.exception(e)
+				logging.exception(e)
 
 		if input in ('q', 'Q'):
 
@@ -290,7 +288,7 @@ class YoutubeClient:
 			urwid.connect_signal(self.foot, 'done', self.edit_done)
 		
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 	def edit_done(self, content):
@@ -308,7 +306,7 @@ class YoutubeClient:
 			self.view.set_footer(None)
 		
 		except Exception as e:
-			self.logging.exception(e)
+			logging.exception(e)
 
 
 if len(sys.argv) == 7:
